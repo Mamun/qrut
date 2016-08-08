@@ -1,4 +1,11 @@
-{"/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
+{"url" "https://green-1.commerzfinanz.com"
+; "url" "http://localhost:8021"
+ "/ratanet/front?controller=CreditApplication&action=Login"
+ {:vendor   "2182442"
+  :userName "otatli"
+  :password "test1234"}
+
+ "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
  {"Instance_theDossierConditions_theVendorInfo_mSalesmanId" "otatli"
   "Instance_theDossierConditions_theMaterialInfo$0_mCode"   "612"}
 
@@ -35,18 +42,18 @@
   "Instance_theFamily_theAddressLiving_theAddress_mPostalCode"       "80796"
   "Instance_theFamily_theCreditHolder_theIdCard_mIssuedBy"           "dfger"
   "Instance_theFamily_mHaveCard"                                     "E"
-  "Instance_theFamily_theCreditHolder_mSigle"                        "Herr"
+  "Instance_theFamily_theCreditHolder_mSigle"                        "HERR"
   "SCHUFA_AGREEMENT_CHECK"                                           "1"}
 
  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary"
  {"Instance_theFamily_theCreditHolder_theCurrentEmployment_theEnterprise_mName"            "aaa"
   "Instance_theFamily_theBudget_mResidencePrimary"                                         "99999"
   "CreditHolderSalaryExtraField"                                                           "5000"
-  "Instance_theFamily_theCreditHolder_mEmail"                                              "mamuninfo@gmail.com"
+  "Instance_theFamily_theCreditHolder_mEmail"                                              "a.almamun@commerzfinanz.com"
   "Instance_theFamily_theCreditHolder_theCurrentEmployment_mDateEnd"                       nil
   "Instance_theFamily_theCreditHolder_theCurrentEmployment_theEnterprise_theAddress_mCity" "Munich"
   "Instance_theFamily_theCreditHolder_mTelephone"                                          "08999168111"
-  "Instance_theFamily_theAddressLiving_mSituation"                                         "K"
+  "Instance_theFamily_theAddressLiving_mSituation"                                         "P"
   "Instance_theFamily_theCreditHolder_theCurrentEmployment_mDateBegin"                     "12.2012"
   "Instance_theFamily_theCreditHolder_mTelephoneGSM"                                       nil
   "Checkbox_Kontoprotect_CHECK"                                                            "1"
@@ -55,4 +62,5 @@
   "Instance_theFamily_theBudget_mCreditHolderSalary"                                       "5000"
   "Kontoprotect_CHECK"                                                                     "1"
   }
+ "/ratanet/front?controller=CreditApplication&action=PrintingContract" {}
  }

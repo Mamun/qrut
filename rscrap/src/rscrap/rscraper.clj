@@ -14,17 +14,6 @@
   (println "Log done-------------- "))
 
 
-#_(defn build-credit-request [m]
-  (let [req {"CAM_Instance_theDossierConditions_mCreditTypeCode"      0
-             "Instance_theDossierConditions_mPaymentDay"              1
-             "Instance_theDossierConditions_theMaterialInfo$0_mTaken" "E"
-             "Instance_theDossierConditions_theMaterialInfo$0_mPrice" 2000
-             "CAM_mCreditAmount"                                      2000}]
-    (merge-with merge m {:params req}))
-  )
-
-
-
 (defn as-string [n]
   (reduce str (html/emit* n)))
 
@@ -34,44 +23,55 @@
 
 
 
-
+(def req-m (edn/read-string (slurp "params.edn")))
 
 
 (comment
 
 
-  ;;Submit material
-  (let [user-params (edn/read-string (slurp "params.edn"))]
 
-    (binding [a/*base-url* "https://green-1.commerzfinanz.com"]
 
-      (a/submit-page (a/as-request a/login-url a/login-data))
+  (a/submit-page (a/login-page req-m) )
 
-      (->
-        (a/get-page (a/as-request a/material-url {}))
-        (a/assoc-user-params user-params)
+
+  (->
+    (a/get-page (a/material-page req-m))
+
+
+    )
+
+  (do
+
+
+    (a/submit-page (a/login-page req-m) )
+
+    (-> (a/get-page (a/material-page req-m))
+        (a/assoc-user-params req-m)
         (a/submit-page)
 
-        (a/assoc-user-params user-params)
-        (current-page)
+        (a/assoc-user-params req-m)
+        (a/current-page)
         (a/submit-page)
 
-        (a/assoc-user-params user-params)
+        (a/assoc-user-params req-m)
         (a/submit-page)
 
         ;;custoemr identity
-        (a/assoc-user-params user-params)
+        (a/assoc-user-params req-m)
         (a/submit-page)
 
         ;;custoemr identity comple
-        (a/assoc-user-params user-params)
+        (a/assoc-user-params req-m)
         (a/submit-page)
 
-        (:response)
-        (as-file)
-        #_(dissoc :response))
+        ;(:response)
+        #_(as-file)
+        #_(dissoc :response)))
 
-      ))
+
+
+  ;;Submit material
+
 
 
   ;;Submit credit type

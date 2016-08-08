@@ -41,25 +41,12 @@
 
 
 (def cs (clj-http.cookies/cookie-store))
-
-;(def baseurl "https//green-1.commerzfinanz.com")
-(def ^:dynamic *base-url* "http://localhost:8021")
-;(def baseurl "https://green-1.commerzfinanz.com")
-(def login-url "/ratanet/front?controller=CreditApplication&action=Login")
-(def material-url "/ratanet/front?controller=CreditApplication&action=DispoMaterialType&ps=DISPOV2&init=1")
-
-
 (html/set-ns-parser! net.cgrand.tagsoup/parser)
 
 
-(def login-data {:vendor   "2182442"
-                 :userName "otatli"
-                 :password "test1234"})
+;(def ^:dynamic *base-url* "http://localhost:8021")
 
 
-(defn as-request [url params]
-  {:params params
-   :url    url})
 
 
 
@@ -72,28 +59,39 @@
         form (get-form-url node)]
     {:params   params
      :url      form
-     :response r}))
+     :response node}))
 
 
 (defn get-page
   [{:keys [params url]}]
-  (-> (str *base-url* url)
+  (-> url
       (client/get {:cookie-store cs
                    :query-params params})
       (as-response)))
 
 
 
-(defn submit-page [{:keys [params url debug?]}]
+(defn submit-page [{:keys [params url debug? ]}]
   (when debug?
     (println "--Submit data start for --" url)
     (clojure.pprint/pprint params)
     (println "--Submit data end--"))
-  (-> (str *base-url* url)
+  (-> url
       (client/post {:form-params     params
                     :cookie-store    cs
                     :force-redirects true})
       (as-response)))
+
+
+
+(defn login-page [config-m]
+  {:params (get config-m "/ratanet/front?controller=CreditApplication&action=Login")
+   :url    (str (get config-m "url" ) "/ratanet/front?controller=CreditApplication&action=Login")})
+
+
+(defn material-page [config-m]
+  {:params {}
+   :url    (str (get config-m "url") "/ratanet/front?controller=CreditApplication&action=DispoMaterialType&ps=DISPOV2&init=1"   )})
 
 
 (defn next-page [m]
@@ -112,8 +110,9 @@
   (update-in m [:params] (fn [w] (dissoc w "prev" "next" "alternate3" "alternate1"))))
 
 
-(defn assoc-user-params [m user-params]
-  (-> (merge-with merge m {:params (get user-params (:url m))})
+(defn assoc-user-params [m config-m]
+  (-> (merge-with merge m {:params (get config-m (:url m))})
+      (update-in [:url] (fn [v] (str (get "url" config-m) v ) ) )
       (next-page)))
 
 
