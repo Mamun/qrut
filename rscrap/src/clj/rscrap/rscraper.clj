@@ -23,27 +23,61 @@
 
 
 
-(def req-m (edn/read-string (slurp "params.edn")))
+(def current-state (atom {}))
+
+
+(defn store-state [v]
+  (reset! current-state v))
+
+(defn get-state [_]
+  @current-state)
+
+
+
+
+
 
 
 (comment
 
 
+  ;"/ratanet/front?controller=CreditApplication&action=PrintingContract"
+
+  (-> (edn/read-string (slurp "credit_type_default.edn"))
+      (a/create-contract  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity")
+      (dissoc :response))
 
 
-  (a/submit-page (a/login-page req-m) )
+  (-> (edn/read-string (slurp "credit_type_default.edn"))
+      (a/create-contract "/ratanet/front?controller=CreditApplication&action=PrintingContract")
+      (dissoc :response))
+
+
+
+
+
+  ;@curren
+
+  (a/submit-page (a/login-page (edn/read-string (slurp "credit_type_default.edn"))))
 
 
   (->
-    (a/get-page (a/material-page req-m))
+    (a/get-page (a/material-page (edn/read-string (slurp "credit_type_default.edn"))))
+    (dissoc :response))
 
-
-    )
 
   (do
 
+    (a/submit-page (a/login-page req-m))
 
-    (a/submit-page (a/login-page req-m) )
+
+
+
+    ;(:params @current-state)
+    ;(:url @current-state)
+
+    ;FONT CLASS='errormessage'>
+
 
     (-> (a/get-page (a/material-page req-m))
         (a/assoc-user-params req-m)
@@ -139,6 +173,8 @@
 
 
 ;(System/getProperties)
+
+
 
 
 

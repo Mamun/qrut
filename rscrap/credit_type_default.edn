@@ -1,5 +1,5 @@
 {"url" "https://green-1.commerzfinanz.com"
-; "url" "http://localhost:8021"
+ ;"url" "http://localhost:8021"
  "/ratanet/front?controller=CreditApplication&action=Login"
  {:vendor   "2182442"
   :userName "otatli"
@@ -13,8 +13,8 @@
  {"CAM_Instance_theDossierConditions_mCreditTypeCode"      0
   "Instance_theDossierConditions_mPaymentDay"              1
   "Instance_theDossierConditions_theMaterialInfo$0_mTaken" "E"
-  "Instance_theDossierConditions_theMaterialInfo$0_mPrice" 2000
-  "CAM_mCreditAmount"                                      2000}
+  "Instance_theDossierConditions_theMaterialInfo$0_mPrice" 20000
+  "CAM_mCreditAmount"                                      20000}
 
  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
  {"Instance_theFamily_theCreditHolder_mCitizenshipCoba"              "000"
@@ -29,7 +29,7 @@
   "accountTypeSelected"                                              "SEPA"
   "Instance_theFamily_theAddressLiving_theAddress_mStreet"           "Schwanthalerstrase 31"
   "Instance_theFamily_theAddressLiving_mBeginDate"                   "01.2009"
-  "Instance_theFamily_theCreditHolder_mFirstName"                    "ratanet"
+  "Instance_theFamily_theCreditHolder_mFirstName"                    "Otatli"
   "Instance_theFamily_theAddressLiving_theAddress_mCity"             "Munich"
   "account_type"                                                     "SEPA"
   "Instance_theFamily_theCreditHolder_theIdCard_mType"               "PAS"
