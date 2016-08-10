@@ -8,10 +8,9 @@
                                    dispatch
                                    dispatch-sync
                                    subscribe]]
-            [dadysql.ui :as v]
             [dadysql.re-frame :as tr]
             [app.service :as s]
-            [app.component.ui :as appui]))
+            ))
 
 
 

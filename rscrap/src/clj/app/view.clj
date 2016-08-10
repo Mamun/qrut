@@ -6,6 +6,33 @@
 (html/set-ns-parser! net.cgrand.tagsoup/parser)
 
 
+
+(html/deftemplate main-template "public/templates/application.html"
+                  []
+                  [:head :title] (html/content "Enlive starter kit"))
+
+
+
+(html/defsnippet main-template "public/templates/header.html"
+                 [:header]
+                 [heading navigation-elements]
+                 [:h1] (html/content heading)
+                 [:ul [:li html/first-of-type]] (html/clone-for [[caption url] navigation-elements]
+                                                                [:li :a] (html/content caption)
+                                                                [:li :a] (html/set-attr :href url)))
+
+
+(comment
+
+  (->>
+    (main-template "Hello from word" [["Hello" " #"]])
+    (html/emit*)
+    (apply str)
+    )
+
+  )
+
+
 (defn html-response
   [body]
   {:status  200
@@ -24,6 +51,8 @@
        (html/emit*)
        (reduce str)
        (html-response)))
+
+
 
 
 
