@@ -1,5 +1,5 @@
-{"url" "https://green-1.commerzfinanz.com"
- ;"url" "http://localhost:8021"
+{;"url" "https://green-1.commerzfinanz.com"
+ "url" "http://localhost:8021"
  "/ratanet/front?controller=CreditApplication&action=Login"
  {:vendor   "2182442"
   :userName "otatli"
@@ -13,8 +13,8 @@
  {"CAM_Instance_theDossierConditions_mCreditTypeCode"      0
   "Instance_theDossierConditions_mPaymentDay"              1
   "Instance_theDossierConditions_theMaterialInfo$0_mTaken" "E"
-  "Instance_theDossierConditions_theMaterialInfo$0_mPrice" 20000
-  "CAM_mCreditAmount"                                      20000}
+  "Instance_theDossierConditions_theMaterialInfo$0_mPrice" 2000
+  "CAM_mCreditAmount"                                      2000}
 
  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
  {"Instance_theFamily_theCreditHolder_mCitizenshipCoba"              "000"

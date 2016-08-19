@@ -1,28 +1,75 @@
 (ns app.view
-  (:require [net.cgrand.enlive-html :as html ] )
-  #_(:use [selmer.parser]))
+  (:require [net.cgrand.enlive-html :as html ] ))
 
 
 (html/set-ns-parser! net.cgrand.tagsoup/parser)
+(html/alter-ns-options! assoc :reloadable? true)
 
 
-
-(html/deftemplate main-template "public/templates/application.html"
-                  []
-                  [:head :title] (html/content "Enlive starter kit"))
-
-
-
-(html/defsnippet main-template "public/templates/header.html"
-                 [:header]
-                 [heading navigation-elements]
-                 [:h1] (html/content heading)
-                 [:ul [:li html/first-of-type]] (html/clone-for [[caption url] navigation-elements]
-                                                                [:li :a] (html/content caption)
-                                                                [:li :a] (html/set-attr :href url)))
+(html/deftemplate index-template "public/index.html"
+                  [title content]
+                  [:head :title] (html/content title)
+                  [:div#wrapper] (html/content content))
 
 
+(html/defsnippet login-snippet "public/login.html"
+                 [:div#login]
+                 []
+                 identity)
+
+
+(html/defsnippet material-snippet "public/material.html"
+                 [:div#material]
+                 []
+                 identity)
+
+
+(html/defsnippet credittype-snippet "public/credittype.html"
+                 [:div#credittype]
+                 []
+                 identity)
+
+
+(html/defsnippet customer-identity-snippet "public/customer_identity.html"
+                 [:div#customer-identity]
+                 []
+                 identity)
+
+
+(html/defsnippet customer-identity-comple-snippet "public/customer_identity_compl.html"
+                 [:div#customer-identity-compl]
+                 []
+                 identity)
+
+
+;customer-identity-comple-view
 (comment
+
+
+  ;material_list
+  (material-snippet)
+
+  (html/html-resource "public/credit_type.html")
+
+
+  (->>  (credit-type-snippet)
+        (main-template "Hello from credit type ")
+        (apply str)
+        )
+
+
+  (apply str
+         (html/emit*
+
+           (html/snippet "public/templates/header.html"
+                         [:header]
+                         []
+                         identity)
+
+           )
+         )
+
+
 
   (->>
     (main-template "Hello from word" [["Hello" " #"]])
@@ -40,21 +87,42 @@
    :body    body})
 
 
-(defn index-page [data]
-  (-> (html/html-resource "public/index.html")
-      (html/at [:#wrapper] (html/content "Display from data ") )))
-
-
 
 (defn index []
-  (->> (index-page {})
-       (html/emit*)
-       (reduce str)
-       (html-response)))
+  (->>  (login-snippet)
+        (index-template "Hello from credit type ")
+        (apply str)
+        (html-response)))
 
 
 
+(defn material-view []
+  (->>  (material-snippet)
+        (index-template "Hello from credit type ")
+        (apply str)
+        (html-response)))
 
+
+
+(defn credittype-view []
+  (->>  (credittype-snippet)
+        (index-template "Hello from credit type ")
+        (apply str)
+        (html-response)))
+
+
+(defn customer-identity-view []
+  (->>  (customer-identity-snippet)
+        (index-template "Hello from credit type ")
+        (apply str)
+        (html-response)))
+
+
+(defn customer-identity-comple-view []
+  (->>  (customer-identity-comple-snippet)
+        (index-template "Hello from credit type ")
+        (apply str)
+        (html-response)))
 
 ;(html/snippet "public/credit_type.html" [:body]  )
 

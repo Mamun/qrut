@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A portfolio template that uses Material Design Lite.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>{{title}}</title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+
+<div class="container" id="material">
+    <div class="panel panel-default">
+        <div class="panel-heading"> Kreditangebot</div>
+        <div class="panel-body">
+            <FORM action="material" method="post" class="form-horizontal">
+
+                <div class="form-group">
+                    <label for="mcode" class="col-sm-2 control-label">Product</label>
+
+                    <div class="col-sm-10">
+                        <SELECT id="mcode" NAME='Instance_theDossierConditions_theMaterialInfo$0_mCode'
+                                class='form-control' size="10">
+                            <OPTION VALUE='0' SELECTED>Kartenantrag ohne Kauf</OPTION>
+                            <OPTION VALUE='321'>PC / Audio / Video</OPTION>
+                            <OPTION VALUE='322'>K&#252;hlschrank oder Gefrierschrank</OPTION>
+                            <OPTION VALUE='330'>Diverse M&#246;bel</OPTION>
+                            <OPTION VALUE='331'>Wohnzimmer</OPTION>
+                            <OPTION VALUE='341'>Kleine K&#252;che (&lt; 3.000 EUR)</OPTION>
+                            <OPTION VALUE='555'>Fahrrad</OPTION>
+                            <OPTION VALUE='595'>Diverse braune Ware</OPTION>
+                            <OPTION VALUE='616'>Computer</OPTION>
+                            <OPTION VALUE='618'>Zubeh&#246;r PC</OPTION>
+                        </SELECT>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="salesmanid" class="col-sm-2 control-label"> Verkäufer : </label>
+
+                    <div class="col-sm-10">
+                        <SELECT id="salesmanid" NAME='Instance_theDossierConditions_theVendorInfo_mSalesmanId'
+                                class='form-control'>
+                            <OPTION VALUE='mustermann'>Mustermann Max</OPTION>
+                            <OPTION VALUE='redouan'>redouan redouan</OPTION>
+                            <OPTION VALUE='2182442' SELECTED>Standard Benutzer Standard Benutzer</OPTION>
+                            <OPTION VALUE='otatli'>Tatli &#214;zg&#252;r</OPTION>
+                            <OPTION VALUE='test'>Test Test</OPTION>
+                        </SELECT>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary " name="next">Weiter</button>
+                    </div>
+                </div>
+            </FORM>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+<script src="js/compiled/web_app.js" type="text/javascript"></script>
+</html>

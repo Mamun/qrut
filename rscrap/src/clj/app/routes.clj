@@ -22,7 +22,12 @@
   view-routes
   (GET "/" _ (v/index))
   (GET "/index" _ (v/index))
-  #_(GET "/contact" _ (v/contact)))
+  (GET "/material" _ (v/material-view))
+  (POST "/material" _ (v/credittype-view) )
+  (POST "/credittype" _ (v/customer-identity-view) )
+  (POST "/customerIdentity" _ (v/customer-identity-comple-view))
+  (POST "/customerIdentityComplementary" _ (v/index))
+  )
 
 
 

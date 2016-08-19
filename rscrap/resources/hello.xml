@@ -1,0 +1,62 @@
+<table>
+    <ECD>
+        <name>Flexibler Ratenkauf</name>
+        <selected>true</selected>
+        <fee></fee>
+        <commision>0,00</commision>
+        <creditTypeCode>2017</creditTypeCode>
+        <instalmentsCount></instalmentsCount>
+        <instalment>60,00</instalment>
+        <interestRate>15,90</interestRate>
+        <frameworkError>
+            <translation>Rate</translation>
+            <msg></msg>
+        </frameworkError>
+        <frameworkError>
+            <translation>Laufzeit</translation>
+            <msg></msg>
+        </frameworkError>
+        <frameworkError>
+            <translation>Zinssatz</translation>
+            <msg></msg>
+        </frameworkError>
+        <instalmentField>ECD_2017_instalment</instalmentField>
+        <instalmentsCountField>ECD_2017_instalmentsCount</instalmentsCountField>
+        <interestRateField>ECD_2017_interestRate</interestRateField>
+        <feeField>ECD_2017_fee</feeField>
+        <maxAgeForInsurance>73</maxAgeForInsurance>
+    </ECD>
+
+    <VAT>
+        <name>Feste Rate</name>
+        <selected>false</selected>
+        <commision>86,80</commision>
+
+        <insurance>true</insurance>
+        <insuranceField>VAT_2601_RSV</insuranceField>
+        <continuous>true</continuous>
+        <creditTypeCode>2601</creditTypeCode>
+        <instalmentsCount>24</instalmentsCount>
+        <instalment>99,35</instalment>
+        <interestRate>9,90</interestRate>
+        <frameworkError>
+            <translation>Rate</translation>
+            <msg></msg>
+        </frameworkError>
+        <frameworkError>
+            <translation>Laufzeit</translation>
+            <msg></msg>
+        </frameworkError>
+        <frameworkError>
+            <translation>Zinssatz</translation>
+            <msg></msg>
+        </frameworkError>
+        <instalmentField>VAT_2601_instalment</instalmentField>
+        <instalmentsCountField>VAT_2601_instalmentsCount</instalmentsCountField>
+        <interestRateField>VAT_2601_interestRate</interestRateField>
+        <feeField>VAT_2601_fee</feeField>
+        <maxAgeForInsurance>73</maxAgeForInsurance>
+    </VAT>
+
+    <tableSelection>2017</tableSelection>
+</table>

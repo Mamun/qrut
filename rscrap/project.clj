@@ -99,7 +99,7 @@
                                               :optimizations :none}}}}}
              :uberjar
              {:source-paths ^:replace ["src/clj"]
-              :hooks        [leiningen.cljsbuild]
+              ;:hooks        [leiningen.cljsbuild]
               :omit-source  true
               :aot          :all
               :cljsbuild    {:builds

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A portfolio template that uses Material Design Lite.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>{{title}}</title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+
+    <!-- Latest compiled and minified Locales -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+
+</head>
+<body>
+
+<div class="container" id="customer-identity">
+    <div class="panel panel-default">
+        <div class="panel-heading"> Angaben zur Person des Antragstellers</div>
+        <div class="panel-body">
+
+            <FORM action="customerIdentity"
+                  method="post" class="form-horizontal">
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mFirstName"
+                           class="col-sm-2 control-label">Vorname</label>
+
+                    <div class="col-sm-10 ">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="s1"></span>
+                            <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_mFirstName'
+                                   id='Instance_theFamily_theCreditHolder_mFirstName'
+                                   placeholder="Vorname" class="form-control" aria-describedby="s1">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mSurname"
+                           class="col-sm-2 control-label">Surname</label>
+
+                    <div class="col-sm-10 ">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="s2"></span>
+                            <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_mSurname'
+                                   id='Instance_theFamily_theCreditHolder_mSurname'
+                                   placeholder="Surname" class="form-control" aria-describedby="s2">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mBirthDate" class="col-sm-2 control-label">Geburtsdatum</label>
+
+                    <div class="col-sm-10 ">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="s3">tt.mm.jjjj</span>
+                            <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_mBirthDate'
+                                   id='Instance_theFamily_theCreditHolder_mBirthDate'
+                                   VALUE='01.11.1941'
+                                   placeholder="Geburtsdatum" class="form-control" aria-describedby="s3">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mBirthDate"
+                           class="col-sm-2 control-label">Ausweisart</label>
+
+                    <div class="col-sm-10 ">
+                        <SELECT NAME='Instance_theFamily_theCreditHolder_theIdCard_mType' class="form-control">
+                            <OPTION VALUE='000'>Bitte Ausw&#228;hlen</OPTION>
+                            <OPTION VALUE='AUS'>Deutscher Personalausweis</OPTION>
+                            <OPTION VALUE='PAS'>Deutscher Reisepass</OPTION>
+                            <OPTION VALUE='PEU'>EU Personalausweis</OPTION>
+                            <OPTION VALUE='REU'>EU Reisepass</OPTION>
+                            <OPTION VALUE='AGX'>Ausl&#228;nd. Reisepass</OPTION>
+                            <OPTION VALUE='VDA' SELECTED>vorl&#228;ufiger deutscher Personalausweis
+                            </OPTION>
+                        </SELECT>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mBirthDate" class="col-sm-2 control-label">Ausweisnummer</label>
+
+                    <div class="col-sm-10 ">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_theIdCard_mNo'
+                               id='Instance_theFamily_theCreditHolder_theIdCard_mNo'
+                               VALUE='5098050'
+                               placeholder="Ausweisnummer" class="form-control">
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mBirthDate" class="col-sm-2 control-label">Ausweis
+                        gültig bis</label>
+
+                    <div class="col-sm-10 ">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="mValidTill">tt.mm.jjjj</span>
+                            <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_theIdCard_mValidTill'
+                                   id='Instance_theFamily_theCreditHolder_theIdCard_mValidTill'
+                                   VALUE='01.11.1941'
+                                   placeholder="Ausweis gültig bis" class="form-control" aria-describedby="mValidTill">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mBirthDate" class="col-sm-2 control-label">Ausstellungsort</label>
+
+                    <div class="col-sm-10 ">
+                        <div class="input-group">
+                            <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_theIdCard_mIssuedBy'
+                                   id='Instance_theFamily_theCreditHolder_theIdCard_mIssuedBy'
+                                   VALUE='M&#252;nchen'
+                                   placeholder="Ausstellungsort" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mCitizenshipCoba" class="col-sm-2 control-label">Staatsangehörigkeit</label>
+
+                    <div class="col-sm-10 ">
+                        <SELECT NAME='Instance_theFamily_theCreditHolder_mCitizenshipCoba' class="form-control">
+                            <OPTION VALUE='000' SELECTED>Bundesrepublik Deutschland</OPTION>
+                            <OPTION VALUE='660'>Afghanistan</OPTION>
+                            <OPTION VALUE='220'>&#196;gypten</OPTION>
+                            <OPTION VALUE='070'>Albanien</OPTION>
+                            <OPTION VALUE='208'>Algerien</OPTION>
+                            <OPTION VALUE='457'>Amerikanische Jungferninseln</OPTION>
+                            <OPTION VALUE='832'>Amerikanische &#220;bersee-Inseln</OPTION>
+                            <OPTION VALUE='810'>Amerikanisch Ozeanien</OPTION>
+                            <OPTION VALUE='830'>Amerikanisch Samoa</OPTION>
+                            <OPTION VALUE='043'>Andorra</OPTION>
+                            <OPTION VALUE='330'>Angola</OPTION>
+                            <OPTION VALUE='446'>Anguilla</OPTION>
+                            <OPTION VALUE='891'>Antarktis</OPTION>
+                            <OPTION VALUE='459'>Antigua und Barbuda</OPTION>
+                            <OPTION VALUE='310'>&#196;quatorial Guinea</OPTION>
+                            <OPTION VALUE='528'>Argentinien</OPTION>
+                            <OPTION VALUE='077'>Armenien</OPTION>
+                            <OPTION VALUE='474'>Aruba</OPTION>
+                            <OPTION VALUE='078'>Aserbaidschan</OPTION>
+                            <OPTION VALUE='334'>&#196;thiopien</OPTION>
+                            <OPTION VALUE='800'>Australien</OPTION>
+                            <OPTION VALUE='802'>Australisch Ozeanien</OPTION>
+                            <OPTION VALUE='453'>Bahamas</OPTION>
+                            <OPTION VALUE='640'>Bahrain</OPTION>
+                            <OPTION VALUE='666'>Bangladesch</OPTION>
+                            <OPTION VALUE='469'>Barbados</OPTION>
+                            <OPTION VALUE='017'>Belgien</OPTION>
+                            <OPTION VALUE='421'>Belize</OPTION>
+                            <OPTION VALUE='284'>Benin</OPTION>
+                            <OPTION VALUE='413'>Bermuda</OPTION>
+                            <OPTION VALUE='625'>Besetzte pal&#228;stinensische Gebiete</OPTION>
+                            <OPTION VALUE='675'>Bhutan</OPTION>
+                            <OPTION VALUE='516'>Bolivien</OPTION>
+                            <OPTION VALUE='093'>Bosnien und Herzegowina</OPTION>
+                            <OPTION VALUE='391'>Botsuana</OPTION>
+                            <OPTION VALUE='892'>Bouvet Inseln</OPTION>
+                            <OPTION VALUE='508'>Brasilien</OPTION>
+                            <OPTION VALUE='468'>Britische Jungferninseln</OPTION>
+                            <OPTION VALUE='357'>Britisches Territorium im Indischen Ozean</OPTION>
+                            <OPTION VALUE='703'>Brunei</OPTION>
+                            <OPTION VALUE='068'>Bulgarien</OPTION>
+                            <OPTION VALUE='094'>Bundesrepublik Jugoslawien</OPTION>
+                            <OPTION VALUE='236'>Burkina Faso</OPTION>
+                            <OPTION VALUE='328'>Burundi</OPTION>
+                            <OPTION VALUE='021'>Ceuta</OPTION>
+                            <OPTION VALUE='512'>Chile</OPTION>
+                            <OPTION VALUE='837'>Cook Inseln</OPTION>
+                            <OPTION VALUE='436'>Costa Rica</OPTION>
+                            <OPTION VALUE='008'>D&#228;nemark</OPTION>
+                            <OPTION VALUE='460'>Dominica</OPTION>
+                            <OPTION VALUE='456'>Dominikanische Republik</OPTION>
+                            <OPTION VALUE='338'>Dschibuti</OPTION>
+                            <OPTION VALUE='500'>Ecuador</OPTION>
+                            <OPTION VALUE='272'>Elfenbeink&#252;ste</OPTION>
+                            <OPTION VALUE='428'>El Salvador</OPTION>
+                            <OPTION VALUE='336'>Eritrea</OPTION>
+                            <OPTION VALUE='053'>Estland</OPTION>
+                            <OPTION VALUE='888'>Euroland</OPTION>
+                            <OPTION VALUE='529'>Falkland Inseln</OPTION>
+                            <OPTION VALUE='041'>F&#228;r&#246;er</OPTION>
+                            <OPTION VALUE='815'>Fidschi</OPTION>
+                            <OPTION VALUE='032'>Finnland</OPTION>
+                            <OPTION VALUE='823'>F&#246;derierte Staaten von Mikronesien</OPTION>
+                            <OPTION VALUE='001'>Frankreich inkl. Monaco</OPTION>
+                            <OPTION VALUE='894'>Franz&#246;sische S&#252;dgebiete</OPTION>
+                            <OPTION VALUE='822'>Franz&#246;sisch Polynesien</OPTION>
+                            <OPTION VALUE='314'>Gabun</OPTION>
+                            <OPTION VALUE='252'>Gambia</OPTION>
+                            <OPTION VALUE='076'>Georgien</OPTION>
+                            <OPTION VALUE='276'>Ghana</OPTION>
+                            <OPTION VALUE='044'>Gibraltar</OPTION>
+                            <OPTION VALUE='473'>Grenada</OPTION>
+                            <OPTION VALUE='009'>Griechenland</OPTION>
+                            <OPTION VALUE='406'>Gr&#246;nland</OPTION>
+                            <OPTION VALUE='106'>Gro&#223;britannien (ohne Guernsey und Jersey und
+                                Insel
+                                Man)
+                            </OPTION>
+                            <OPTION VALUE='006'>Grossbritannien und Nordirland</OPTION>
+                            <OPTION VALUE='831'>Guam</OPTION>
+                            <OPTION VALUE='416'>Guatemala</OPTION>
+                            <OPTION VALUE='107'>Guernsey</OPTION>
+                            <OPTION VALUE='260'>Guinea</OPTION>
+                            <OPTION VALUE='257'>Guinea Bissau</OPTION>
+                            <OPTION VALUE='488'>Guyana</OPTION>
+                            <OPTION VALUE='452'>Haiti</OPTION>
+                            <OPTION VALUE='835'>Heard und Mc Donald - Inseln</OPTION>
+                            <OPTION VALUE='424'>Honduras</OPTION>
+                            <OPTION VALUE='740'>Hongkong</OPTION>
+                            <OPTION VALUE='664'>Indien</OPTION>
+                            <OPTION VALUE='700'>Indonesien</OPTION>
+                            <OPTION VALUE='109'>Insel Man</OPTION>
+                            <OPTION VALUE='612'>Irak</OPTION>
+                            <OPTION VALUE='616'>Iran</OPTION>
+                            <OPTION VALUE='007'>Irland</OPTION>
+                            <OPTION VALUE='024'>Island</OPTION>
+                            <OPTION VALUE='624'>Israel</OPTION>
+                            <OPTION VALUE='005'>Italien inkl. San Marino</OPTION>
+                            <OPTION VALUE='464'>Jamaika</OPTION>
+                            <OPTION VALUE='732'>Japan</OPTION>
+                            <OPTION VALUE='653'>Jemen</OPTION>
+                            <OPTION VALUE='108'>Jersey</OPTION>
+                            <OPTION VALUE='628'>Jordanien</OPTION>
+                            <OPTION VALUE='463'>Kaiman Inseln</OPTION>
+                            <OPTION VALUE='696'>Kambodscha</OPTION>
+                            <OPTION VALUE='302'>Kamerun</OPTION>
+                            <OPTION VALUE='404'>Kanada</OPTION>
+                            <OPTION VALUE='247'>Kap Verde</OPTION>
+                            <OPTION VALUE='079'>Kasachstan</OPTION>
+                            <OPTION VALUE='644'>Katar</OPTION>
+                            <OPTION VALUE='346'>Kenia</OPTION>
+                            <OPTION VALUE='083'>Kirgisistan</OPTION>
+                            <OPTION VALUE='812'>Kiribati</OPTION>
+                            <OPTION VALUE='833'>Kokosinseln (Keelinginseln)</OPTION>
+                            <OPTION VALUE='480'>Kolumbien</OPTION>
+                            <OPTION VALUE='375'>Komoren</OPTION>
+                            <OPTION VALUE='322'>Kongo - Demokratische Republik (ehem. Zaire)
+                            </OPTION>
+                            <OPTION VALUE='095'>Kosovo</OPTION>
+                            <OPTION VALUE='092'>Kroatien</OPTION>
+                            <OPTION VALUE='448'>Kuba</OPTION>
+                            <OPTION VALUE='636'>Kuwait</OPTION>
+                            <OPTION VALUE='684'>Laos</OPTION>
+                            <OPTION VALUE='395'>Lesotho</OPTION>
+                            <OPTION VALUE='054'>Lettland</OPTION>
+                            <OPTION VALUE='604'>Libanon</OPTION>
+                            <OPTION VALUE='268'>Liberia</OPTION>
+                            <OPTION VALUE='216'>Libyen</OPTION>
+                            <OPTION VALUE='037'>Liechtenstein</OPTION>
+                            <OPTION VALUE='055'>Litauen</OPTION>
+                            <OPTION VALUE='018'>Luxemburg</OPTION>
+                            <OPTION VALUE='743'>Macau</OPTION>
+                            <OPTION VALUE='370'>Madagaskar</OPTION>
+                            <OPTION VALUE='386'>Malawi</OPTION>
+                            <OPTION VALUE='701'>Malaysia</OPTION>
+                            <OPTION VALUE='667'>Malediven</OPTION>
+                            <OPTION VALUE='232'>Mali</OPTION>
+                            <OPTION VALUE='046'>Malta</OPTION>
+                            <OPTION VALUE='204'>Marokko</OPTION>
+                            <OPTION VALUE='824'>Marshall Inseln</OPTION>
+                            <OPTION VALUE='462'>Martinique</OPTION>
+                            <OPTION VALUE='228'>Mauretanien</OPTION>
+                            <OPTION VALUE='373'>Mauritius</OPTION>
+                            <OPTION VALUE='377'>Mayotte</OPTION>
+                            <OPTION VALUE='096'>Mazedonien</OPTION>
+                            <OPTION VALUE='023'>Melilla</OPTION>
+                            <OPTION VALUE='412'>Mexiko</OPTION>
+                            <OPTION VALUE='074'>Moldawien</OPTION>
+                            <OPTION VALUE='716'>Mongolei</OPTION>
+                            <OPTION VALUE='097'>Montenegro</OPTION>
+                            <OPTION VALUE='470'>Montserrat</OPTION>
+                            <OPTION VALUE='366'>Mosambik</OPTION>
+                            <OPTION VALUE='676'>Myanmar</OPTION>
+                            <OPTION VALUE='389'>Namibia</OPTION>
+                            <OPTION VALUE='803'>Nauru</OPTION>
+                            <OPTION VALUE='672'>Nepal</OPTION>
+                            <OPTION VALUE='809'>Neukaledonien und Gebiete</OPTION>
+                            <OPTION VALUE='804'>Neuseeland</OPTION>
+                            <OPTION VALUE='814'>Neuseel&#228;ndisch Ozeaninen</OPTION>
+                            <OPTION VALUE='432'>Nicaragua</OPTION>
+                            <OPTION VALUE='858'>Nicht ermittelbare L&#228;nder und Gebiete</OPTION>
+                            <OPTION VALUE='003'>Niederlande</OPTION>
+                            <OPTION VALUE='478'>Niederl&#228;ndische Antillen</OPTION>
+                            <OPTION VALUE='240'>Niger</OPTION>
+                            <OPTION VALUE='288'>Nigeria</OPTION>
+                            <OPTION VALUE='838'>Niue</OPTION>
+                            <OPTION VALUE='724'>Nordkorea</OPTION>
+                            <OPTION VALUE='820'>N&#246;rdliche Marianen</OPTION>
+                            <OPTION VALUE='836'>Norfolk Inseln</OPTION>
+                            <OPTION VALUE='028'>Norwegen</OPTION>
+                            <OPTION VALUE='649'>Oman</OPTION>
+                            <OPTION VALUE='038'>&#214;sterreich</OPTION>
+                            <OPTION VALUE='662'>Pakistan</OPTION>
+                            <OPTION VALUE='825'>Palau</OPTION>
+                            <OPTION VALUE='442'>Panama</OPTION>
+                            <OPTION VALUE='801'>Papua-Neuguinea</OPTION>
+                            <OPTION VALUE='520'>Paraguay</OPTION>
+                            <OPTION VALUE='504'>Peru</OPTION>
+                            <OPTION VALUE='708'>Philippinen</OPTION>
+                            <OPTION VALUE='813'>Pitcairninseln</OPTION>
+                            <OPTION VALUE='890'>Polargebiete</OPTION>
+                            <OPTION VALUE='060'>Polen</OPTION>
+                            <OPTION VALUE='010'>Portugal / Azoren / Madeira</OPTION>
+                            <OPTION VALUE='318'>Republik Kongo (Brazzaville)</OPTION>
+                            <OPTION VALUE='324'>Ruanda</OPTION>
+                            <OPTION VALUE='066'>Rum&#228;nien</OPTION>
+                            <OPTION VALUE='075'>Russland</OPTION>
+                            <OPTION VALUE='806'>Salomonen</OPTION>
+                            <OPTION VALUE='378'>Sambia</OPTION>
+                            <OPTION VALUE='819'>Samoa</OPTION>
+                            <OPTION VALUE='047'>San Marino</OPTION>
+                            <OPTION VALUE='311'>Sao Tome und Principe</OPTION>
+                            <OPTION VALUE='632'>Saudi Arabien</OPTION>
+                            <OPTION VALUE='030'>Schweden</OPTION>
+                            <OPTION VALUE='039'>Schweiz</OPTION>
+                            <OPTION VALUE='248'>Senegal</OPTION>
+                            <OPTION VALUE='098'>Serbien</OPTION>
+                            <OPTION VALUE='099'>Serbien einschl. Kosovo</OPTION>
+                            <OPTION VALUE='355'>Seychellen und zugeh&#246;rige Gebiete</OPTION>
+                            <OPTION VALUE='264'>Sierra Leone</OPTION>
+                            <OPTION VALUE='706'>Singapur</OPTION>
+                            <OPTION VALUE='063'>Slowakei</OPTION>
+                            <OPTION VALUE='091'>Slowenien</OPTION>
+                            <OPTION VALUE='342'>Somalia</OPTION>
+                            <OPTION VALUE='011'>Spanien</OPTION>
+                            <OPTION VALUE='669'>Sri Lanka (Ceylon)</OPTION>
+                            <OPTION VALUE='329'>St. Helena</OPTION>
+                            <OPTION VALUE='449'>St. Kitts und Nevis</OPTION>
+                            <OPTION VALUE='465'>St. Lucia</OPTION>
+                            <OPTION VALUE='408'>St. Pierre und Miquelon</OPTION>
+                            <OPTION VALUE='467'>St. Vincent und Grenadinen</OPTION>
+                            <OPTION VALUE='388'>S&#252;dafrika</OPTION>
+                            <OPTION VALUE='224'>Sudan</OPTION>
+                            <OPTION VALUE='893'>S&#252;dgeorgien und s&#252;dliche Sandwich - Inseln
+                            </OPTION>
+                            <OPTION VALUE='728'>S&#252;dkorea</OPTION>
+                            <OPTION VALUE='492'>Suriname</OPTION>
+                            <OPTION VALUE='393'>Swasiland</OPTION>
+                            <OPTION VALUE='608'>Syrien</OPTION>
+                            <OPTION VALUE='082'>Tadschikistan</OPTION>
+                            <OPTION VALUE='736'>Taiwan</OPTION>
+                            <OPTION VALUE='352'>Tansania</OPTION>
+                            <OPTION VALUE='680'>Thailand</OPTION>
+                            <OPTION VALUE='626'>Timor - Leste</OPTION>
+                            <OPTION VALUE='280'>Togo</OPTION>
+                            <OPTION VALUE='839'>Tokelau</OPTION>
+                            <OPTION VALUE='817'>Tonga</OPTION>
+                            <OPTION VALUE='472'>Trinidad und Tobago</OPTION>
+                            <OPTION VALUE='244'>Tschad</OPTION>
+                            <OPTION VALUE='061'>Tschechien</OPTION>
+                            <OPTION VALUE='212'>Tunesien</OPTION>
+                            <OPTION VALUE='052'>T&#252;rkei</OPTION>
+                            <OPTION VALUE='080'>Turkmenistan</OPTION>
+                            <OPTION VALUE='454'>Turks- und Caicos-Inseln</OPTION>
+                            <OPTION VALUE='807'>Tuvalu</OPTION>
+                            <OPTION VALUE='350'>Uganda</OPTION>
+                            <OPTION VALUE='072'>Ukraine</OPTION>
+                            <OPTION VALUE='064'>Ungarn</OPTION>
+                            <OPTION VALUE='524'>Uruguay</OPTION>
+                            <OPTION VALUE='400'>USA einschl. Puerto Rico</OPTION>
+                            <OPTION VALUE='081'>Usbekistan</OPTION>
+                            <OPTION VALUE='816'>Vanuatu</OPTION>
+                            <OPTION VALUE='045'>Vatikanstadt</OPTION>
+                            <OPTION VALUE='484'>Venezuela</OPTION>
+                            <OPTION VALUE='647'>Vereinigte Arab. Emirate</OPTION>
+                            <OPTION VALUE='690'>Vietnam</OPTION>
+                            <OPTION VALUE='720'>Volksrepublik China</OPTION>
+                            <OPTION VALUE='811'>Wallis und Futuna</OPTION>
+                            <OPTION VALUE='834'>Weihnachtsinseln</OPTION>
+                            <OPTION VALUE='073'>Wei&#223;russland (Belarus)</OPTION>
+                            <OPTION VALUE='306'>Zentralafrikanische Republik</OPTION>
+                            <OPTION VALUE='382'>Zimbabwe</OPTION>
+                            <OPTION VALUE='600'>Zypern</OPTION>
+                            <OPTION VALUE='A00'>Staatenlos</OPTION>
+                        </SELECT>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_theBankAccount_mIBAN" class="col-sm-2 control-label">IBAN</label>
+
+                    <div class="col-sm-10 ">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_theBankAccount_mIBAN'
+                               id='Instance_theFamily_theCreditHolder_theBankAccount_mIBAN'
+                               VALUE='DE78700100800000919803'
+                               placeholder="IBAN" class="form-control">
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_theBankAccount_mDateBeginYear"
+                           class="col-sm-2 control-label">IBAN</label>
+
+                    <div class="col-sm-10 ">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_theBankAccount_mDateBeginYear'
+                               id='Instance_theFamily_theCreditHolder_theBankAccount_mDateBeginYear' VALUE='2000'
+                               placeholder="IBAN" class="form-control">
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_mHaveCard" class="col-sm-2 control-label">Vorhandene Karte</label>
+
+                    <div class="col-sm-10 ">
+                        <SELECT NAME='Instance_theFamily_mHaveCard' id="Instance_theFamily_mHaveCard"
+                                class='form-control'>
+                            <OPTION VALUE='X'>Bitte Ausw&#228;hlen</OPTION>
+                            <OPTION VALUE='E'>EC / Maestro / V-Pay</OPTION>
+                            <OPTION VALUE='I'>Diners / American Express</OPTION>
+                            <OPTION VALUE='M' SELECTED>Mastercard</OPTION>
+                            <OPTION VALUE='V'>VISA</OPTION>
+                            <OPTION VALUE='S'>Sonstige</OPTION>
+                            <OPTION VALUE='0'>Keine Karte</OPTION>
+                        </SELECT>
+
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theAddressLiving_theAddress_mStreet" class="col-sm-2 control-label">Straße</label>
+
+                    <div class="col-sm-10 ">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theAddressLiving_theAddress_mStreet'
+                               id='Instance_theFamily_theAddressLiving_theAddress_mStreet'
+                               VALUE='GRO&#223;E SCHARRNSTR. 36'
+                               placeholder="Straße" class="form-control">
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theAddressLiving_theAddress_mPostalCode"
+                           class="col-sm-2 control-label">PLZ</label>
+
+                    <div class="col-sm-10 ">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theAddressLiving_theAddress_mPostalCode'
+                               id='Instance_theFamily_theAddressLiving_theAddress_mPostalCode'
+                               VALUE='33309'
+                               placeholder="PLZ" class="form-control">
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theAddressLiving_theAddress_mCity" class="col-sm-2 control-label">Ort
+                        in Deutschland</label>
+
+                    <div class="col-sm-10 ">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theAddressLiving_theAddress_mCity'
+                               id='Instance_theFamily_theAddressLiving_theAddress_mCity'
+                               VALUE='STUTTGART'
+                               placeholder="Ort in Deutschland" class="form-control">
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theAddressLiving_mBeginDate" class="col-sm-2 control-label">Hier
+                        wohnhaft seit</label>
+
+                    <div class="col-sm-10 ">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theAddressLiving_mBeginDate'
+                               id='Instance_theFamily_theAddressLiving_mBeginDate'
+                               VALUE='02.2005'
+                               placeholder="Hier wohnhaft seit" class="form-control">
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mSigle"
+                           class="col-sm-2 control-label">Anrede </label>
+
+                    <div class="col-sm-10 ">
+                        <SELECT NAME='Instance_theFamily_theCreditHolder_mSigle'
+                                id="Instance_theFamily_theCreditHolder_mSigle" class='form-control'>
+                            <OPTION VALUE='0000'>Bitte Ausw&#228;hlen</OPTION>
+                            <OPTION VALUE='FRAU'>Frau</OPTION>
+                            <OPTION VALUE='HERR' SELECTED>Herr</OPTION>
+                        </SELECT>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mBirthPlace" class="col-sm-2 control-label">Geburtsort </label>
+
+                    <div class="col-sm-10 ">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_mBirthPlace'
+                               id='Instance_theFamily_theCreditHolder_mBirthPlace'
+                               placeholder="Geburtsort" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mMaidenName" class="col-sm-2 control-label">Geburtsname </label>
+
+                    <div class="col-sm-10 ">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_mMaidenName'
+                               id='Instance_theFamily_theCreditHolder_mMaidenName'
+                               placeholder="Geburtsname" class="form-control">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_mFamilySituation"
+                           class="col-sm-2 control-label">Familienstand </label>
+
+                    <div class="col-sm-10 ">
+                        <SELECT NAME='Instance_theFamily_mFamilySituation'
+                                id="Instance_theFamily_mFamilySituation"
+                                class="form-control">
+                            <OPTION VALUE='0'>Bitte Ausw&#228;hlen</OPTION>
+                            <OPTION VALUE='C'>Ledig</OPTION>
+                            <OPTION VALUE='D'>Geschieden</OPTION>
+                            <OPTION VALUE='K'>Lebensgemeinschaft</OPTION>
+                            <OPTION VALUE='M' SELECTED>Verheiratet</OPTION>
+                            <OPTION VALUE='S'>Getrennt</OPTION>
+                            <OPTION VALUE='V'>Verwitwet</OPTION>
+                        </SELECT>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_mNoChildren" class="col-sm-2 control-label">Anzahl unterhaltspfl.
+                        Kinder </label>
+
+                    <div class="col-sm-10 ">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_mNoChildren'
+                               id='Instance_theFamily_mNoChildren'
+                               placeholder="Anzahl unterhaltspfl. Kinder" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Instance_mWhichSigners" class="col-sm-2 control-label">Mitantragsteller </label>
+
+                    <div class="col-sm-10 ">
+                        <SELECT NAME='Instance_mWhichSigners' id="Instance_mWhichSigners" class='form-control'>
+                            <OPTION VALUE='alone'>Nein</OPTION>
+                            <OPTION VALUE='with_partner' SELECTED>Ehe- oder LebensPartner</OPTION>
+                        </SELECT>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_theFamily_theCreditHolder_mNoAdvertisment"
+                           class="col-sm-2 control-label"> </label>
+
+                    <div class="col-sm-10 ">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                Der Kunde hat sich ausdrücklich damit einverstanden
+                                erklärt,
+                                Beratung und Informationen über Leistungen der Commerz Finanz GmbH <b>telefonisch</b>
+                                zu erhalten :
+                                <INPUT TYPE='RADIO'
+                                       NAME='Instance_theFamily_theCreditHolder_mNoAdvertisment'
+                                       id='Instance_theFamily_theCreditHolder_mNoAdvertisment' VALUE='A'
+                                       CHECKED>ja
+                                <INPUT TYPE='RADIO'
+                                       NAME='Instance_theFamily_theCreditHolder_mNoAdvertisment'
+                                       id='Instance_theFamily_theCreditHolder_mNoAdvertisment' VALUE='P'>nein
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Instance_mWhichSigners" class="col-sm-2 control-label"> </label>
+
+                    <div class="col-sm-10 ">
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <INPUT TYPE='CHECKBOX'
+                                       NAME='Checkbox_SCHUFA_AGREEMENT_CHECK'
+                                       id='Checkbox_SCHUFA_AGREEMENT_CHECK'
+                                       VALUE='1'
+                                       onClick='Checkbox_SCHUFA_AGREEMENT_CHECKchange();'>
+                                Der Kunde hat eingewilligt, dass die Commerz Finanz GmbH zum Zwecke
+                                der
+                                Prüfung seiner Kreditwürdigkeit unter Übermittlung seines Namens, seiner Anschrift,
+                                seines
+                                Geburtsdatums und Geburtsortes Informationen bei den im Folgenden genannten
+                                Auskunfteien
+                                einholt.<br/><br/>Diese Anfragen haben keinerlei Auswirkungen auf die
+                                Bonitätseinstufung bei
+                                den jeweiligen Auskunfteien. Bei den eingeholten Auskünften handelt es sich in allen
+                                Fällen
+                                um Bonitätsinformationen auf Basis mathematisch-statistischer Verfahren, ggf. unter
+                                Verwendung von Anschriftendaten. Ergänzend holen wir:
+                                <ul>
+                                    <li>bei der <a href="javascript:void(0);"
+                                                   onmouseover="javascript:AffBulle('SCHUFA Holding AG, Kormoranweg 5, 65201 Wiesbaden')"
+                                                   onmouseout="HideBulle()" target="_self">SCHUFA Holding AG</a>:
+                                        Informationen über Bestand und ggf. nicht vertragskonforme Abwicklung von
+                                        Kreditverbindlichkeiten und Kreditkarten;
+                                    </li>
+                                    <li>bei der <a href="javascript:void(0);"
+                                                   onmouseover="javascript:AffBulle('infoscore Consumer Data GmbH, Rheinstraße 99, 76532 Baden-Baden')"
+                                                   onmouseout="HideBulle()" target="_self">infoscore Consumer Data
+                                        GmbH</a>
+                                        und / oder <a href="javascript:void(0);"
+                                                      onmouseover="javascript:AffBulle('Creditreform Boniversum GmbH, Hellersbergstraße 11, 41460 Neuss')"
+                                                      onmouseout="HideBulle()" target="_self">Creditreform
+                                            Boniversum
+                                            GmbH</a>: Informationen zu seinem bisherigen Zahlungsverhalten
+                                    </li>
+                                </ul>
+                                ein. <br/>Die Einwilligung des Kunden ist durch Aktivierung des Kontrollkästchens zu
+                                bestätigen. Die Kreditbeantragung kann durch Anklicken des Buttons "Weiter"
+                                gestartet
+                                werden. Verweigert der Kunde seine Einwilligung, ist eine Kreditbeantragung nicht
+                                möglich.
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default " name="prev">Zurück</button>
+                        <button type="submit" class="btn btn-default " name="next">Weiter</button>
+                    </div>
+                </div>
+
+            </FORM>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+<script src="js/compiled/web_app.js" type="text/javascript"></script>
+
+</html>
