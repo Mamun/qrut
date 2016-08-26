@@ -1,66 +1,12 @@
 (ns rscrap.adapter
-  (require [net.cgrand.enlive-html :as html]
-           [clj-http.client :as client]
-           [net.cgrand.tagsoup])
+  (require [clj-http.client :as client]
+           ;[net.cgrand.tagsoup]
+           [rscrap.extractor :as p ])
   (import [java.io StringReader]))
 
 
-(defn select-tag [node]
-  (->> (html/select node [:select])
-       (map (fn [r]
-              (let [p (get-in r [:attrs :name])
-                    frr (filter #(not= "/n" %) (get-in r [:content]))
-                    v (zipmap (map #(get-in % [:attrs :value]) frr)
-                              (map #(html/text %) frr))]
-                {p v})))
-       (into {})))
-
-
-(defn input-tag [v]
-  (let [w1 (html/select v [:input])]
-    (zipmap
-      (map #(get-in % [:attrs :name]) w1)
-      (map #(get-in % [:attrs :value]) w1))))
-
-
-
-(defn get-from-fields [node]
-  (reduce (fn [acc v]
-            (merge acc (select-tag v) (input-tag v))
-            ) {} node))
-
-
-
-(defn get-form-url [node]
-  (->> (html/select node [[:form (html/attr-has :method "post")]])
-       (mapcat #(html/attr-values % :action))
-       (first)))
-
-
-
 (def cs (clj-http.cookies/cookie-store))
-(html/set-ns-parser! net.cgrand.tagsoup/parser)
 
-
-
-(defn get-error [node]
-  (->> (html/select node [:font.errormessage])
-       (map :content)
-       (map first)))
-
-
-(defn as-response [r]
-  (let [node (-> r
-                 (:body)
-                 (StringReader.)
-                 (html/html-resource))
-        params (get-from-fields node)
-        form (get-form-url node)
-        errormessage (get-error node)]
-    {:params       params
-     :url          form
-     :errormessage errormessage
-     :response     node}))
 
 
 
@@ -69,7 +15,9 @@
   (-> url
       (client/get {:cookie-store cs
                    :query-params params})
-      (as-response)))
+      (:body)
+      (StringReader.)
+      (p/extract-data)))
 
 
 
@@ -82,7 +30,9 @@
       (client/post {:form-params     params
                     :cookie-store    cs
                     :force-redirects true})
-      (as-response)))
+      (:body)
+      (StringReader.)
+      (p/extract-data)))
 
 
 
@@ -160,10 +110,13 @@
 
 (comment
 
-  (->> [[:form (html/attr-has :method "post")]]
+  #_(->> [[:form (html/attr-has :method "post")]]
        (html/select (html/html-resource "calc.html"))
        (mapcat #(html/attr-values % :action)
                ))
+
+
+
 
   )
 

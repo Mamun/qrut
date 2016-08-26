@@ -1,0 +1,303 @@
+
+
+
+
+
+
+<html>
+<head>
+    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <title>JSP Page</title>
+    <script language="javascript" src="/ratanet/web/js/dynamic.js"></script>
+    <script language="javascript" src="/ratanet/web/js/dispoV2PlusCreditType.js"></script>
+    <link rel='stylesheet' type='text/css'  href=' /ratanet/web/dispoV2/style/style.css' />
+
+</head>
+<body>
+<script type="text/javascript">
+        InitBulle(1);
+		addOnLoadFunction( function() {
+            calculateAmounts();
+            setCreditType();
+            setProperFocus();
+        });
+    </script>
+
+
+<FORM action="/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType" method="post">
+
+    <input type="submit" name="focus_helper" style="display: none" onClick="return true;"/>
+    <input type="image" name="focus_helper1" style="width:0,height:0" width="0" height="0" onClick="return true;"/>
+
+
+
+    <INPUT TYPE='HIDDEN' NAME='jump_to' id='jump_to' VALUE='' CLASS='text-input' >
+
+
+    <TABLE WIDTH="550" BORDER="0" ALIGN="CENTER" cellspacing='0' cellpadding="0">
+
+        <TR>
+            <TD align="left" valign="top">
+                <p class="kopfzeile">
+                    Kauf über Einkaufskonto
+                </p>
+            </TD>
+        </TR>
+
+    </Table>
+
+
+    <INPUT type="HIDDEN" name="RequestID" value="578084905"/>
+
+    <INPUT type="HIDDEN" name="UNIQUE_TRANSACTION" value="FLOWTID:2"/>
+
+
+    <TABLE CLASS='pannelext' WIDTH='550' BORDER='0' ALIGN='CENTER'><TR VALIGN='TOP'><TD><TABLE CLASS='pannelint' WIDTH='100%' BORDER=0 CELLSPACING=0>
+
+
+        <INPUT TYPE='HIDDEN' NAME='Instance_theDossierConditions_thePartnerAssuranceInfo_mOptionCode' id='Instance_theDossierConditions_thePartnerAssuranceInfo_mOptionCode' VALUE='' CLASS='text-input' >
+
+
+
+        <TR>
+            <TD class="inputlabel">
+                <font class='label'>
+                    Kaufpreis :
+                </font>
+            </TD>
+            <TD class="inputfield">
+                <INPUT TYPE='TEXT' NAME='Instance_theDossierConditions_theMaterialInfo$0_mPrice' id='Instance_theDossierConditions_theMaterialInfo$0_mPrice' tabindex="1" SIZE='12' MAXLENGTH='12' CLASS='disableAutoComplete' onChange='forms_prePaidReload1(document.forms[0].Instance_theDossierConditions_theMaterialInfo$0_mPrice,document.forms[0].forms_prePaidReload1);'><SCRIPT type="text/javascript">document.forms[0].Instance_theDossierConditions_theMaterialInfo$0_mPrice.focus();</SCRIPT>
+
+                &nbsp;
+            </TD>
+
+
+
+        <TR>
+            <TD class="inputlabel" width="42%">
+                <font class='label'>
+                    Versicherungsprämie (Garantieprodukt) :
+                </font>
+            </TD>
+            <TD class="inputfield" width="58%">
+                <INPUT TYPE='TEXT' NAME='Instance_theDossierConditions_theClassicInfo_mInsuranceAmount' id='Instance_theDossierConditions_theClassicInfo_mInsuranceAmount' tabindex="2" SIZE='12' MAXLENGTH='12' CLASS='disableAutoComplete' onChange='forms_prePaidReload2(document.forms[0].Instance_theDossierConditions_theClassicInfo_mInsuranceAmount,document.forms[0].forms_prePaidReload2);'>
+                <A  HREF="javascript:void(0);" onMouseOver="javascript:AffBulle('Bitte tragen Sie hier die Versicherungsprämie für ein Garantieprodukt ein.')" onMouseOut="HideBulle()" TARGET='_self'>?</A>&nbsp;
+                &nbsp;
+            </TD>
+
+
+
+        <TR>
+            <TD class="inputlabel" width="42%">
+                <font class='label'>
+                    Anzahlung/Inzahlunggabe :
+                </font>
+            </TD>
+            <TD class="inputfield" width="58%">
+                <INPUT TYPE='TEXT' NAME='CAM_prePaid' id='CAM_prePaid' tabindex="3" SIZE='12' MAXLENGTH='12' CLASS='disableAutoComplete' onChange='forms_prePaidReload3(document.forms[0].CAM_prePaid,document.forms[0].forms_prePaidReload3);'>
+                &nbsp;
+            </TD>
+
+
+        <tr>
+            <td class="inputlabel">
+
+                <font class='label'>
+                    Nettokreditbetrag  :
+                </font>
+            </TD>
+            <TD class="inputfield">
+                <INPUT TYPE='TEXT' NAME='CAM_mCreditAmount' id='CAM_mCreditAmount' readonly onFocus='if (window.bloor==null) this.blur(); else bloor(this,event);'  tabindex="-1" SIZE='12' MAXLENGTH='12' CLASS='text-input' >
+                &nbsp;
+
+
+                &nbsp;
+
+            </td>
+        </tr>
+
+
+
+        <tr height="5">
+            <td colspan="2">
+                &nbsp;
+            </td>
+        </tr>
+
+
+        <INPUT TYPE='HIDDEN' NAME='Instance_theDossierConditions_theClassicInfo_mPaymentDelay' id='Instance_theDossierConditions_theClassicInfo_mPaymentDelay' VALUE='0' CLASS='text-input' >
+
+
+
+        <TR id="mPaymentDay_table">
+            <TD class="inputlabel">
+                <font class='label'>
+                    Fälligkeitsdatum :
+                </font>
+            </TD>
+            <TD class="inputfield">
+                <SELECT NAME='Instance_theDossierConditions_mPaymentDay' class='select-input'  >
+                    <OPTION VALUE='1' SELECTED>1.</OPTION>
+                    <OPTION VALUE='15' >15.</OPTION>
+                </SELECT>
+
+                &nbsp;
+            </TD>
+        </TR>
+
+
+    </TABLE></TD></TR></TABLE>
+    <!--
+        <TABLE CLASS='pannelext' WIDTH='550' BORDER='0' ALIGN='CENTER'><TR VALIGN='TOP'><TD><TABLE CLASS='pannelint' WIDTH='100%' BORDER=0 CELLSPACING=0>
+    -->
+
+
+    <TABLE CLASS='pannelext' WIDTH='550' BORDER=0 ALIGN='CENTER' cellspacing="0" cellpadding="3"><TR VALIGN='TOP'><TD><TABLE CLASS='pannelint' WIDTH='100%' BORDER=0 CELLSPACING=0 cellpadding="0">
+        <tr>
+            <td colspan="2">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr class="pannelext" height="20" valign="center">
+                        <td colspan="2" align="center" width="30">
+                            <b>Rückzahlung</b>
+                        </td>
+                        <td>
+                            &#160;
+                        </td>
+                        <td align="right">
+                            <b>Laufzeit</b>
+                        </td>
+                        <td>
+                            &#160;
+                        </td>
+                        <td align="right" width="90">
+                            <b>Rate</b>
+                        </td>
+                        <td>
+                            &#160;
+                        </td>
+                        <td align="right" width="60">
+                            <b>Zinssatz</b>
+                        </td>
+                        <td>
+                            &#160;
+                        </td>
+                        <td>
+                            <b>Gebühr</b>
+                        </td>
+                        <td>
+                            &#160;
+                        </td>
+                        <td width="80">
+                            <b>Hinweis/Sorglospaket </b>
+                        </td>
+                    </tr>
+                    <input type="hidden" name="radio_last_selection" value="0"/>
+                    <script>
+		function assignXCODE(value) {
+				window.status=value;
+				parent.menu.document.getElementById('xcode').innerHTML='<a class="menbut">'+value+'</a>';
+		}
+        function resetXCODE(value) {
+			window.status='';
+            parent.menu.document.getElementById('xcode').innerHTML='<a class="menbut">Code</a>';
+        }
+        function changeInstallmentSet(field, value) {
+        	var field = document.getElementsByName(field);
+			field[0].value=value;
+        }
+</script>
+
+                    <!-- When changing included above please do the same in com.ctlmb.ratanet.webapp.util.TableSelectionCalculator.INCLUDED -->
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+
+                &nbsp;
+
+
+                &nbsp;
+
+
+                &nbsp;
+
+
+                <INPUT TYPE='HIDDEN' NAME='Instance_theDossierConditions_mCreditTypeCode' id='Instance_theDossierConditions_mCreditTypeCode' VALUE='2960' CLASS='text-input' >
+                &nbsp;
+
+            </td>
+        </tr>
+
+        <tr><td>weitere Erstkaufmodelle:</td><td>
+            <select name="CAM_Instance_theDossierConditions_mCreditTypeCode" class="select-input" onChange='setCreditType()'>
+                <option value="0">Bitte wählen</option>
+                <option value="3311">Aktionskauf</option>
+                <option value="3313">Schlußrate</option>
+                <option value="2638">Feste Rate unter 1000 EUR</option>
+            </select>
+        </td></tr>
+
+
+
+        <tr height="5">
+            <td colspan="2">
+                &nbsp;
+            </td>
+        </tr>
+        <!--
+            </TABLE></TD></TR></TABLE>
+        -->
+    </TABLE></TD></TR></TABLE>
+
+
+    <INPUT TYPE='HIDDEN' NAME='Instance_theDossierConditions_mPaymentMode' id='Instance_theDossierConditions_mPaymentMode' VALUE='P' CLASS='text-input' >
+
+
+
+    <TABLE WIDTH="500" BORDER="0" ALIGN="CENTER" cellspacing='0'>
+
+        <TR><TD COLSPAN="2">
+            <div align="center">
+                <INPUT TYPE='image' VALUE='0'  SRC='/ratanet/web/dispoV2/img/previous.gif'  NAME='prev'  onClick='return hasToSubmit()'  >
+                <INPUT TYPE='image' VALUE='0'  SRC='/ratanet/web/dispoV2/img/next.gif'  NAME='next'  onClick='return hasToSubmit()'  tabindex='4' >
+                <br/>
+
+                <INPUT TYPE='image' VALUE='0'  SRC='/ratanet/web/dispoV2/img/schilder.gif'  NAME='alternate3'  onClick='return hasToSubmit()'  >
+                <INPUT TYPE='image' VALUE='0'  SRC='/ratanet/web/dispoV2/img/angebot.gif'  NAME='alternate1'  onClick='return hasToSubmit()'  >
+            </div>
+        </TD></TR>
+        <TR><TD COLSPAN="2">
+            <div align="center">
+
+            </div>
+        </TD></TR>
+        <TR>
+            <TD colspan="2" align="center">
+
+                &nbsp;
+
+            </TD>
+        </TR>
+    </TABLE>
+
+
+</FORM>
+
+
+<!-- code to disable autocompletion because this is causing problems with onChange -->
+
+<script language="JavaScript" type="text/javascript">
+if (document.getElementsByTagName) {
+var inputElements = document.getElementsByTagName("input");
+for (i=0; inputElements[i]; i++) {
+if (inputElements[i].className && (inputElements[i].className.indexOf("disableAutoComplete") != -1)) {
+inputElements[i].setAttribute("autocomplete","off");
+}//if current input element has the disableAutoComplete class set.
+}//loop thru input elements
+}//basic DOM-happiness-check
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+
+
+
+
+
+
+
+<script type="text/javascript">
+		function popup(url) {
+		fenster=window.open(url, "Popupfenster", "width=300,height=90,resizable=yes");
+ 		fenster.focus();
+ 		return false;
+		}
+	</script>
+<html>
+<head>
+    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <title>JSP Page</title>
+    <script language="javascript" src="/ratanet/web/js/dynamic.js"></script>
+    <link rel='stylesheet' type='text/css'  href=' /ratanet/web/dispoV2/style/style.css' />
+
+</head>
+<body>
+<FORM action="/ratanet/front?controller=CreditApplication&action=DispoMaterialType" method="post">
+
+    <!-- CAMMaterialType.jsp -->
+
+    <TABLE WIDTH="550" BORDER="0" ALIGN="CENTER" cellspacing='0'>
+
+        <TR>
+            <TD align="left" valign="top">
+                <p class="kopfzeile">- Kreditangebot -
+                    <font size=2 class="panelheader"><b> &nbsp;&nbsp;&nbsp;&nbsp; Produktauswahl </b></font></P>
+            </TD>
+        </TR>
+
+    </Table>
+
+    <INPUT type="HIDDEN" name="RequestID" value="578084445"/>
+
+    <INPUT type="HIDDEN" name="UNIQUE_TRANSACTION" value="FLOWTID:3"/>
+
+
+    <input type="hidden" name="Instance_theDossierConditions_theMaterialInfo$0_mName" value="keine Angabe"/>
+    <TABLE CLASS='pannelext' WIDTH='550' BORDER='0' ALIGN='CENTER'><TR VALIGN='TOP'><TD><TABLE CLASS='pannelint' WIDTH='100%' BORDER=0 CELLSPACING=0>
+
+
+
+        <TR>
+            <TD class="inputlabel" width="20%" >
+                <font class='label'>
+                    Produkt :
+                </font>
+            </TD>
+            <td class="inputfield" width="60%">
+                <SELECT NAME='Instance_theDossierConditions_theMaterialInfo$0_mCode' class='select-input'  size="10"
+                >
+                    <OPTION VALUE='0' >Kartenantrag ohne Kauf</OPTION>
+                    <OPTION VALUE='320' SELECTED>Diverse Wei&#223;e Ware</OPTION>
+                    <OPTION VALUE='322' >K&#252;hlschrank oder Gefrierschrank</OPTION>
+                    <OPTION VALUE='323' >Sp&#252;l-/Waschmaschine</OPTION>
+                    <OPTION VALUE='595' >Diverse braune Ware</OPTION>
+                    <OPTION VALUE='610' >TV/HIFI Ger&#228;te</OPTION>
+                    <OPTION VALUE='611' >Photo/Video</OPTION>
+                    <OPTION VALUE='616' >Computer</OPTION>
+                    <OPTION VALUE='618' >Zubeh&#246;r PC</OPTION>
+                </SELECT>
+                <SCRIPT type="text/javascript">
+document.forms[0].Instance_theDossierConditions_theMaterialInfo$0_mCode.focus();
+</SCRIPT>
+
+                <br />
+                &nbsp;
+                <script type="text/javascript">
+
+                    function selectDefaultIfNone() {
+                        // alert(document.forms[0].Instance_theDossierConditions_theMaterialInfo$0_mCode.selectedIndex);
+
+                        if (document.forms[0].Instance_theDossierConditions_theMaterialInfo$0_mCode.selectedIndex == -1 &&
+                                document.forms[0].Instance_theDossierConditions_theMaterialInfo$0_mCode.length > 0){
+
+                            document.forms[0].Instance_theDossierConditions_theMaterialInfo$0_mCode.selectedIndex = 0;
+                            // alert(document.forms[0].Instance_theDossierConditions_theMaterialInfo$0_mCode.selectedIndex);
+                        }
+
+                    }
+                    
+                    selectDefaultIfNone();
+                </script>
+            </td>
+        </TR>
+
+
+        <tr><td>&nbsp;</td></tr>
+
+        <TR>
+            <TD class="inputlabel"><font class='label'>
+                Verkäufer :
+            </font></TD>
+            <TD class="inputfield"><SELECT NAME='Instance_theDossierConditions_theVendorInfo_mSalesmanId' >
+                <OPTION VALUE='beel' >Beel Steffen</OPTION>
+                <OPTION VALUE='cramatte' >Cramatte Pascal</OPTION>
+                <OPTION VALUE='engelberth' >Engelberth Silvia</OPTION>
+                <OPTION VALUE='ferber' >Ferber Michael</OPTION>
+                <OPTION VALUE='gökmen' >G&#246;kmen Ela</OPTION>
+                <OPTION VALUE='hajdini' >Hajdini Elvis</OPTION>
+                <OPTION VALUE='heß' >He&#223; Kevin</OPTION>
+                <OPTION VALUE='hirche' >Hirche Ronny Bernd</OPTION>
+                <OPTION VALUE='ivanov' >Ivanov Irene</OPTION>
+                <OPTION VALUE='kunick' >Kunick Christian</OPTION>
+                <OPTION VALUE='kunze' >Kunze Simon</OPTION>
+                <OPTION VALUE='piszczan' >Piszczan Lukas</OPTION>
+                <OPTION VALUE='reinhardt' >Reinhardt Dennis</OPTION>
+                <OPTION VALUE='reumann' >Reumann Frank</OPTION>
+                <OPTION VALUE='rohwer' >Rohwer Sascha</OPTION>
+                <OPTION VALUE='scholko' >Scholko Irmgard</OPTION>
+                <OPTION VALUE='schür' >Sch&#252;r Marvin Alexander</OPTION>
+                <OPTION VALUE='seichter' >Seichter Uwe</OPTION>
+                <OPTION VALUE='sickenberg' >Sickenberg Rudolph</OPTION>
+                <OPTION VALUE='smeets' >Smeets Frank</OPTION>
+                <OPTION VALUE='2103257' SELECTED>Standard Benutzer Standard Benutzer</OPTION>
+                <OPTION VALUE='sumskis' >Sumskis Tomas</OPTION>
+                <OPTION VALUE='thurn' >Thurn Kirsten</OPTION>
+                <OPTION VALUE='thönelt' >Th&#246;nelt Patrick</OPTION>
+                <OPTION VALUE='vieler' >Vieler Janine</OPTION>
+                <OPTION VALUE='weber' >Weber Christiane</OPTION>
+                <OPTION VALUE='willwacher' >Willwacher Christine</OPTION>
+            </SELECT>
+                &nbsp;</TD>
+        </TR>
+
+
+
+    </TABLE></TD></TR></TABLE>
+
+    <TABLE WIDTH="500" BORDER="0" ALIGN="CENTER" cellspacing='0'>
+
+        <TR><TD COLSPAN="2">
+            <div align="center">
+
+                <INPUT TYPE='image' VALUE='0'  SRC='/ratanet/web/dispoV2/img/next.gif'  NAME='next'  >
+            </div>
+        </TD></TR>
+        <TR><TD COLSPAN="2">
+            <div align="center">
+
+            </div>
+        </TD></TR>
+    </TABLE>
+
+
+
+
+</FORM>
+
+
+<a href="/ratanet/web/loadUserParameters.jsp">
+    <img src="/ratanet/web/img/inv.gif" border="0">
+</a>
+
+
+</body>
+</html>

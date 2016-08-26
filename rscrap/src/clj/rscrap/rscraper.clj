@@ -44,6 +44,11 @@
   ;"/ratanet/front?controller=CreditApplication&action=PrintingContract"
 
   (-> (edn/read-string (slurp "credit_type_default.edn"))
+      (a/create-contract  "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType")
+      (dissoc :response))
+
+
+  (-> (edn/read-string (slurp "credit_type_default.edn"))
       (a/create-contract  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity")
       (dissoc :response))
 
@@ -51,8 +56,6 @@
   (-> (edn/read-string (slurp "credit_type_default.edn"))
       (a/create-contract "/ratanet/front?controller=CreditApplication&action=PrintingContract")
       (dissoc :response))
-
-
 
 
 
