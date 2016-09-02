@@ -1,7 +1,7 @@
-(ns rscrap.adapter
+(ns extractor.http-connector
   (require [clj-http.client :as client]
            ;[net.cgrand.tagsoup]
-           [rscrap.extractor :as p ])
+           [extractor.core :as p ])
   (import [java.io StringReader]))
 
 

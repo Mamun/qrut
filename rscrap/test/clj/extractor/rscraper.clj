@@ -1,9 +1,9 @@
-(ns rscrap.rscraper
+(ns extractor.rscraper
   (require                                                  ;[pl.danieljanus.tagsoup :as ts]
     [environ.core :as e]
     [net.cgrand.enlive-html :as html]
     [clj-http.client :as client]
-    [rscrap.adapter :as a]
+    [extractor.http-connector :as a]
     [clojure.tools.reader.edn :as edn]
     [net.cgrand.tagsoup]))
 

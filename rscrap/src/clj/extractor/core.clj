@@ -1,8 +1,17 @@
-(ns rscrap.extractor
+(ns extractor.core
   (require [net.cgrand.enlive-html :as html]
-           [rscrap.extractor-credit-type :as ct]
-           [rscrap.extractor-util :as c]
+           [clojure.walk :as w]
+           [extractor.credit-type :as ct]
+           [extractor.util :as c]
            [net.cgrand.tagsoup]))
+
+
+
+
+;(keyword :A)
+
+
+
 
 
 (def selector #{[:select] [:input]})
@@ -39,7 +48,7 @@
 (defmethod do-extract
   :default
   [_ node]
-  {:params       (c/extract-data-batch (html/select node selector))
+  {:params       (c/extract-data (html/select node selector))
    :errormessage (get-error node)})
 
 
@@ -55,12 +64,15 @@
 
 
 
+
+
+
 (comment
 
 
 
   (-> (html/select (html/html-resource "material.html") selector)
-      (c/extract-data-batch))
+      (c/extract-data))
 
   (-> (html/html-resource "credittype.html")
       (extract-data)

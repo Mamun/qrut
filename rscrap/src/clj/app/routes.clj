@@ -9,7 +9,8 @@
             [clojure.tools.logging :as log]
             [immutant.web.middleware :as imm]
             [dadysql.http-service :as h]
-            [app.view :as v]
+            [app.view.common :as v]
+            [app.view.credittype :as vc]
             [app.service :as api]
             [app.state :as s]))
 
@@ -39,7 +40,7 @@
   (do
     (debug-request-params r)
     (->
-      (v/credittype-view)
+      (vc/view)
       (update-session-data r :material))))
 
 
@@ -53,7 +54,7 @@
 (defn customer-handler [r]
   (if (get-in r [:params :next])
     (v/customer-comple-view)
-    (v/credittype-view)))
+    (vc/view)))
 
 
 (defn customer-comp-handler [r]

@@ -1,5 +1,14 @@
-(ns app.view
-  (:require [net.cgrand.enlive-html :as html]))
+(ns app.view.common
+  (:require [net.cgrand.enlive-html :as html]
+            [extractor.core :as e]
+            [extractor.util :as eu]))
+
+
+(defn html-response
+  [body]
+  {:status  200
+   :headers {"Content-Type" "text/html; charset=utf-8"}
+   :body    body})
 
 
 (html/set-ns-parser! net.cgrand.tagsoup/parser)
@@ -18,6 +27,14 @@
                  identity)
 
 
+(defn apply-session [submit-m node]
+  (html/at node
+           [:select#mcode [:option (html/attr= :value (get submit-m "Instance_theDossierConditions_theMaterialInfo$0_mCode"))]]
+           (html/set-attr :selected :selected)
+           [:select#salesmanid [:option (html/attr= :value (or
+                                                             (get submit-m :Instance_theDossierConditions_theVendorInfo_mSalesmanId)
+                                                             (get submit-m "Instance_theDossierConditions_theVendorInfo_mSalesmanId")))]]
+           (html/set-attr :selected :selected)))
 
 
 (html/defsnippet material-snippet "public/material.html"
@@ -38,10 +55,19 @@
                                             (html/set-attr :value (first i)))))
 
 
-(defn apply-session [submit-m node ]
-  (html/at node
-           [:select#mcode [:option (html/attr= :value (get submit-m "Instance_theDossierConditions_theMaterialInfo$0_mCode") )]]
-           (html/set-attr :selected :selected)))
+
+
+(defn material-view [submit-m]
+  (let [w (e/extract-data "material.html")
+        d (get-in w [:params "Instance_theDossierConditions_theMaterialInfo$0_mCode"])
+        s (get-in w [:params "Instance_theDossierConditions_theVendorInfo_mSalesmanId"])]
+    (->> (material-snippet d s)
+         (apply-session submit-m)
+         (index-template "Hello from credit type ")
+         (apply str)
+         (html-response))))
+
+
 
 
 
@@ -49,6 +75,8 @@
 (comment
 
 
+  (select-keys
+    (e/extract-data "material.html") [:params])
 
 
   (let [d
@@ -62,30 +90,16 @@
          "322" "Kühlschrank oder Gefrierschrank",
          "323" "Spül-/Waschmaschine"}
         s {}]
-    (-> (material-snippet d s)
-        (apply-session)
-        ))
+    (-> (material-snippet d s)))
 
   )
 
 
 
 
-(html/defsnippet credittype-snippet "public/credittype.html"
-                 [:div#credittype]
-                 []
-                 identity)
 
 
 
-(comment
-
-  (let []
-    (-> (credittype-snippet) )
-    )
-
-
-  )
 
 
 (html/defsnippet customer-snippet "public/customer.html"
@@ -138,11 +152,6 @@
   )
 
 
-(defn html-response
-  [body]
-  {:status  200
-   :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body    body})
 
 
 
@@ -156,31 +165,10 @@
 
 
 
-(defn material-view [submit-m]
-  (let [d {"612" "Telefon/Handy",
-           "616" "Computer",
-           "618" "Zubehör PC",
-           "610" "TV/HIFI Geräte",
-           "320" "Diverse Weiße Ware",
-           "0"   "Kartenantrag ohne Kauf",
-           "611" "Photo/Video",
-           "322" "Kühlschrank oder Gefrierschrank",
-           "323" "Spül-/Waschmaschine"}
-        s {"mustermann" "Musterman"
-           "212344"     "35t435"}]
-    (->> (material-snippet d s)
-         (apply-session submit-m)
-         (index-template "Hello from credit type ")
-         (apply str)
-         (html-response))))
 
 
 
-(defn credittype-view []
-  (->> (credittype-snippet)
-       (index-template "Hello from credit type ")
-       (apply str)
-       (html-response)))
+
 
 
 (defn customer-view []
