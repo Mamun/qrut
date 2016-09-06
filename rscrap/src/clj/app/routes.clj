@@ -6,12 +6,13 @@
             [ring.middleware.logger :refer [wrap-with-logger]]
             [ring.middleware.session.cookie :as sc]
             [ring.util.response :as response]
+            [app.routes-middleware :as rm]
             [ring.middleware.dadysql :as hs]
             [clojure.tools.logging :as log]
             [immutant.web.middleware :as imm]
             [dadysql.http-service :as h]
             [app.handler.common :as v]
-            [app.handler.credittype :as vc]
+            [app.handler.credittype :as credit]
             [app.handler.material :as mv]
             [app.service :as api]
             [app.state :as s]))
@@ -24,69 +25,24 @@
                         :form-params :scheme :headers]))
 
 
-(defn debug-request-params [r]
-  (do
-    (println "-- Session start --")
-    (clojure.pprint/pprint (:session r))
-    (println "-- Session end --")
-    (println "-- params start  --")
-    (clojure.pprint/pprint (:params r))
-    (println "End -----------")))
-
-
-(defn build-page-flow [r]
-  (if (get-in r [:params :prev])
-    (update-in r [:session :flow] (fn [v]
-                                    (into (empty v) (butlast v))))
-    (update-in r [:session :flow] (fn [v]
-                                    (conj (or v []) (get r :uri))))))
-
-
-#_(defn update-session-data [response {:keys [session params]} type]
-    (assoc response :session (assoc session type params)))
-
-
-(defn init-material-handler [r]
-  (-> (mv/view (get-in r [:session :material]))
-      (update-in [:session] (fn [v] (assoc v :flow ["/material"])))
-
-      ))
-
-
 (defn material-handler [r]
   (do
-    ;(debug-request-params r)
-    (-> (vc/view)
-        #_(update-session-data r :material))))
+    (response/redirect "/credittype")))
 
 
 (defn credittype-handler [r]
-  ;(debug-request-params r)
-  (if (get-in r [:params :next])
-    (v/customer-view)
-    (mv/view (get-in r [:session :material]))))
+  (do
+    (response/redirect "/customer")))
 
 
 (defn customer-handler [r]
   (if (get-in r [:params :next])
     (v/customer-comple-view)
-    (vc/view)))
+    (credit/view)))
 
 
 (defn customer-comp-handler [r]
-  (if (get-in r [:params :next])
-    (response/redirect "/")
-    (v/customer-view)))
-
-
-(defn dispatch-handler [path r]
-  (condp = path
-    "/material" (init-material-handler r)
-    "/credittype" (credittype-handler r)
-    "/customer" (customer-handler r)
-    "/customerComplementary" (customer-comp-handler r)
-    (init-material-handler r)))
-
+  (response/redirect "/"))
 
 
 
@@ -95,21 +51,19 @@
   (GET "/" [_]
     (response/redirect "/material"))
   (GET "/index" _ (v/index))
-  (GET "/material" r (init-material-handler r))
+
+  (GET "/material" r (mv/view (get-in r [:session :material])))
   (POST "/material" r (material-handler r))
+
+  (GET "/credittype" r (credit/view))
   (POST "/credittype" r (credittype-handler r))
-  (POST "/customer" r (customer-handler r))
+
+  (GET "/customer" r (v/customer-view))
+  (POST "/customer" r (do (customer-handler r)
+                          (response/redirect "/customerComplementary")))
+
+  (GET "/customerComplementary" r (v/customer-comple-view))
   (POST "/customerComplementary" r (customer-comp-handler r)))
-
-
-(defn warp-view-routes-middleware [handler]
-  (fn [request]
-    (debug-request-params request)
-    (let [{:keys [session]} (build-page-flow request)]
-      (-> request
-          (handler)
-          (update-in [:session] #(merge session (or % {})))))))
-
 
 
 (defn api-routes []
@@ -121,7 +75,7 @@
 
 (defroutes
   app-routes
-  (warp-view-routes-middleware view-routes)
+  (rm/warp-view-navi-middleware view-routes "/material")
   (context "/api" _ (api-routes))
   (route/resources "/")
   (route/not-found {:status 200
