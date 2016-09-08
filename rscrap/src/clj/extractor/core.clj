@@ -70,6 +70,8 @@
 (comment
 
 
+  (-> (html/select (html/html-resource "address.html") selector)
+      (c/extract-data))
 
   (-> (html/select (html/html-resource "material.html") selector)
       (c/extract-data))

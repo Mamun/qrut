@@ -13,11 +13,11 @@
       (eu/view-data)))
 
 
-(defn view []
+(defn view [submit-v]
   (let [d (get-temp-data)
         credit-line (cv/get-credit-line d)]
     (->> (cv/credittype-snippet d credit-line)
-         (c/index-template "Hello from credit type ")
+         (c/index-template "Credit type ")
          (apply str)
          (c/html-response))))
 

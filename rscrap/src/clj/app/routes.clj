@@ -6,14 +6,14 @@
             [ring.middleware.logger :refer [wrap-with-logger]]
             [ring.middleware.session.cookie :as sc]
             [ring.util.response :as response]
-            [app.routes-middleware :as rm]
             [ring.middleware.dadysql :as hs]
             [clojure.tools.logging :as log]
             [immutant.web.middleware :as imm]
             [dadysql.http-service :as h]
-            [app.handler.common :as v]
+            [app.routes-middleware :as rm]
+            [app.handler.common :as common]
             [app.handler.credittype :as credit]
-            [app.handler.material :as mv]
+            [app.handler.material :as material]
             [app.service :as api]
             [app.state :as s]))
 
@@ -36,9 +36,8 @@
 
 
 (defn customer-handler [r]
-  (if (get-in r [:params :next])
-    (v/customer-comple-view)
-    (credit/view)))
+  (do
+    (response/redirect "/customerComplementary")))
 
 
 (defn customer-comp-handler [r]
@@ -50,19 +49,25 @@
   view-routes
   (GET "/" [_]
     (response/redirect "/material"))
-  (GET "/index" _ (v/index))
+  (GET "/index" _ (common/index))
 
-  (GET "/material" r (mv/view (get-in r [:session :material])))
+  (GET "/material" r  (material/view (get-in r [:session :action-v "/material"])))
   (POST "/material" r (material-handler r))
 
-  (GET "/credittype" r (credit/view))
-  (POST "/credittype" r (credittype-handler r))
+  (GET "/credittype" r (do
 
-  (GET "/customer" r (v/customer-view))
-  (POST "/customer" r (do (customer-handler r)
-                          (response/redirect "/customerComplementary")))
+                         (credit/view (get-in r [:session :action-v "/material"]))
 
-  (GET "/customerComplementary" r (v/customer-comple-view))
+                           ))
+  (POST "/credittype" r (do
+                          ;(println "---------Credittype form data ")
+                          ;  (clojure.pprint/pprint (:params r))
+                          (credittype-handler r)))
+
+  (GET "/customer" r (common/customer-view))
+  (POST "/customer" r (customer-handler r))
+
+  (GET "/customerComplementary" r (common/customer-comple-view))
   (POST "/customerComplementary" r (customer-comp-handler r)))
 
 
@@ -75,7 +80,7 @@
 
 (defroutes
   app-routes
-  (rm/warp-view-navi-middleware view-routes "/material")
+  (rm/warp-navi-middleware view-routes "/material")
   (context "/api" _ (api-routes))
   (route/resources "/")
   (route/not-found {:status 200
@@ -84,7 +89,7 @@
 
 (defn warp-log [handler]
   (fn [req]
-    (log/info "-----------------" req)
+    (log/info "-----------------" (dissoc req :cookies :headers :async-channel :body))
     (handler req)))
 
 

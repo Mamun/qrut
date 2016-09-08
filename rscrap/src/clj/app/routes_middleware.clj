@@ -42,7 +42,7 @@
 
 
 
-(defn warp-view-navi-middleware [handler start-path]
+(defn warp-navi-middleware [handler start-path]
   (fn [request]
     (let [{:keys [uri]} request]
       ;   (debug-request-params request)
@@ -56,3 +56,8 @@
           :else
           (update-session (handler request) request))
         (handler request)))))
+
+
+
+(defn get-action-value [r path]
+  (get-in r [:session :action-v path]))

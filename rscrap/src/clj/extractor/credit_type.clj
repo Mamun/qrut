@@ -95,8 +95,40 @@
 
 
 
+(defn as-from-data [param]
+  (reduce (fn [acc v]
+            (condp = (:type v)
+              "checkbox" (assoc acc (:name v) (:checked v))
+              (assoc acc (or (:name v) "desc") (:value v)))
+            ) {} param))
 
 
+
+(defn creditline-from-data [param-m]
+  (map as-from-data param-m))
+
+
+(defn credit-line [coll credit-value]
+  (-> (filter (fn [c]
+                (if (= credit-value (get c "CALCULATION_TABLE"))
+                  true false)
+                ) coll)
+      (first)))
+
+
+(defn find-check-credittype [coll]
+  (reduce (fn [acc [v]]
+            (if (= (:checked v) "true")
+              (reduced (:value v))
+              acc)
+            ) nil coll))
+
+
+(defn get-default-credit-line [coll]
+  (let [w (creditline-from-data coll)
+        v (find-check-credittype coll) ]
+
+    (credit-line w v)))
 
 
 (comment
@@ -105,7 +137,13 @@
   ;(apply conj [1 2 3] [ 56] )
 
   (-> (html/html-resource "credittype.html")
-      (extract-credit-data))
+      (extract-credit-data)
+      (:credit-line)
+      (get-default-credit-line)
+      ;(creditline-from-data)
+      ;(credit-line "2601")
+
+      )
 
 
   (-> (html/html-resource "credittype.html")
