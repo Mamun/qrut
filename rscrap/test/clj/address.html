@@ -1,0 +1,209 @@
+<html>
+<head>
+    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <title>JSP Page</title>
+    <script language="javascript" src="/ratanet/web/js/dynamic.js"></script>
+    <link rel='stylesheet' type='text/css'  href=' /ratanet/web/dispoV2/style/style.css' />
+
+
+</head>
+<body>
+<SCRIPT LANGUAGE="JAVASCRIPT">
+InitBulle(1);
+</SCRIPT>
+<FORM action="/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityAddressConfirm" method="post">
+
+
+    <input type="submit" name="focus_helper" style="display: none" onClick="return true;"/>
+    <input type="image" name="focus_helper1" style="width:0,height:0" width="0" height="0" onClick="return true;"/>
+
+
+    <div id="pannelarea">
+        <TABLE WIDTH="550" BORDER="0" ALIGN="CENTER" cellspacing='0'>
+
+
+            <TR>
+                <TD align="left" valign="top">
+                    <p class="kopfzeile">- Anfrage -
+                        <font size=2 class="panelheader"><b> &nbsp;&nbsp;&nbsp;&nbsp; Adressvalidierung  </b></font></P>
+                </TD>
+            </TR>
+
+        </Table>
+
+        <INPUT type="HIDDEN" name="RequestID" value="578095917"/>
+
+        <INPUT type="HIDDEN" name="UNIQUE_TRANSACTION" value="FLOWTID:5"/>
+
+
+        <!-- separator line -->
+        <br>
+
+
+
+
+        <table cellspacing=0 cellpadding=0 width="550" align="center">
+
+            <TR><TD align="left">
+                Die Adresse wurde korrigiert. <b>Es wird empfohlen die berichtigte Anschrift zu akzeptieren.</b>
+            </tr></td>
+
+            <tr><td>&nbsp;</tr></td>
+
+            <TR><TD align="left">
+                <INPUT TYPE='RADIO' NAME='addressConfirm' id='addressConfirm' VALUE='accepted' > <b>Die korrigierte Anschrift akzeptieren</b>
+            </tr></td>
+
+        </table>
+
+
+
+        <TABLE CLASS='pannelext' WIDTH='550' BORDER='0' ALIGN='CENTER'><TR><TD colspan='2'><font class='panneltitle'>
+            Korrigierte Adresse
+        </font></TD></TR>
+            <TR VALIGN='TOP'><TD><TABLE CLASS='pannelint' WIDTH='100%' BORDER=0 CELLSPACING=0>
+
+
+
+
+
+                <TR>
+                    <TD class="inputlabel" width="33%">
+                        <font class='label'>
+                            <I>Straße</I> :
+                        </font>
+                    </TD>
+                    <TD class="greyunderline" width="66%" >
+                        Heckscherstr. 11
+                    </TD>
+                </TR>
+
+
+
+                <TR>
+                    <TD class="inputlabel">
+                        <font class='label'>
+                            <I>Postleitzahl</I> :
+                        </font>
+                    </TD>
+                    <TD class="greyunderline">
+                        80804
+                    </TD>
+                </TR>
+
+
+
+                <TR>
+                    <TD class="inputlabel">
+                        <font class='label'>
+                            <I>Ort in Deutschland</I> :
+                        </font>
+                    </TD>
+                    <TD class="greyunderline">
+                        M&#252;nchen
+                    </TD>
+                </TR>
+
+
+            </TABLE></TD></TR></TABLE>
+
+
+
+        <table cellspacing=0 cellpadding=0 width="550" align="center">
+
+            <TR><TD align="left">
+                <INPUT TYPE='RADIO' NAME='addressConfirm' id='addressConfirm' VALUE='corrected' > Die Adresse manuell korrigieren
+            </td></tr>
+
+        </table>
+
+
+
+
+
+
+        <TABLE CLASS='pannelext' WIDTH='550' BORDER='0' ALIGN='CENTER'><TR><TD colspan='2'><font class='panneltitle'>
+            Originelle Adresse
+        </font></TD></TR>
+            <TR VALIGN='TOP'><TD><TABLE CLASS='pannelint' WIDTH='100%' BORDER=0 CELLSPACING=0>
+
+
+                <TR>
+                    <TD class="inputlabel" width="33%">
+                        <font class='label'>
+                            Straße :
+                        </font>
+                    </TD>
+                    <TD class="inputfield" width="66%">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theAddressLiving_theAddress_mStreet' id='Instance_theFamily_theAddressLiving_theAddress_mStreet' VALUE='Heckscherstr. 11' SIZE='32' MAXLENGTH='32' CLASS='text-input' ><SCRIPT type="text/javascript">document.forms[0].Instance_theFamily_theAddressLiving_theAddress_mStreet.focus();</SCRIPT>
+
+                        &nbsp;
+                    </TD>
+                </TR>
+
+
+
+                <TR>
+                    <TD class="inputlabel">
+                        <font class='label'>
+                            Postleitzahl :
+                        </font>
+                    </TD>
+                    <TD class="inputfield">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theAddressLiving_theAddress_mPostalCode' id='Instance_theFamily_theAddressLiving_theAddress_mPostalCode' VALUE='80804' SIZE='5' MAXLENGTH='5' CLASS='text-input' >
+                        &nbsp;
+                    </TD>
+                </TR>
+
+
+
+                <TR>
+                    <TD class="inputlabel">
+                        <font class='label'>
+                            Ort in Deutschland :
+                        </font>
+                    </TD>
+                    <TD class="inputfield">
+                        <INPUT TYPE='TEXT' NAME='Instance_theFamily_theAddressLiving_theAddress_mCity' id='Instance_theFamily_theAddressLiving_theAddress_mCity' VALUE='Munich' SIZE='32' MAXLENGTH='32' CLASS='text-input' >
+                        <A  HREF="javascript:void(0);" onMouseOver="javascript:AffBulle('<table border=0><tr valign=top><td>Kunde muss Erstwohnsitz in Deutschland haben</td></tr></table>')" onMouseOut="HideBulle()" TARGET='_self'>?</A>&nbsp;
+                        &nbsp;
+                    </TD>
+                </TR>
+
+
+            </TABLE></TD></TR></TABLE>
+
+
+        <table cellspacing=0 cellpadding=0 width="550" align="center">
+
+            <TR><TD align="center">
+                &nbsp;
+            </TD></TR>
+
+        </table>
+
+        <br>
+
+        <TABLE class='table-nav-buttons' WIDTH="550" BORDER="0" ALIGN="CENTER" cellspacing='0'>
+
+            <TR><TD COLSPAN="2" align="center">
+                <div class="navbuttons">
+                    <INPUT TYPE='image' VALUE='0'  SRC='/ratanet/web/dispoV2/img/next.gif'  NAME='next'  >
+                </div>
+            </TD></TR>
+
+            <TR><TD COLSPAN="2">
+                <div align="center">
+
+                </div>
+            </TD></TR>
+
+        </TABLE>
+
+
+
+    </div>
+</FORM>
+
+</body>
+</html>
