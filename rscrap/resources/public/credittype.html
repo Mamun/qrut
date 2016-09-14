@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <script src="assets/jquery/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="assets/bootstrap/dist/css/bootstrap.min.css">
-    <script src="assets/bootstrap/dist/css/bootstrap.min.js"></script>
-    <script src="assets/bootstrap-validator/dist/validator.min.js"></script>
+    <script src="assets/bootstrap/dist/js/bootstrap.min.js"></script>
 
 
 </head>
@@ -27,20 +27,20 @@
 
                 <div class="form-group has-feedback">
                     <label for="mPrice" class="col-sm-2 control-label">Kaufpreis</label>
-
                     <div class="col-sm-10 ">
                         <div class="input-group">
                             <span class="input-group-addon" id="s1">&#8364;</span>
-                            <INPUT TYPE='TEXT' NAME='Instance_theDossierConditions_theMaterialInfo$0_mPrice' id='mPrice'
+                            <input type='text' NAME='Instance_theDossierConditions_theMaterialInfo$0_mPrice' id='mPrice'
                                    placeholder="Kaufpreis" class="form-control" aria-describedby="s1"
                                    value=${Instance_theDossierConditions_theMaterialInfo$0_mPrice}
-                                   data-error="Please prove price "
+                                   pattern="^[_A-z0-9]{1,}$"
+                                   data-match-error="Please provide total amount "
                                    required>
                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         </div>
-
-
+                        <div class="help-block with-errors"></div>
                     </div>
+
                 </div>
 
                 <div class="form-group">
@@ -50,22 +50,20 @@
                     <div class="col-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon" id="s2">&#8364;</span>
-                            <INPUT TYPE='TEXT' NAME='Instance_theDossierConditions_theClassicInfo_mInsuranceAmount'
+                            <input TYPE='text' NAME='Instance_theDossierConditions_theClassicInfo_mInsuranceAmount'
                                    id='mInsuranceAmount' placeholder="Versicherungsprämie (Garantieprodukt)"
                                    class="form-control" aria-describedby="s2"
-                                   value=${Instance_theDossierConditions_theClassicInfo_mInsuranceAmount}
-                            >
+                                   value=${Instance_theDossierConditions_theClassicInfo_mInsuranceAmount}>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="CAM_prePaid" class="col-sm-2 control-label">Anzahlung/Inzahlunggabe</label>
-
                     <div class="col-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon" id="s3">&#8364;</span>
-                            <INPUT TYPE='TEXT' NAME='CAM_prePaid' id='CAM_prePaid' placeholder="Anzahlung/Inzahlunggabe"
+                            <input TYPE='text' NAME='CAM_prePaid' id='CAM_prePaid' placeholder="Anzahlung/Inzahlunggabe"
                                    class="form-control" aria-describedby="s3" value=${CAM_prePaid}>
                         </div>
                     </div>
@@ -110,14 +108,15 @@
 
 
                 <div class="form-group">
-                    <label for="Instance_theDossierConditions_theMaterialInfo$0_mDeliveringDate"
+                    <label for="mDeliveringDate"
                            class="col-sm-2 control-label">Lieferdatum</label>
 
                     <div class="col-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon" id="s5">tt.mm.yyyy</span>
+                            <!-- id='Instance_theDossierConditions_theMaterialInfo$0_mDeliveringDate'-->
                             <INPUT TYPE='TEXT' NAME='Instance_theDossierConditions_theMaterialInfo$0_mDeliveringDate'
-                                   id='Instance_theDossierConditions_theMaterialInfo$0_mDeliveringDate'
+                                   id='mDeliveringDate'
                                    placeholder="Lieferdatum" class="form-control" aria-describedby="s5"
                                    value=${Instance_theDossierConditions_theMaterialInfo$0_mDeliveringDate}
                             >
@@ -190,7 +189,8 @@
                                     <td>
                                         <div class="radio input-group">
                                             <label>
-                                                <input type="radio" name="CALCULATION_TABLE" value="2601">Feste Rate From hllo asf
+                                                <input type="radio" name="CALCULATION_TABLE" value="2601">Feste Rate
+                                                From hllo asf
                                             </label>
                                         </div>
                                     </td>
@@ -238,9 +238,24 @@
     </div>
 
 
+    <script src="assets/bootstrap-validator/dist/validator.min.js"></script>
+
+    <link rel="stylesheet" href="assets/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <script src="assets/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
     <script>
 
-        $('#myForm').validator()
+
+$('#mDeliveringDate').datepicker({
+
+});
+        $('#myForm').validator();
+
+
+
+
+
     </script>
 
 </div>
