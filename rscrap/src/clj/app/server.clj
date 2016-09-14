@@ -6,14 +6,18 @@
   (:gen-class))
 
 
+(defonce server (atom nil))
 
-#_(defn -main
-  [& args]
-  (println "Starting tie app  ")
-  (s/init-state)
-  (im/run r/http-handler {:port 3000
-                        ;:host "0.0.0.0"
-                        }))
+(defn start-server [port ]
+  (let [v (im/run r/http-handler {:port port
+                                  :host "0.0.0.0"})]
+    (reset! server v)))
+
+
+(defn stop-server []
+  (im/stop @server))
+
+
 
 
 (defn -main

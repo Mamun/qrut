@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>
+        Validator, for Bootstrap 3
+    </title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Documentation extras -->
+    <link href="assets/css/docs.css" rel="stylesheet">
+    <link href="assets/css/pygments-manni.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="assets/ico/favicon.png">
+
+
+</head>
+<body>
+<a class="sr-only" href="#content">Skip to main content</a>
+
+<!-- Docs master nav -->
+
+<div class="container bs-docs-container">
+    <div class="row">
+
+        <div class="col-md-9" role="main">
+            <!-- Dropdowns
+  ================================================== -->
+            <div class="bs-docs-section">
+
+                <div class="bs-example">
+                    <form data-toggle="validator" role="form">
+                        <div class="form-group">
+                            <label for="inputName" class="control-label">Name</label>
+                            <input type="text" class="form-control" id="inputName" placeholder="Cina Saffary" required>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="inputTwitter" class="control-label">Twitter</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">@</span>
+                                <input type="text" pattern="^[_A-z0-9]{1,}$" maxlength="15" class="form-control" id="inputTwitter" placeholder="1000hz" required>
+                            </div>
+                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                            <div class="help-block with-errors">Hey look, this one has feedback icons!</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail" class="control-label">Email</label>
+                            <input type="email" class="form-control" id="inputEmail" placeholder="Email" data-error="Bruh, that email address is invalid" required>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" class="control-label">Password</label>
+                            <div class="form-inline row">
+                                <div class="form-group col-sm-6">
+                                    <input type="password" data-minlength="6" class="form-control" id="inputPassword" placeholder="Password" required>
+                                    <div class="help-block">Minimum of 6 characters</div>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm" required>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="underwear" required>
+                                    Boxers
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="underwear" required>
+                                    Briefs
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="terms" data-error="Before you wreck yourself" required>
+                                    Check yourself
+                                </label>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div> <!-- /example -->
+
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer
+================================================== -->
+
+<!-- JS and analytics only. -->
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script src="http://1000hz.github.io/bootstrap-validator/dist/validator.min.js"></script>
+<!--
+<script src="dist/validator.min.js"></script>
+-->
+<script src="http://platform.twitter.com/widgets.js"></script>
+<script src="assets/js/application.js"></script>
+
+</body>
+</html>
