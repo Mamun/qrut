@@ -21,6 +21,12 @@
                   [:div#wrapper] (html/content content))
 
 
+(html/deftemplate login-template "public/login_template.html"
+                  [title content]
+                  [:head :title] (html/content title)
+                  [:div#wrapper] (html/content content))
+
+
 (html/defsnippet login-snippet "public/login.html"
                  [:div#login]
                  []
@@ -33,6 +39,11 @@
 
 
 (comment
+
+
+  (reduce str
+          (html/emit*
+            (login-snippet)))
 
 
   (select-keys
@@ -115,7 +126,7 @@
 
 
 
-(defn index []
+#_(defn index []
   (->> (login-snippet)
        (index-template "Hello from credit type ")
        (apply str)
@@ -125,10 +136,11 @@
 
 
 
-
-
-
-
+(defn login-view []
+  (->> (login-snippet)
+       (login-template "Hello from credit type ")
+       (apply str )
+       (html-response)))
 
 
 (defn customer-view []

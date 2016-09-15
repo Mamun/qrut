@@ -56,9 +56,9 @@
 
 
 
-      (-> (edn/read-string (slurp "credit_type_default.edn"))
-          (a/create-contract "/ratanet/front?controller=CreditApplication&action=PrintingContract")
-          (dissoc :response :node))
+  (-> (edn/read-string (slurp "credit_type_default.edn"))
+      (a/create-contract "/ratanet/front?controller=CreditApplication&action=PrintingContract")
+      (dissoc :response :node))
 
 
 

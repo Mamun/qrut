@@ -41,15 +41,20 @@
 
 
 (defn customer-comp-handler [r]
-  (response/redirect "/"))
+  (response/redirect "/material"))
+
 
 
 
 (defroutes
   view-routes
   (GET "/" [_]
-    (response/redirect "/material"))
-  (GET "/index" _ (common/index))
+    (response/redirect "/login"))
+  ;(GET "/index" _ (common/index))
+  (GET "/login" _ (common/login-view))
+  (POST "/login" _ (response/redirect "/material"))
+  (GET "/logout" _ (response/redirect "/login"))
+
 
   (GET "/material" r  (material/view (get-in r [:session :action-v "/material"])))
   (POST "/material" r (material-handler r))
@@ -89,7 +94,7 @@
 
 (defn warp-log [handler]
   (fn [req]
-    (log/info "-----------------" (dissoc req :cookies :headers :async-channel :body))
+    (log/info "-----------------" (dissoc req :cookies :headers :async-channel :body :server-exchange))
     (handler req)))
 
 
@@ -106,3 +111,14 @@
       ;  wrap-with-logger
       ;wrap-gzip
       ))
+
+
+
+
+
+(comment
+
+
+
+
+)

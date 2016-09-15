@@ -3,11 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A portfolio template that uses Material Design Lite.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script src="assets/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="assets/bootstrap/dist/css/bootstrap.min.css">
+    <script src="assets/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+
 </head>
 <body>
-<div id="login">
-    <a href="material">login</a>
+<div class="container" id="login">
+    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title">Sign In</div>
+                <div style="float:right; font-size: 80%; position: relative; top:-10px">
+                </div>
+            </div>
+
+            <div style="padding-top:30px" class="panel-body">
+
+                <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+                <form action="login" method="post" id="loginform" class="form-horizontal" data-toggle="validator">
+
+                    <div class="form-group">
+                        <div class="col-sm-12 ">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input id="Handlernummer" type="number" class="form-control" name="handlernummer"
+                                       placeholder="Händlernummer:">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12 ">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input id="login-username" type="text" class="form-control" name="username" value=""
+                                       placeholder="username">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                <input id="login-password" type="password" class="form-control" name="password"
+                                       placeholder="password"
+                                       required>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="input-group">
+                        <div class="checkbox">
+                            <label>
+                                <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <!-- Button -->
+
+                        <div class="col-sm-12 ">
+                            <button type="submit" class="btn btn-primary" >Login</button>
+                           <!-- <a id="btn-login" href="#" class="btn btn-success">Login </a> -->
+
+
+                        </div>
+                    </div>
+
+                    <!--
+                    <div class="form-group">
+                        <div class="col-md-12 control">
+                            <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
+                                Don't have an account!
+                                <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+                                    Sign Up Here
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/bootstrap-validator/dist/validator.min.js"></script>
+    <script>
+    $('#loginform').validator();
+    </script>
 
 </div>
+
 </body>
 </html>
