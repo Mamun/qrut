@@ -1,8 +1,8 @@
-(ns extractor.credit-type
+(ns scraper.credit-type
   (require [net.cgrand.enlive-html :as html]
            [net.cgrand.tagsoup]
            [clojure.walk :as w]
-           [extractor.util :as r]))
+           [scraper.util :as r]))
 
 
 (def credit-input-selector #{[:select]

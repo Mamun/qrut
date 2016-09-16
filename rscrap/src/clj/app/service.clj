@@ -1,7 +1,8 @@
 (ns app.service
   (:require
     [clojure.tools.logging :as log]
-    [app.state :as s]
+    ;[app.state :as s]
+    [clojure.spec :as sp]
     [dadysql.jdbc :as j]))
 
 
@@ -24,9 +25,25 @@
 
 
 
+(sp/def ::a int?)
+
+(sp/explain-str ::a "asdf")
 
 
-(comment
+(defn check [type data]
+  (if (sp/valid? type data)
+    true
+    (throw (IllegalArgumentException. (sp/explain type data)))))
 
-  (load-material-type)
-  )
+
+
+(defn hello [v]
+  {:pre [(check ::a v)]}
+  (throw (ex-info "hekllki" {})))
+
+
+;(hello "asfd")
+
+
+
+

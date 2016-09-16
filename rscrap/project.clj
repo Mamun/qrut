@@ -25,7 +25,7 @@
                   :exclusions [ring/ring-jetty-adapter]]
                  [ring/ring-defaults "0.2.0"]
                  [ring.middleware.logger "0.5.0"]
-                 [compojure "1.1.6"]
+                 [compojure "1.5.1"]
                  [selmer "1.0.4"]  ;; html template
                  [enlive "1.1.6"]
                  [environ "1.0.3"]

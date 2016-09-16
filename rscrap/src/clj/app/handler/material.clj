@@ -1,6 +1,6 @@
 (ns app.handler.material
   (:require [net.cgrand.enlive-html :as html]
-            [extractor.core :as e]
+            [scraper.core :as e]
             [app.handler.common :as c]))
 
 
@@ -39,7 +39,7 @@
 
 
 (defn view [submit-m]
-  (let [w (e/extract-data "material.html")
+  (let [w (e/scrap-data "material.html")
         d (get-in w [:params "Instance_theDossierConditions_theMaterialInfo$0_mCode"])
         s (get-in w [:params "Instance_theDossierConditions_theVendorInfo_mSalesmanId"])]
     (->> (material-snippet d s)

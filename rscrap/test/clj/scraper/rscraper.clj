@@ -3,7 +3,7 @@
     [environ.core :as e]
     [net.cgrand.enlive-html :as html]
     [clj-http.client :as client]
-    [extractor.http-connector :as a]
+    [scraper.http-connector :as a]
     [clojure.tools.reader.edn :as edn]
     [net.cgrand.tagsoup]))
 

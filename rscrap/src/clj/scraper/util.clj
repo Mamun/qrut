@@ -1,4 +1,4 @@
-(ns extractor.util
+(ns scraper.util
   (require [clojure.walk :as w]
            [net.cgrand.enlive-html :as html]))
 

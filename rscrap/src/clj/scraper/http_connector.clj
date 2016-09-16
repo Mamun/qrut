@@ -1,13 +1,11 @@
-(ns extractor.http-connector
+(ns scraper.http-connector
   (require [clj-http.client :as client]
-    ;[net.cgrand.tagsoup]
-           [extractor.core :as p]
-           [extractor.credit-type :as ct])
+           [scraper.core :as p]
+           [scraper.credit-type :as ct])
   (import [java.io StringReader]))
 
 
 (def cs (clj-http.cookies/cookie-store))
-
 
 
 
@@ -18,7 +16,7 @@
                    :query-params params})
       (:body)
       (StringReader.)
-      (p/extract-data)))
+      (p/scrap-data)))
 
 
 
@@ -34,7 +32,7 @@
                     :force-redirects true})
       (:body)
       (StringReader.)
-      (p/extract-data)))
+      (p/scrap-data)))
 
 
 

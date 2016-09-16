@@ -1,8 +1,8 @@
-(ns extractor.core
+(ns scraper.core
   (require [net.cgrand.enlive-html :as html]
            [clojure.walk :as w]
-           [extractor.credit-type :as ct]
-           [extractor.util :as c]
+           [scraper.credit-type :as ct]
+           [scraper.util :as c]
            [net.cgrand.tagsoup]))
 
 
@@ -35,17 +35,17 @@
        (map first)))
 
 
-(defmulti do-extract (fn [url _] url))
+(defmulti do-scrap (fn [url _] url))
 
 
-(defmethod do-extract
+(defmethod do-scrap
   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
   [_ node]
   {:params       (ct/extract-credit-data node)
    :errormessage (get-error node)})
 
 
-(defmethod do-extract
+(defmethod do-scrap
   :default
   [_ node]
   {:params       (c/extract-data (html/select node selector))
@@ -53,10 +53,10 @@
 
 
 
-(defn extract-data [r]
+(defn scrap-data [r]
   (let [node (html/html-resource r)
         form (get-form-url node)]
-    (-> (do-extract form node)
+    (-> (do-scrap form node)
         (assoc :url form)
         (assoc :node node))))
 
@@ -77,15 +77,15 @@
       (c/extract-data))
 
   (-> (html/html-resource "credittype.html")
-      (extract-data)
+      (scrap-data)
       (:params))
 
-  (-> (extract-data "credittype.html")
+  (-> (scrap-data "credittype.html")
       (select-keys [:params]))
 
 
   (-> (html/html-resource "material.html")
-      (extract-data)
+      (scrap-data)
       (select-keys [:params :url]))
 
 

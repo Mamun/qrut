@@ -1,7 +1,7 @@
 (ns app.handler.common
   (:require [net.cgrand.enlive-html :as html]
-            [extractor.core :as e]
-            [extractor.util :as eu]))
+            [scraper.core :as e]
+            [scraper.util :as eu]))
 
 
 (defn html-response
@@ -15,22 +15,17 @@
 (html/alter-ns-options! assoc :reloadable? true)
 
 
-(html/deftemplate index-template "public/index.html"
+(html/deftemplate index-template "public/template.html"
                   [title content]
                   [:head :title] (html/content title)
                   [:div#wrapper] (html/content content))
 
 
-(html/deftemplate login-template "public/login_template.html"
-                  [title content]
-                  [:head :title] (html/content title)
-                  [:div#wrapper] (html/content content))
+(html/deftemplate login-template "public/login.html"
+                  [title]
+                  [:head :title] (html/content title))
 
 
-(html/defsnippet login-snippet "public/login.html"
-                 [:div#login]
-                 []
-                 identity)
 
 
 
@@ -127,20 +122,20 @@
 
 
 #_(defn index []
-  (->> (login-snippet)
-       (index-template "Hello from credit type ")
-       (apply str)
-       (html-response)))
+    (->> (login-snippet)
+         (index-template "Hello from credit type ")
+         (apply str)
+         (html-response)))
 
 
 
 
 
 (defn login-view []
-  (->> (login-snippet)
-       (login-template "Hello from credit type ")
-       (apply str )
-       (html-response)))
+  (->>
+    (login-template "Hello from credit type ")
+    (apply str)
+    (html-response)))
 
 
 (defn customer-view []

@@ -15,7 +15,7 @@
   (wrap-reload #'app/http-handler))
 
 (defn run []
-  (ser/start-server 3000)
+  (ser/start-server ser/dev-server-config)
   #_(s/init-state)
   #_(figwheel/start-figwheel!))
 

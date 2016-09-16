@@ -45,25 +45,25 @@
 
 
 
-
 (defroutes
-  view-routes
-  (GET "/" [_]
-    (response/redirect "/login"))
-  ;(GET "/index" _ (common/index))
+  auth-routes
   (GET "/login" _ (common/login-view))
   (POST "/login" _ (response/redirect "/material"))
-  (GET "/logout" _ (response/redirect "/login"))
+  (GET "/logout" _ (response/redirect "/login")))
 
 
-  (GET "/material" r  (material/view (get-in r [:session :action-v "/material"])))
+(defroutes
+  credit-routes
+  (GET "/" [_]
+    (response/redirect "/login"))
+
+  (GET "/material" r (material/view (get-in r [:session :action-v "/material"])))
   (POST "/material" r (material-handler r))
 
   (GET "/credittype" r (do
-
                          (credit/view (get-in r [:session :action-v "/material"]))
+                         ))
 
-                           ))
   (POST "/credittype" r (do
                           ;(println "---------Credittype form data ")
                           ;  (clojure.pprint/pprint (:params r))
@@ -76,26 +76,30 @@
   (POST "/customerComplementary" r (customer-comp-handler r)))
 
 
-(defn api-routes []
-  (-> (routes
-        (GET "/postcode" request (h/ok-response (select-header request)))
-        (GET "/material" _ (h/response (api/load-material-type))))
-      (h/warp-default)))
+(def api-routes
+  (context "/api" _
+    (GET "/session" request (h/response request))
+    (GET "/postcode" request (h/ok-response (select-header request)))
+    (GET "/material" _ (h/response (api/load-material-type)))))
 
 
-(defroutes
-  app-routes
-  (rm/warp-navi-middleware view-routes "/material")
-  (context "/api" _ (api-routes))
-  (route/resources "/")
-  (route/not-found {:status 200
-                    :body   "Not found From app "}))
+
+(def app-routes
+  (routes
+    auth-routes
+    (wrap-routes #'credit-routes rm/warp-navi-middleware "/material")
+    (wrap-routes #'api-routes h/warp-default)
+    (route/resources "/")
+    (route/not-found {:status 200
+                      :body   "Not found From app "})))
+
 
 
 (defn warp-log [handler]
   (fn [req]
     (log/info "-----------------" (dissoc req :cookies :headers :async-channel :body :server-exchange))
     (handler req)))
+
 
 
 (def http-handler
@@ -118,7 +122,4 @@
 
 (comment
 
-
-
-
-)
+  )

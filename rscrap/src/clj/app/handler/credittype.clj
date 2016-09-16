@@ -1,14 +1,14 @@
 (ns app.handler.credittype
   (:require [net.cgrand.enlive-html :as html]
             [app.handler.credittype-view :as cv]
-            [extractor.core :as e]
+            [scraper.core :as e]
             [app.handler.common :as c]
-            [extractor.util :as eu]))
+            [scraper.util :as eu]))
 
 
 
 (defn get-temp-data []
-  (-> (e/extract-data "credittype.html")
+  (-> (e/scrap-data "credittype.html")
       (get-in [:params])
       (eu/view-data)))
 
