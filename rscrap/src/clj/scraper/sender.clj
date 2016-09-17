@@ -1,4 +1,4 @@
-(ns scraper.contract-generator
+(ns scraper.sender
   (:require [clj-http.client :as client]
             [scraper.core :as p]
             [clojure.tools.reader.edn :as edn])
@@ -53,17 +53,6 @@
   (dissoc request-m :form-params))
 
 
-(defn init-flow-request [request]
-  (-> request
-      (assoc :url "/ratanet/front?controller=CreditApplication&action=DispoMaterialType&ps=DISPOV2&init=1")
-      (dissoc :form-params)))
-
-
-(defn login-request []
-  {:url "/ratanet/front?controller=CreditApplication&action=Login"})
-
-
-
 (defn assoc-action-type [request-m action-type]
   (condp = action-type
     :prev
@@ -83,12 +72,14 @@
       (:body)
       (StringReader.)
       (p/scrap-data)
-      (assoc  :cookie cookie)
+      (assoc :cookie cookie)
       )
   )
 
 (defn log [r]
+  (println "------Log Start---------")
   (clojure.pprint/pprint r)
+  (println "------Log End ---------")
   r
   )
 
@@ -96,16 +87,29 @@
 (defn send-request
   ([request-m user-params] (send-request request-m user-params :next))
   ([request-m user-params action-type]
-   (let [request (format-request request-m user-params)]
 
-     (if (contains? request :form-params)
-       (-> request
+   (let [request-m (format-request request-m user-params)]
+     (log request-m)
+     (if (contains? request-m :form-params)
+       (-> request-m
            (assoc-action-type action-type)
            (send-http-post)
-          ; (log)
-           (format-response request))
-       (-> (send-http-get request)
-           (format-response request))))))
+
+           (format-response request-m)
+           #_(log))
+       (-> (send-http-get request-m)
+           (format-response request-m))))))
+
+
+
+(defn init-flow-request [request]
+  (-> request
+      (assoc :url "/ratanet/front?controller=CreditApplication&action=DispoMaterialType&ps=DISPOV2&init=1")
+      (dissoc :form-params)))
+
+
+(defn login-request []
+  {:url "/ratanet/front?controller=CreditApplication&action=Login"})
 
 
 
@@ -131,14 +135,13 @@
 
   (get config "/ratanet/front?controller=CreditApplication&action=DispoMaterialType")
 
-  (->
-    (login-request)
-    (send-request config)
-     (init-flow-request)
-     (send-request config)
-    ;  (send-request config)
-    ;  (send-request config)
-    )
+  (-> (login-request)
+      (send-request config)
+      ;(init-flow-request)
+     ; (send-request config)
+      ;  (send-request config :prev)
+      ;  (send-request config)
+      )
 
   )
 

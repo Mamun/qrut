@@ -1,7 +1,8 @@
 (ns app.routes
   (:use [compojure.route :as route]
         [compojure.core])
-  (:require [ring.middleware.webjars :refer [wrap-webjars]]
+  (:require [clojure.walk :as w]
+            [ring.middleware.webjars :refer [wrap-webjars]]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults site-defaults]]
             [ring.middleware.logger :refer [wrap-with-logger]]
             [ring.middleware.session.cookie :as sc]
@@ -11,9 +12,11 @@
             [immutant.web.middleware :as imm]
             [dadysql.http-service :as h]
             [app.routes-middleware :as rm]
-            [app.handler.common :as common]
-            [app.handler.credittype :as credit]
-            [app.handler.material :as material]
+    ;  [app.handler.common :as common]
+    ;  [app.handler.credittype :as credit]
+    ;  [app.handler.material :as material]
+            [app.handler.core :as hc]
+            [scraper.sender :as sender]
             [app.service :as api]
             [app.state :as s]))
 
@@ -25,7 +28,7 @@
                         :form-params :scheme :headers]))
 
 
-(defn material-handler [r]
+#_(defn material-handler [r]
   (do
     (response/redirect "/credittype")))
 
@@ -44,11 +47,75 @@
   (response/redirect "/material"))
 
 
+(def redirect-url-m
+  {"/login"                                                               "/ratanet/front?controller=CreditApplication&action=Login"
+   "/ratanet/front?controller=CreditApplication&action=Login"             "/login"
+   "/material"                                                            "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
+   "/ratanet/front?controller=CreditApplication&action=DispoMaterialType" "/material"
+   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType" "/credittype"})
+
+(defn find-redirect-utl [request-m]
+  (get redirect-url-m (:url request-m)))
+
+
+(defonce session-store (atom {}))
+
+
+;@session-store
+
+(defn add-to-store [request-m identifier]
+  (swap! session-store (fn [w]
+                         (update-in w [identifier] (fn [_] request-m))))
+  request-m
+  )
+
+
+(defn process-request [{:keys [session uri params] :as r}]
+;  (clojure.pprint/pprint params)
+  (let [identifer (:identifer session)
+        user-params-m (hash-map (get redirect-url-m uri) (w/stringify-keys params))]
+    (-> (get @session-store identifer)
+        (sender/send-request user-params-m)
+        (add-to-store identifer)
+        (find-redirect-utl)
+        (response/redirect)
+        (assoc :session (assoc session :identifier identifer)))))
+
+
+
+(defn login-handler [request]
+  (let [{:keys [params]} request
+
+        user-r {"/ratanet/front?controller=CreditApplication&action=Login" params}
+        request-m (-> (sender/login-request)
+                      (sender/send-request user-r))]
+    (if (empty? (:errormessage request-m))
+      (let [request (update-in request [:session :identifer] (fn [v] 1))
+            ;identifer 1
+            ]
+        ;(sender/init-flow-request request-m)
+        (add-to-store request-m 1)
+        #_(process-request request)
+
+
+        )
+      (hc/view (sender/login-request)))))
+
+
+
+#_(defn get-value [session]
+  (let [w @session-store]
+    (-> (get @session-store (get-in r [:session :identifier]) )
+
+        ))
+  )
+
+
 
 (defroutes
   auth-routes
-  (GET "/login" _ (common/login-view))
-  (POST "/login" _ (response/redirect "/material"))
+  (GET "/login" _ (hc/view (sender/login-request)))
+  (POST "/login" request (login-handler request))
   (GET "/logout" _ (response/redirect "/login")))
 
 
@@ -57,23 +124,27 @@
   (GET "/" [_]
     (response/redirect "/login"))
 
-  (GET "/material" r (material/view (get-in r [:session :action-v "/material"])))
-  (POST "/material" r (material-handler r))
+  (GET "/material" r (let []
+                       ;(println "----/material .........." v)
+                       (hc/view (get @session-store (get-in r [:session :identifier]) )))  #_(material/view (get-in r [:session :action-v "/material"])))
+  (POST "/material" r (process-request r) )
 
   (GET "/credittype" r (do
-                         (credit/view (get-in r [:session :action-v "/material"]))
-                         ))
+                         (println "credot type voew ")
+                         (sender/log (get @session-store (get-in r [:session :identifier]) ))
+                           (hc/view (get @session-store (get-in r [:session :identifier]) ) )
+                           ))
 
-  (POST "/credittype" r (do
-                          ;(println "---------Credittype form data ")
-                          ;  (clojure.pprint/pprint (:params r))
-                          (credittype-handler r)))
+  #_(POST "/credittype" r (do
+                            (credittype-handler r)))
 
-  (GET "/customer" r (common/customer-view))
-  (POST "/customer" r (customer-handler r))
+  ;(GET "/customer" r (common/customer-view))
+  ;(POST "/customer" r (customer-handler r))
 
-  (GET "/customerComplementary" r (common/customer-comple-view))
-  (POST "/customerComplementary" r (customer-comp-handler r)))
+  ;(GET "/customerComplementary" r (common/customer-comple-view))
+  ;(POST "/customerComplementary" r (customer-comp-handler r))
+
+  )
 
 
 (def api-routes

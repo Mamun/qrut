@@ -3,7 +3,8 @@
     [environ.core :as e]
     [net.cgrand.enlive-html :as html]
     [clj-http.client :as client]
-    [scraper.contract-generator :as a]
+    [scraper.sender :as s]
+    [app.handler.core :as v]
     [clojure.tools.reader.edn :as edn]
     [net.cgrand.tagsoup]))
 
@@ -39,6 +40,16 @@
 
 
 (comment
+
+
+  (->
+    (s/login-request)
+    (s/send-request s/config)
+    (s/init-flow-request)
+    (s/send-request s/config)
+   ; (v/view)
+
+    )
 
 
   ;"/ratanet/front?controller=CreditApplication&action=PrintingContract"
