@@ -41,14 +41,14 @@
 (defmethod do-scrap
   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
   [_ node]
-  {:params       (ct/extract-credit-data node)
+  {:form-params (ct/extract-credit-data node)
    :errormessage (get-error node)})
 
 
 (defmethod do-scrap
   :default
   [_ node]
-  {:params       (c/extract-data (html/select node selector))
+  {:form-params  (c/extract-data (html/select node selector))
    :errormessage (get-error node)})
 
 
@@ -58,7 +58,8 @@
         form (get-form-url node)]
     (-> (do-scrap form node)
         (assoc :url form)
-        (assoc :node node))))
+        ;(assoc :node node)
+        )))
 
 
 
