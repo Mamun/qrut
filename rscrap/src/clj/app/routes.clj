@@ -11,7 +11,7 @@
             [clojure.tools.logging :as log]
             [immutant.web.middleware :as imm]
             [dadysql.http-service :as h]
-            [app.routes-middleware :as rm]
+        ;    [app.routes-middleware :as rm]
     ;  [app.handler.common :as common]
     ;  [app.handler.credittype :as credit]
     ;  [app.handler.material :as material]
@@ -48,13 +48,13 @@
 
 
 (def redirect-url-m
-  {"/login"                                                                 "/ratanet/front?controller=CreditApplication&action=Login"
-   "/ratanet/front?controller=CreditApplication&action=Login"               "/login"
-   "/material"                                                              "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
-   "/credittype"                                                            "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
-   "/customer" "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
-   "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"   "/material"
-   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType" "/credittype"
+  {"/login"                                                                     "/ratanet/front?controller=CreditApplication&action=Login"
+   "/ratanet/front?controller=CreditApplication&action=Login"                   "/login"
+   "/material"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
+   "/credittype"                                                                "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
+   "/customer"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
+   "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"       "/material"
+   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"     "/credittype"
    "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity" "/customer"})
 
 (defn is-same-page [params]
@@ -78,6 +78,8 @@
   (cond
     #_(is-same-page params)
     ;uri
+    (not-empty (:errormessage request-m))
+    uri
     (empty? (:errormessage request-m))
     (do
       ;(fetcher/log request-m  "Redirect url ")
@@ -116,7 +118,7 @@
 
 
 (defn process-request [{:keys [uri params] :as rrequest}]
-
+  (println "-------------------proc")
   (let [user-params-m (hash-map (get redirect-url-m uri) (w/stringify-keys params))]
     (fetcher/log user-params-m "proecess request start ")
     (-> (get-request-m rrequest)
@@ -179,6 +181,7 @@
                                 (-> (get-request-m rrequest)
                                     (view/view))))
   (POST "/credittype" r (do
+                          (println "---- credit type ")
                           (->
                             (credittype-default r)
                             (process-request))))
@@ -205,7 +208,8 @@
 (def app-routes
   (routes
     auth-routes
-    (wrap-routes #'credit-routes rm/warp-navi-middleware "/material")
+    credit-routes
+    ;(wrap-routes #'credit-routes rm/warp-navi-middleware "/material")
     (wrap-routes #'api-routes h/warp-default)
     (route/resources "/")
     (route/not-found {:status 200
@@ -216,13 +220,15 @@
 (defn warp-log [handler]
   (fn [req]
     (log/info "-----------------" (dissoc req :cookies :headers :async-channel :body :server-exchange))
-    (handler req)))
+    (handler req)
+    ))
 
 
 
 (def http-handler
   (-> app-routes
       (hs/warp-dadysql-handler :tms s/tms-atom :ds s/ds-atom)
+
       (wrap-defaults (-> site-defaults
                          (assoc-in [:security :anti-forgery] false)
                          (assoc-in [:session :store] (sc/cookie-store {:key "BuD3KgdAXhDHrJXu"}))

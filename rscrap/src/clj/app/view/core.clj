@@ -42,9 +42,12 @@
 
 
 (html/deftemplate index-template "public/template.html"
-                  [title content]
+                  [title error content ]
                   [:head :title] (html/content title)
-                  [:div#wrapper] (html/content content))
+                  [:div#wrapper] (html/content content)
+                  [:div.alert.alert-danger] #(when (not-empty error)
+                                              (html/at %
+                                              [html/any]  (html/content (apply str error)))))
 
 
 (html/deftemplate login-template "public/login.html"
@@ -82,7 +85,7 @@
         s (get-in request-m [:form-params "Instance_theDossierConditions_theVendorInfo_mSalesmanId"])]
     (->> (mt/material-snippet d s)
          ;(apply-session submit-m)
-         (index-template "Select material  ")
+         (index-template "Select material  " (:errormessage request-m) )
          (apply str)
          (html-response))))
 
@@ -94,7 +97,7 @@
         credit-line (ct/get-credit-line d)
         d (view-data d)]
     (->> (ct/credittype-snippet d credit-line)
-         (index-template "Select credit type ")
+         (index-template "Select credit type " (:errormessage request-m))
          (apply str)
          (html-response))))
 
@@ -102,7 +105,7 @@
   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
   [request-m]
   (->> (customer-snippet)
-       (index-template "Select credit type ")
+       (index-template "Select credit type " (:errormessage request-m))
        (apply str)
        (html-response)
        )
