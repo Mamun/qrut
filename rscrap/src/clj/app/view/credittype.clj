@@ -66,10 +66,18 @@
             (credittype-line-snippet vat))))
 
 
+(def model-m {:Instance_theDossierConditions_theMaterialInfo$0_mPrice ""
+               :Instance_theDossierConditions_theClassicInfo_mInsuranceAmount ""
+               :CAM_prePaid ""
+               :CAM_mCreditAmount ""
+               :Instance_theDossierConditions_theMaterialInfo$0_mDeliveringDate ""
+               })
+
+
 (html/defsnippet credittype-snippet "public/credittype.html"
                  [:div#credittype]
                  [d credit-line]
-                 [:div html/any] (html/transform-content (html/replace-vars d))
+                 [:div html/any] (html/transform-content (html/replace-vars (merge model-m d)))
                  [:table#credittype-table :tbody] (html/content credit-line))
 
 (comment
@@ -93,6 +101,7 @@
         :jump_to "",
         :UNIQUE_TRANSACTION "FLOWTID:2",
         :radio_last_selection "0",
+        :Instance_theDossierConditions_theMaterialInfo$0_mDeliveringDate ""
         :Instance_theDossierConditions_theMaterialInfo$0_mPrice ""}
        (credittype-snippet nil)
 

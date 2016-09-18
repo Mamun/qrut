@@ -72,7 +72,7 @@
   (->
     (get @session-store 1)
 
-    (view/view-data)
+    (view/view)
     )
   )
 
