@@ -29,6 +29,20 @@
                     :force-redirects true})))
 
 
+(defn assoc-action-type [request-m user-params-m]
+  (cond
+    (contains? user-params-m :prev)
+    (-> request-m
+        (update-in [:form-params] (fn [w] (dissoc w "prev" "next" "alternate3" "alternate1")))
+        (update-in [:form-params] (fn [w] (assoc w "prev.x" 35 "prev.y" 35))))
+
+    (contains? user-params-m :next)
+    (-> request-m
+        (update-in [:form-params] (fn [w] (dissoc w "prev" "next" "alternate3" "alternate1")))
+        (update-in [:form-params] (fn [w] (assoc w "next.x" 14 "next.y" 14))))
+    :else
+    (update-in request-m [:form-params] (fn [w] (dissoc w "next" "next.x" "next.y" "prev" "prev.x" "prev.y" "alternate3" "alternate1")))))
+
 
 (defmulti format-request (fn [request-m _] (get request-m :url)))
 
@@ -53,17 +67,7 @@
   (dissoc request-m :form-params))
 
 
-(defn assoc-action-type [request-m action-type]
-  (condp = action-type
-    :prev
-    (-> request-m
-        (update-in [:form-params] (fn [w] (dissoc w "prev" "next" "alternate3" "alternate1")))
-        (update-in [:form-params] (fn [w] (assoc w "prev.x" 35 "prev.y" 35))))
-    :current
-    (update-in request-m [:form-params] (fn [w] (dissoc w "next" "next.x" "next.y" "prev" "prev.x" "prev.y" "alternate3" "alternate1")))
-    (-> request-m
-        (update-in [:form-params] (fn [w] (dissoc w "prev" "next" "alternate3" "alternate1")))
-        (update-in [:form-params] (fn [w] (assoc w "next.x" 14 "next.y" 14))))))
+
 
 
 (defn format-response [response {:keys [cookie]}]
@@ -76,29 +80,27 @@
       )
   )
 
-(defn log [r]
-  (println "------Log Start---------")
-  (clojure.pprint/pprint r)
-  (println "------Log End ---------")
-  r
-  )
+(defn log
+  ([r] (log r ""))
+  ([r note]
+
+   (println (str "------Log Start for ---------" note))
+   (clojure.pprint/pprint r)
+   (println "------Log End ---------")
+   r))
+
 
 
 (defn fetch-data
-  ([request-m ] (fetch-data request-m :next))
-  ([request-m  action-type]
-   (log request-m)
-   (if (contains? request-m :form-params)
-     (-> request-m
-         (assoc-action-type action-type)
-         (send-http-post)
+  [request-m]
 
-         (format-response request-m)
-         #_(log))
-     (-> (send-http-get request-m)
-         (format-response request-m)))
-   #_(let [request-m (format-request request-m user-params)]
-    )))
+  (if (contains? request-m :form-params)
+    (-> request-m
+        (send-http-post)
+        (format-response request-m))
+    (-> (send-http-get request-m)
+        (format-response request-m)))
+  )
 
 
 
@@ -116,6 +118,7 @@
 (defn create-contract [user-params stop-url]
   (let [v (-> (login-request)
               (format-request user-params)
+              (assoc-action-type user-params)
               (fetch-data)
               (init-flow-request))]
     (loop [request-m v]
@@ -125,7 +128,10 @@
             ;  (nil? (:url user-params))
             ; request
             :else
-            (recur (fetch-data (format-request request-m user-params)))))))
+            (-> (format-request request-m user-params)
+                (assoc-action-type user-params)
+                (fetch-data)
+                (recur))))))
 
 
 
@@ -139,7 +145,7 @@
   (-> (login-request)
       (fetch-data config)
       ;(init-flow-request)
-     ; (send-request config)
+      ; (send-request config)
       ;  (send-request config :prev)
       ;  (send-request config)
       )

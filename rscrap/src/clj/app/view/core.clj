@@ -2,6 +2,7 @@
   (:require [clojure.walk :as w]
             [app.view.credittype :as ct]
             [app.view.material :as mt]
+            [app.view.common :as c]
             [net.cgrand.enlive-html :as html]))
 
 
@@ -51,6 +52,18 @@
                   [:head :title] (html/content title))
 
 
+(html/defsnippet customer-snippet "public/customer.html"
+                 [:div#customer]
+                 []
+                 identity)
+
+
+(html/defsnippet customer-comple-snippet "public/customer_compl.html"
+                 [:div#customer-compl]
+                 []
+                 identity)
+
+
 (defmulti view (fn [request-m] (:url request-m)))
 
 
@@ -85,7 +98,16 @@
          (apply str)
          (html-response))))
 
+(defmethod view
+  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
+  [request-m]
+  (->> (customer-snippet)
+       (index-template "Select credit type ")
+       (apply str)
+       (html-response)
+       )
 
+  )
 
 
 

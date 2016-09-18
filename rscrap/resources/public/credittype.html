@@ -23,7 +23,7 @@
     <div class="panel panel-default">
         <div class="panel-heading"> Kauf über Einkaufskonto</div>
         <div class="panel-body">
-            <form action="credittype" method="post" class="form-horizontal" data-toggle="validator">
+            <form id="credittypeForm" action="credittype" method="post" class="form-horizontal" data-toggle="validator">
 
                 <div class="form-group has-feedback">
                     <label for="mPrice" class="col-sm-2 control-label">Kaufpreis</label>
@@ -248,7 +248,12 @@
     <script>
 
     $('#mDeliveringDate').datepicker({});
-    $('#myForm').validator();
+    $('#credittypeForm').validator();
+
+    $("#credittypeForm :input").blur(function() {
+       $("#credittypeForm").submit();
+    });
+
 
     </script>
 

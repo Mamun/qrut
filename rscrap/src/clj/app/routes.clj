@@ -51,19 +51,40 @@
   {"/login"                                                                 "/ratanet/front?controller=CreditApplication&action=Login"
    "/ratanet/front?controller=CreditApplication&action=Login"               "/login"
    "/material"                                                              "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
+   "/credittype"                                                            "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
+   "/customer" "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
    "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"   "/material"
-   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType" "/credittype"})
+   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType" "/credittype"
+   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity" "/customer"})
+
+(defn is-same-page [params]
+  (if (or (contains? params :next)
+          (contains? params :prev))
+    false
+    true))
+
+(comment
+  (is-same-page {"Instance_theDossierConditions_theMaterialInfo$0_mCode"  "320",
+                 :Instance_theDossierConditions_theVendorInfo_mSalesmanId "2103257",
+                 :next                                                    ""}
+                )
+
+  )
 
 
-(defn find-redirect-utl [request-m r]
 
-  (cond (empty? (:errormessage request-m))
-        (or (get redirect-url-m (:url request-m))
-            "/material"
-            )
-
-        :else
-        (:uri r)))
+(defn find-redirect-utl [request-m {:keys [uri params]}]
+  ; (fetcher/log params "Params value ")
+  (cond
+    #_(is-same-page params)
+    ;uri
+    (empty? (:errormessage request-m))
+    (do
+      ;(fetcher/log request-m  "Redirect url ")
+      (or (get redirect-url-m (:url request-m))
+          "/material"))
+    :else
+    uri))
 
 
 (defonce session-store (atom {}))
@@ -91,18 +112,22 @@
 
 
 (defn copy-session [new-request old-request]
-  (assoc new-request :session (:session old-request))
-  )
+  (assoc new-request :session (:session old-request)))
+
 
 (defn process-request [{:keys [uri params] :as rrequest}]
+
   (let [user-params-m (hash-map (get redirect-url-m uri) (w/stringify-keys params))]
+    (fetcher/log user-params-m "proecess request start ")
     (-> (get-request-m rrequest)
         (fetcher/format-request user-params-m)
-        (fetcher/log)
+        (fetcher/assoc-action-type params)
+        (fetcher/log "Before fetach ")
         (fetcher/fetch-data)
+        (fetcher/log "After fetch  ")
         (add-to-store! rrequest)
         (find-redirect-utl rrequest)
-
+        (fetcher/log "Redirect URL   ")
         (response/redirect)
         (copy-session rrequest))))
 
@@ -128,6 +153,11 @@
   (GET "/logout" _ (response/redirect "/login")))
 
 
+(defn credittype-default [{:keys [params] :as r}]
+
+  (assoc r :params (assoc params :CAM_mCreditAmount (get params "Instance_theDossierConditions_theMaterialInfo$0_mPrice")))
+  )
+
 (defroutes
   credit-routes
   (GET "/" [_]
@@ -145,17 +175,18 @@
   (POST "/material" r (process-request r))
 
   (GET "/credittype" rrequest (do
-                         (println "credot type voew ")
-                         (-> (get-request-m rrequest)
-                             (fetcher/log)
-                             (view/view))
-                         ))
+                                (println "credot type voew ")
+                                (-> (get-request-m rrequest)
+                                    (view/view))))
+  (POST "/credittype" r (do
+                          (->
+                            (credittype-default r)
+                            (process-request))))
 
-  #_(POST "/credittype" r (do
-                            (credittype-handler r)))
-
-  ;(GET "/customer" r (common/customer-view))
-  ;(POST "/customer" r (customer-handler r))
+  (GET "/customer" r (do
+                       (-> (get-request-m r)
+                           (view/view))))
+  (POST "/customer" r (process-request r))
 
   ;(GET "/customerComplementary" r (common/customer-comple-view))
   ;(POST "/customerComplementary" r (customer-comp-handler r))
