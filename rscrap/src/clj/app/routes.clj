@@ -29,8 +29,8 @@
 
 
 #_(defn material-handler [r]
-  (do
-    (response/redirect "/credittype")))
+    (do
+      (response/redirect "/credittype")))
 
 
 (defn credittype-handler [r]
@@ -48,14 +48,22 @@
 
 
 (def redirect-url-m
-  {"/login"                                                               "/ratanet/front?controller=CreditApplication&action=Login"
-   "/ratanet/front?controller=CreditApplication&action=Login"             "/login"
-   "/material"                                                            "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
-   "/ratanet/front?controller=CreditApplication&action=DispoMaterialType" "/material"
+  {"/login"                                                                 "/ratanet/front?controller=CreditApplication&action=Login"
+   "/ratanet/front?controller=CreditApplication&action=Login"               "/login"
+   "/material"                                                              "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
+   "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"   "/material"
    "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType" "/credittype"})
 
-(defn find-redirect-utl [request-m]
-  (get redirect-url-m (:url request-m)))
+
+(defn find-redirect-utl [request-m r]
+
+  (cond (empty? (:errormessage request-m))
+        (or (get redirect-url-m (:url request-m))
+            "/material"
+            )
+
+        :else
+        (:uri r)))
 
 
 (defonce session-store (atom {}))
@@ -63,59 +71,72 @@
 
 ;@session-store
 
-(defn add-to-store [request-m identifier]
-  (swap! session-store (fn [w]
-                         (update-in w [identifier] (fn [_] request-m))))
-  request-m
+(defn add-to-store! [request-m ring-request]
+  (let [identifier (get-in ring-request [:session :identifier])]
+    (swap! session-store (fn [w]
+                           (update-in w [identifier] (fn [_] request-m))))
+    request-m))
+
+
+(defn get-request-m [ring-request]
+  (get @session-store (get-in ring-request [:session :identifier])))
+
+
+(defn copy-session [new-request old-request]
+  (assoc new-request :session (:session old-request))
   )
 
-
-(defn process-request [{:keys [session uri params] :as r}]
-;  (clojure.pprint/pprint params)
-  (let [identifer (:identifer session)
-        user-params-m (hash-map (get redirect-url-m uri) (w/stringify-keys params))]
-    (-> (get @session-store identifer)
-        (sender/send-request user-params-m)
-        (add-to-store identifer)
-        (find-redirect-utl)
+(defn process-request [{:keys [uri params] :as rrequest}]
+  ;  (clojure.pprint/pprint params)
+  (let [user-params-m (hash-map (get redirect-url-m uri) (w/stringify-keys params))]
+    (-> (get-request-m rrequest)
+        (sender/format-request user-params-m)
+        (sender/send-request)
+        (add-to-store! rrequest)
+        (find-redirect-utl rrequest)
+        (sender/log)
         (response/redirect)
-        (assoc :session (assoc session :identifier identifer)))))
+
+        (copy-session rrequest)
+        #_(assoc :session (assoc session :identifier identifer)))))
 
 
 
-(defn login-handler [request]
-  (let [{:keys [params]} request
+#_(defn login-handler [request]
+    (let [{:keys [params]} request
 
-        user-r {"/ratanet/front?controller=CreditApplication&action=Login" params}
-        request-m (-> (sender/login-request)
-                      (sender/send-request user-r))]
-    (if (empty? (:errormessage request-m))
-      (let [request (update-in request [:session :identifer] (fn [v] 1))
-            ;identifer 1
-            ]
-        ;(sender/init-flow-request request-m)
-        (add-to-store request-m 1)
-        #_(process-request request)
+          user-r {"/ratanet/front?controller=CreditApplication&action=Login" params}
+          request-m (-> (sender/login-request)
+                        (sender/send-request user-r))]
+      (if (empty? (:errormessage request-m))
+        (let [request (update-in request [:session :identifer] (fn [v] 1))
+              ;identifer 1
+              ]
+          ;(sender/init-flow-request request-m)
+          (add-to-store! request-m 1)
+          #_(process-request request)
 
-
-        )
-      (hc/view (sender/login-request)))))
-
+          )
+        (hc/view (sender/login-request)))))
 
 
-#_(defn get-value [session]
-  (let [w @session-store]
-    (-> (get @session-store (get-in r [:session :identifier]) )
-
-        ))
-  )
+(defn assoc-idententifer-to-session [old-request]
+  (let [identifier (or (get-in old-request [:session :identifier])
+                       1)
+        new-session (-> (or (:session old-request) {})
+                        (assoc :identifier identifier))]
+    (assoc old-request :session new-session)))
 
 
 
 (defroutes
   auth-routes
-  (GET "/login" _ (hc/view (sender/login-request)))
-  (POST "/login" request (login-handler request))
+  (GET "/login" rrequest (let [rrequest (assoc-idententifer-to-session rrequest)]
+                           (-> (sender/login-request)
+                               (add-to-store! rrequest)
+                               (hc/view)
+                               (copy-session rrequest))))
+  (POST "/login" rrequest (process-request rrequest))
   (GET "/logout" _ (response/redirect "/login")))
 
 
@@ -124,16 +145,22 @@
   (GET "/" [_]
     (response/redirect "/login"))
 
-  (GET "/material" r (let []
-                       ;(println "----/material .........." v)
-                       (hc/view (get @session-store (get-in r [:session :identifier]) )))  #_(material/view (get-in r [:session :action-v "/material"])))
-  (POST "/material" r (process-request r) )
+  (GET "/material" rrequest (let []
+                              ;(println "----/material .........." v)
+                              (-> (get-request-m rrequest)
+                                  (sender/init-flow-request)
+                                  (sender/send-request)
+                                  (add-to-store! rrequest)
+                                  (sender/log)
+                                  (hc/view)
+                                  (copy-session rrequest)))  #_(material/view (get-in r [:session :action-v "/material"])))
+  (POST "/material" r (process-request r))
 
   (GET "/credittype" r (do
                          (println "credot type voew ")
-                         (sender/log (get @session-store (get-in r [:session :identifier]) ))
-                           (hc/view (get @session-store (get-in r [:session :identifier]) ) )
-                           ))
+                         (sender/log (get @session-store (get-in r [:session :identifier])))
+                         (hc/view (get @session-store (get-in r [:session :identifier])))
+                         ))
 
   #_(POST "/credittype" r (do
                             (credittype-handler r)))

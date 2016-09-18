@@ -38,7 +38,7 @@
 
 
 (defmethod view
-  "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
+  "/ratanet/front?controller=CreditApplication&action=DispoMaterialType&ps=DISPOV2&init=1"
   [request-m]
   (let [d (get-in request-m [:form-params "Instance_theDossierConditions_theMaterialInfo$0_mCode"])
         s (get-in request-m [:form-params "Instance_theDossierConditions_theVendorInfo_mSalesmanId"])]

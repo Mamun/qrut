@@ -85,20 +85,20 @@
 
 
 (defn send-request
-  ([request-m user-params] (send-request request-m user-params :next))
-  ([request-m user-params action-type]
+  ([request-m ] (send-request request-m :next))
+  ([request-m  action-type]
+   (log request-m)
+   (if (contains? request-m :form-params)
+     (-> request-m
+         (assoc-action-type action-type)
+         (send-http-post)
 
-   (let [request-m (format-request request-m user-params)]
-     (log request-m)
-     (if (contains? request-m :form-params)
-       (-> request-m
-           (assoc-action-type action-type)
-           (send-http-post)
-
-           (format-response request-m)
-           #_(log))
-       (-> (send-http-get request-m)
-           (format-response request-m))))))
+         (format-response request-m)
+         #_(log))
+     (-> (send-http-get request-m)
+         (format-response request-m)))
+   #_(let [request-m (format-request request-m user-params)]
+    )))
 
 
 
@@ -115,7 +115,8 @@
 
 (defn create-contract [user-params stop-url]
   (let [v (-> (login-request)
-              (send-request user-params)
+              (format-request user-params)
+              (send-request )
               (init-flow-request))]
     (loop [request-m v]
       (cond (or (not-empty (:errormessage request-m))
@@ -124,7 +125,7 @@
             ;  (nil? (:url user-params))
             ; request
             :else
-            (recur (send-request request-m user-params))))))
+            (recur (send-request (format-request request-m user-params)))))))
 
 
 
