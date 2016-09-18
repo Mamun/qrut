@@ -3,7 +3,7 @@
     [environ.core :as e]
     [net.cgrand.enlive-html :as html]
     [clj-http.client :as client]
-    [scraper.sender :as s]
+    [scraper.remote-fetcher :as s]
     [app.handler.core :as v]
     [clojure.tools.reader.edn :as edn]
     [net.cgrand.tagsoup]))
@@ -44,9 +44,9 @@
 
   (->
     (s/login-request)
-    (s/send-request s/config)
+    (s/fetch-data s/config)
     (s/init-flow-request)
-    (s/send-request s/config)
+    (s/fetch-data s/config)
    ; (v/view)
 
     )

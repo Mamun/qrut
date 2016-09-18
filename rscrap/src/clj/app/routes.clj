@@ -15,8 +15,8 @@
     ;  [app.handler.common :as common]
     ;  [app.handler.credittype :as credit]
     ;  [app.handler.material :as material]
-            [app.handler.core :as hc]
-            [scraper.sender :as sender]
+            [app.view.core :as view]
+            [scraper.remote-fetcher :as fetcher]
             [app.service :as api]
             [app.state :as s]))
 
@@ -68,6 +68,14 @@
 
 (defonce session-store (atom {}))
 
+(comment
+  (->
+    (get @session-store 1)
+
+    (view/view-data)
+    )
+  )
+
 
 ;@session-store
 
@@ -87,37 +95,17 @@
   )
 
 (defn process-request [{:keys [uri params] :as rrequest}]
-  ;  (clojure.pprint/pprint params)
   (let [user-params-m (hash-map (get redirect-url-m uri) (w/stringify-keys params))]
     (-> (get-request-m rrequest)
-        (sender/format-request user-params-m)
-        (sender/send-request)
+        (fetcher/format-request user-params-m)
+        (fetcher/log)
+        (fetcher/fetch-data)
         (add-to-store! rrequest)
         (find-redirect-utl rrequest)
-        (sender/log)
+
         (response/redirect)
+        (copy-session rrequest))))
 
-        (copy-session rrequest)
-        #_(assoc :session (assoc session :identifier identifer)))))
-
-
-
-#_(defn login-handler [request]
-    (let [{:keys [params]} request
-
-          user-r {"/ratanet/front?controller=CreditApplication&action=Login" params}
-          request-m (-> (sender/login-request)
-                        (sender/send-request user-r))]
-      (if (empty? (:errormessage request-m))
-        (let [request (update-in request [:session :identifer] (fn [v] 1))
-              ;identifer 1
-              ]
-          ;(sender/init-flow-request request-m)
-          (add-to-store! request-m 1)
-          #_(process-request request)
-
-          )
-        (hc/view (sender/login-request)))))
 
 
 (defn assoc-idententifer-to-session [old-request]
@@ -132,9 +120,9 @@
 (defroutes
   auth-routes
   (GET "/login" rrequest (let [rrequest (assoc-idententifer-to-session rrequest)]
-                           (-> (sender/login-request)
+                           (-> (fetcher/login-request)
                                (add-to-store! rrequest)
-                               (hc/view)
+                               (view/view)
                                (copy-session rrequest))))
   (POST "/login" rrequest (process-request rrequest))
   (GET "/logout" _ (response/redirect "/login")))
@@ -148,18 +136,19 @@
   (GET "/material" rrequest (let []
                               ;(println "----/material .........." v)
                               (-> (get-request-m rrequest)
-                                  (sender/init-flow-request)
-                                  (sender/send-request)
+                                  (fetcher/init-flow-request)
+                                  (fetcher/fetch-data)
                                   (add-to-store! rrequest)
-                                  (sender/log)
-                                  (hc/view)
+                                  ;(sender/log)
+                                  (view/view)
                                   (copy-session rrequest)))  #_(material/view (get-in r [:session :action-v "/material"])))
   (POST "/material" r (process-request r))
 
-  (GET "/credittype" r (do
+  (GET "/credittype" rrequest (do
                          (println "credot type voew ")
-                         (sender/log (get @session-store (get-in r [:session :identifier])))
-                         (hc/view (get @session-store (get-in r [:session :identifier])))
+                         (-> (get-request-m rrequest)
+                             (fetcher/log)
+                             (view/view))
                          ))
 
   #_(POST "/credittype" r (do

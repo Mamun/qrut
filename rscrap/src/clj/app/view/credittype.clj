@@ -1,4 +1,4 @@
-(ns app.handler.credittype-view
+(ns app.view.credittype
   (:require [net.cgrand.enlive-html :as html]))
 
 (html/set-ns-parser! net.cgrand.tagsoup/parser)
@@ -72,3 +72,31 @@
                  [:div html/any] (html/transform-content (html/replace-vars d))
                  [:table#credittype-table :tbody] (html/content credit-line))
 
+(comment
+
+
+  (->  {:RequestID "578106005",
+        :Instance_theDossierConditions_theClassicInfo_mPaymentDelay "0",
+        :CAM_prePaid "",
+        :CAM_mCreditAmount "",
+        :Instance_theDossierConditions_theClassicInfo_mInsuranceAmount "",
+        :focus_helper "",
+        :Instance_theDossierConditions_mPaymentDay {:15 "15.", :1 "1."},
+        :Instance_theDossierConditions_mCreditTypeCode "2960",
+        :Instance_theDossierConditions_thePartnerAssuranceInfo_mOptionCode "",
+        :credit-line (),
+        :Instance_theDossierConditions_mPaymentMode "P",
+        :CAM_Instance_theDossierConditions_mCreditTypeCode {:2638 "Feste Rate unter 1000 EUR",
+                                                            :3313 "Schlu�rate",
+                                                            :0 "Bitte w�hlen",
+                                                            :3311 "Aktionskauf"},
+        :jump_to "",
+        :UNIQUE_TRANSACTION "FLOWTID:2",
+        :radio_last_selection "0",
+        :Instance_theDossierConditions_theMaterialInfo$0_mPrice ""}
+       (credittype-snippet nil)
+
+       )
+
+ ; (html/content nil)
+  )

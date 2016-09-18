@@ -1,8 +1,8 @@
-(ns app.handler.credittype
+(ns app.view.credittype-test
   (:require [net.cgrand.enlive-html :as html]
-            [app.handler.credittype-view :as cv]
+            [app.view.credittype :as cv]
+            [app.view.core :as view]
             [scraper.core :as e]
-            [app.handler.common :as c]
             [scraper.util :as eu]))
 
 
@@ -13,7 +13,7 @@
       (eu/view-data)))
 
 
-(defn view [submit-v]
+#_(defn view [submit-v]
   (let [d (get-temp-data)
         credit-line (cv/get-credit-line d)]
     (->> (cv/credittype-snippet d credit-line)
@@ -28,12 +28,19 @@
 (comment
 
 
+  (html/html-resource "address.html")
+
   (->> (get-temp-data)
        (get-credit-line)
        (html/emit*)
        (apply str))
 
-  (let [[card & credit-line :as w] (->> (e/extract-data "credittype.html")
+  (->
+    (e/scrap-data "credittype.html")
+    (view/view))
+
+
+  (let [[card & credit-line :as w] (->> (e/scrap-data "credittype.html")
                                         (:params)
                                         (eu/view-data)
                                         (:credit-line))]

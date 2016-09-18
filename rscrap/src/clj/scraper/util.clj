@@ -136,26 +136,7 @@
 
 
 
-(defn- replace-mv
-  [f1 m]
-  (let [f (fn [[k v]] [(keyword k) (f1 v)])]
-    (into {} (map f m))))
 
-
-(defn postwalk-replace-value-with
-  "Recursively transforms all map keys from strings to keywords."
-  {:added "1.1"}
-  [f m]
-  (w/postwalk (fn [x] (cond
-                        (map? x)
-                        (replace-mv f x)
-                        :else x)) m))
-
-
-(defn view-data [m]
-  (postwalk-replace-value-with (fn [v]
-                                 (if (nil? v) "" v)
-                                 ) m))
 
 
 

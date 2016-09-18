@@ -1,4 +1,4 @@
-(ns scraper.sender
+(ns scraper.remote-fetcher
   (:require [clj-http.client :as client]
             [scraper.core :as p]
             [clojure.tools.reader.edn :as edn])
@@ -84,8 +84,8 @@
   )
 
 
-(defn send-request
-  ([request-m ] (send-request request-m :next))
+(defn fetch-data
+  ([request-m ] (fetch-data request-m :next))
   ([request-m  action-type]
    (log request-m)
    (if (contains? request-m :form-params)
@@ -116,7 +116,7 @@
 (defn create-contract [user-params stop-url]
   (let [v (-> (login-request)
               (format-request user-params)
-              (send-request )
+              (fetch-data)
               (init-flow-request))]
     (loop [request-m v]
       (cond (or (not-empty (:errormessage request-m))
@@ -125,7 +125,7 @@
             ;  (nil? (:url user-params))
             ; request
             :else
-            (recur (send-request (format-request request-m user-params)))))))
+            (recur (fetch-data (format-request request-m user-params)))))))
 
 
 
@@ -137,7 +137,7 @@
   (get config "/ratanet/front?controller=CreditApplication&action=DispoMaterialType")
 
   (-> (login-request)
-      (send-request config)
+      (fetch-data config)
       ;(init-flow-request)
      ; (send-request config)
       ;  (send-request config :prev)

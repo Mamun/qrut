@@ -1,71 +1,11 @@
-(ns app.handler.common
+(ns app.view.common
   (:require [net.cgrand.enlive-html :as html]
             [scraper.core :as e]
             [scraper.util :as eu]))
 
 
-(defn html-response
-  [body]
-  {:status  200
-   :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body    body})
-
-
 (html/set-ns-parser! net.cgrand.tagsoup/parser)
 (html/alter-ns-options! assoc :reloadable? true)
-
-
-(html/deftemplate index-template "public/template.html"
-                  [title content]
-                  [:head :title] (html/content title)
-                  [:div#wrapper] (html/content content))
-
-
-(html/deftemplate login-template "public/login.html"
-                  [title]
-                  [:head :title] (html/content title))
-
-
-
-
-
-
-
-
-
-(comment
-
-
-  (reduce str
-          (html/emit*
-            (login-snippet)))
-
-
-  (select-keys
-    (e/extract-data "material.html") [:params])
-
-
-  (let [d
-        {"612" "Telefon/Handy",
-         "616" "Computer",
-         "618" "Zubehör PC",
-         "610" "TV/HIFI Geräte",
-         "320" "Diverse Weiße Ware",
-         "0"   "Kartenantrag ohne Kauf",
-         "611" "Photo/Video",
-         "322" "Kühlschrank oder Gefrierschrank",
-         "323" "Spül-/Waschmaschine"}
-        s {}]
-    (-> (material-snippet d s)))
-
-  )
-
-
-
-
-
-
-
 
 
 (html/defsnippet customer-snippet "public/customer.html"
@@ -131,21 +71,21 @@
 
 
 
-(defn login-view []
+#_(defn login-view []
   (->>
     (login-template "Hello from credit type ")
     (apply str)
     (html-response)))
 
 
-(defn customer-view []
+#_(defn customer-view []
   (->> (customer-snippet)
        (index-template "Hello from credit type ")
        (apply str)
        (html-response)))
 
 
-(defn customer-comple-view []
+#_(defn customer-comple-view []
   (->> (customer-comple-snippet)
        (index-template "Hello from credit type ")
        (apply str)

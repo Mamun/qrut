@@ -1,7 +1,7 @@
-(ns app.handler.material
+(ns app.view.material
   (:require [net.cgrand.enlive-html :as html]
-            [scraper.core :as e]
-            [app.handler.common :as c]))
+           ; [scraper.core :as e]
+            #_[app.handler.common :as c]))
 
 
 (html/set-ns-parser! net.cgrand.tagsoup/parser)
@@ -38,7 +38,7 @@
 
 
 
-(defn view [submit-m]
+#_(defn view [submit-m]
   (let [w (e/scrap-data "material.html")
         d (get-in w [:params "Instance_theDossierConditions_theMaterialInfo$0_mCode"])
         s (get-in w [:params "Instance_theDossierConditions_theVendorInfo_mSalesmanId"])]
