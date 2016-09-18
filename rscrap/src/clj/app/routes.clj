@@ -28,34 +28,18 @@
                         :form-params :scheme :headers]))
 
 
-#_(defn material-handler [r]
-    (do
-      (response/redirect "/credittype")))
-
-
-(defn credittype-handler [r]
-  (do
-    (response/redirect "/customer")))
-
-
-(defn customer-handler [r]
-  (do
-    (response/redirect "/customerComplementary")))
-
-
-(defn customer-comp-handler [r]
-  (response/redirect "/material"))
-
 
 (def redirect-url-m
-  {"/login"                                                                     "/ratanet/front?controller=CreditApplication&action=Login"
+  {;"/login"                                                                     "/ratanet/front?controller=CreditApplication&action=Login"
    "/ratanet/front?controller=CreditApplication&action=Login"                   "/login"
-   "/material"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
-   "/credittype"                                                                "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
-   "/customer"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
+   ;"/material"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
+   ;"/credittype"                                                                "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
+   ;"/customer"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
+   "/customerComplementary" "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary"
    "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"       "/material"
    "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"     "/credittype"
-   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity" "/customer"})
+   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity" "/customer"
+   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary" "/customerComplementary"})
 
 (defn is-same-page [params]
   (if (or (contains? params :next)
@@ -119,17 +103,17 @@
 
 (defn process-request [{:keys [uri params] :as rrequest}]
   (println "-------------------proc")
-  (let [user-params-m (hash-map (get redirect-url-m uri) (w/stringify-keys params))]
+  (let [user-params-m (w/stringify-keys params)]
     (fetcher/log user-params-m "proecess request start ")
     (-> (get-request-m rrequest)
         (fetcher/format-request user-params-m)
         (fetcher/assoc-action-type params)
         (fetcher/log "Before fetach ")
         (fetcher/fetch-data)
-        (fetcher/log "After fetch  ")
+    ;    (fetcher/log "After fetch  ")
         (add-to-store! rrequest)
         (find-redirect-utl rrequest)
-        (fetcher/log "Redirect URL   ")
+     ;   (fetcher/log "Redirect URL   ")
         (response/redirect)
         (copy-session rrequest))))
 
@@ -157,7 +141,9 @@
 
 (defn credittype-default [{:keys [params] :as r}]
 
-  (assoc r :params (assoc params :CAM_mCreditAmount (get params "Instance_theDossierConditions_theMaterialInfo$0_mPrice")))
+  (assoc r :params (assoc params
+                     :CAM_Instance_theDossierConditions_mCreditTypeCode "0"
+                     :CAM_mCreditAmount (get params "Instance_theDossierConditions_theMaterialInfo$0_mPrice")))
   )
 
 (defroutes
@@ -191,8 +177,10 @@
                            (view/view))))
   (POST "/customer" r (process-request r))
 
-  ;(GET "/customerComplementary" r (common/customer-comple-view))
-  ;(POST "/customerComplementary" r (customer-comp-handler r))
+  (GET "/customerComplementary" r (do
+                                    (-> (get-request-m r)
+                                        (view/view))))
+  (POST "/customerComplementary" r (process-request r))
 
   )
 

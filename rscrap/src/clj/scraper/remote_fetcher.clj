@@ -50,14 +50,17 @@
 (defmethod format-request
   :default
   [request-m user-params-m]
-  (update-in request-m [:form-params] merge (get user-params-m (:url request-m))))
+  (-> request-m
+      (update-in  [:form-params] merge user-params-m)
+      (update-in  [:form-params] dissoc :credit-line)
+      ))
 
 
 (defmethod format-request
   "/ratanet/front?controller=CreditApplication&action=Login"
   [request-m user-params-m]
   (-> request-m
-      (assoc :form-params (get user-params-m (:url request-m)))
+      (assoc :form-params user-params-m)
       (assoc :cookie (clj-http.cookies/cookie-store))))
 
 

@@ -2,7 +2,7 @@
   (:require [clojure.walk :as w]
             [app.view.credittype :as ct]
             [app.view.material :as mt]
-            [app.view.common :as c]
+
             [net.cgrand.enlive-html :as html]))
 
 
@@ -111,6 +111,21 @@
        )
 
   )
+
+
+
+(defmethod view
+  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary"
+  [request-m]
+  (->> (customer-snippet)
+       (index-template "Select credit type " (:errormessage request-m))
+       (apply str)
+       (html-response)
+       )
+
+  )
+
+
 
 
 
