@@ -1,5 +1,5 @@
-{"url" "https://green-1.commerzfinanz.com"
- ;"url" "http://localhost:8021"
+{;"url" "https://green-1.commerzfinanz.com"
+ "url" "http://localhost:8021"
  "/ratanet/front?controller=CreditApplication&action=Login"
  {:vendor "2103257"
   :password "lumumi60"
@@ -20,31 +20,38 @@
   "CAM_mCreditAmount"                                      2000}
 
  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
- {"Instance_theFamily_theCreditHolder_mCitizenshipCoba"              "000"
-  "Instance_theFamily_mFamilySituation"                              "C"
-  "Instance_mWhichSigners"                                           "alone"
-  "Instance_theFamily_theCreditHolder_mMaidenName"                   "test"
-  "Instance_theFamily_theCreditHolder_theBankAccount_mDateBeginYear" "2011"
+ {"Instance_theFamily_mFamilySituation"                              "C"
+  "Instance_theFamily_theCreditHolder_mCitizenshipCoba"              "000"
+  "Instance_theFamily_theAddressLiving_mBeginDate"                   "01.2009"
+  "Instance_theFamily_theCreditHolder_mSurname"                      "Test"
+  "Instance_theFamily_theCreditHolder_mSigle"                        "HERR"
+  "Instance_theFamily_theAddressLiving_theAddress_mStreet"           "Schwanthalerstrase 31"
   "Instance_theFamily_theCreditHolder_mBirthPlace"                   "Munich"
+  "Instance_theFamily_theCreditHolder_mMaidenName"                   "test"
+
+  "Instance_mWhichSigners"                                           "alone"
+
+  "Instance_theFamily_theCreditHolder_theBankAccount_mDateBeginYear" "2011"
+
   "Instance_theFamily_mNoChildren"                                   "0"
   "Instance_theFamily_theCreditHolder_theBankAccount_mIBAN"          "DE55701500001000648657"
   "Instance_theFamily_theCreditHolder_mNoAdvertisment"               "A"
   "accountTypeSelected"                                              "SEPA"
-  "Instance_theFamily_theAddressLiving_theAddress_mStreet"           "Schwanthalerstrase 31"
-  "Instance_theFamily_theAddressLiving_mBeginDate"                   "01.2009"
+
+
   "Instance_theFamily_theCreditHolder_mFirstName"                    "John"
   "Instance_theFamily_theAddressLiving_theAddress_mCity"             "Munich"
   "account_type"                                                     "SEPA"
   "Instance_theFamily_theCreditHolder_theIdCard_mType"               "PAS"
   "Instance_theFamily_theCreditHolder_theIdCard_mValidTill"          "01.01.2018"
-  "Instance_theFamily_theCreditHolder_mSurname"                      "Test"
+
   "Instance_theDossierConditions_mPaymentMode"                       "P"
   "Instance_theFamily_theCreditHolder_mBirthDate"                    "01.01.1990"
   "Instance_theFamily_theCreditHolder_theIdCard_mNo"                 "CheckEmpty"
   "Instance_theFamily_theAddressLiving_theAddress_mPostalCode"       "80336"
   "Instance_theFamily_theCreditHolder_theIdCard_mIssuedBy"           "dfger"
   "Instance_theFamily_mHaveCard"                                     "E"
-  "Instance_theFamily_theCreditHolder_mSigle"                        "HERR"
+
   "SCHUFA_AGREEMENT_CHECK"                                           "1"}
  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityAddressConfirm"
  {"addressConfirm" "accepted"}

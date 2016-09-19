@@ -48,6 +48,7 @@
         <div class="panel-body">
 
             <FORM action="customer"
+                  id="customerForm"
                   method="post" class="form-horizontal">
 
 
@@ -125,7 +126,7 @@
                     <div class="col-sm-10 ">
                         <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_theIdCard_mNo'
                                id='Instance_theFamily_theCreditHolder_theIdCard_mNo'
-                               VALUE='5098050'
+                               VALUE='CheckEmpty'
                                placeholder="Ausweisnummer" class="form-control">
 
                     </div>
@@ -154,7 +155,7 @@
                         <div class="input-group">
                             <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_theIdCard_mIssuedBy'
                                    id='Instance_theFamily_theCreditHolder_theIdCard_mIssuedBy'
-                                   VALUE='M&#252;nchen'
+                                   VALUE='Berlin'
                                    placeholder="Ausstellungsort" class="form-control">
                         </div>
                     </div>
@@ -477,9 +478,8 @@
                     <div class="col-sm-10 ">
                         <INPUT TYPE='TEXT' NAME='Instance_theFamily_theAddressLiving_theAddress_mStreet'
                                id='Instance_theFamily_theAddressLiving_theAddress_mStreet'
-                               VALUE='GRO&#223;E SCHARRNSTR. 36'
+                               VALUE='Wittstocker Str. 1'
                                placeholder="Straße" class="form-control">
-
                     </div>
                 </div>
 
@@ -487,13 +487,11 @@
                 <div class="form-group">
                     <label for="Instance_theFamily_theAddressLiving_theAddress_mPostalCode"
                            class="col-sm-2 control-label">PLZ</label>
-
                     <div class="col-sm-10 ">
                         <INPUT TYPE='TEXT' NAME='Instance_theFamily_theAddressLiving_theAddress_mPostalCode'
                                id='Instance_theFamily_theAddressLiving_theAddress_mPostalCode'
-                               VALUE='33309'
+                               VALUE='10553'
                                placeholder="PLZ" class="form-control">
-
                     </div>
                 </div>
 
@@ -505,7 +503,7 @@
                     <div class="col-sm-10 ">
                         <INPUT TYPE='TEXT' NAME='Instance_theFamily_theAddressLiving_theAddress_mCity'
                                id='Instance_theFamily_theAddressLiving_theAddress_mCity'
-                               VALUE='STUTTGART'
+                               VALUE='Berlin'
                                placeholder="Ort in Deutschland" class="form-control">
 
                     </div>
@@ -546,7 +544,7 @@
                     <div class="col-sm-10 ">
                         <INPUT TYPE='TEXT' NAME='Instance_theFamily_theCreditHolder_mBirthPlace'
                                id='Instance_theFamily_theCreditHolder_mBirthPlace'
-                               value="München"
+                               value="Berlin"
                                placeholder="Geburtsort" class="form-control">
                     </div>
                 </div>
@@ -596,7 +594,6 @@
 
                 <div class="form-group">
                     <label for="Instance_mWhichSigners" class="col-sm-2 control-label">Mitantragsteller </label>
-
                     <div class="col-sm-10 ">
                         <SELECT NAME='Instance_mWhichSigners' id="Instance_mWhichSigners" class='form-control'>
                             <OPTION VALUE='alone' SELECTED>Nein</OPTION>
@@ -624,11 +621,9 @@
                                        CHECKED>ja
                                 <INPUT TYPE='RADIO'
                                        NAME='Instance_theFamily_theCreditHolder_mNoAdvertisment'
-                                       id='Instance_theFamily_theCreditHolder_mNoAdvertisment' VALUE='P'>nein
-
+                                       VALUE='P'>nein
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -644,7 +639,7 @@
                                        NAME='Checkbox_SCHUFA_AGREEMENT_CHECK'
                                        id='Checkbox_SCHUFA_AGREEMENT_CHECK'
                                        VALUE='1'
-                                       onClick='Checkbox_SCHUFA_AGREEMENT_CHECKchange();'>
+                                       checked>
                                 Der Kunde hat eingewilligt, dass die Commerz Finanz GmbH zum Zwecke
                                 der
                                 Prüfung seiner Kreditwürdigkeit unter Übermittlung seines Namens, seiner Anschrift,
@@ -695,6 +690,18 @@
                 </div>
 
             </FORM>
+
+            <script>
+
+
+    $("#customerForm :input").change(function() {
+       $("#customerForm").submit();
+    });
+
+
+    </script>
+
+
         </div>
     </div>
 

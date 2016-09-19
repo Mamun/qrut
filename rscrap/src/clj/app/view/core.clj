@@ -117,7 +117,7 @@
 (defmethod view
   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary"
   [request-m]
-  (->> (customer-snippet)
+  (->> (customer-comple-snippet)
        (index-template "Select credit type " (:errormessage request-m))
        (apply str)
        (html-response)

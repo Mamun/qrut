@@ -41,6 +41,8 @@
    "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity" "/customer"
    "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary" "/customerComplementary"})
 
+
+
 (defn is-same-page [params]
   (if (or (contains? params :next)
           (contains? params :prev))
@@ -102,15 +104,14 @@
 
 
 (defn process-request [{:keys [uri params] :as rrequest}]
-  (println "-------------------proc")
   (let [user-params-m (w/stringify-keys params)]
-    (fetcher/log user-params-m "proecess request start ")
+    ;(fetcher/log user-params-m "proecess request start ")
     (-> (get-request-m rrequest)
         (fetcher/format-request user-params-m)
         (fetcher/assoc-action-type params)
         (fetcher/log "Before fetach ")
         (fetcher/fetch-data)
-    ;    (fetcher/log "After fetch  ")
+       ; (fetcher/log "After fetch  ")
         (add-to-store! rrequest)
         (find-redirect-utl rrequest)
      ;   (fetcher/log "Redirect URL   ")
@@ -139,12 +140,24 @@
   (GET "/logout" _ (response/redirect "/login")))
 
 
-(defn credittype-default [{:keys [params] :as r}]
 
+(defn mutate-credittype-params [{:keys [params] :as r}]
   (assoc r :params (assoc params
                      :CAM_Instance_theDossierConditions_mCreditTypeCode "0"
-                     :CAM_mCreditAmount (get params "Instance_theDossierConditions_theMaterialInfo$0_mPrice")))
-  )
+                     :Instance_theDossierConditions_mCreditTypeCode (or (get params "CALCULATION_TABLE")
+                                                                        (get params :CALCULATION_TABLE ))
+                     :CAM_mCreditAmount (get params "Instance_theDossierConditions_theMaterialInfo$0_mPrice"))))
+
+
+(def default-customer-info {"accountTypeSelected"                                              "SEPA"
+                            "account_type"                                                     "SEPA"
+                            "SCHUFA_AGREEMENT_CHECK"                                           "1"})
+
+
+(defn mutate-customer-params [{:keys [params] :as r}]
+  (assoc r :params (merge params default-customer-info)))
+
+
 
 (defroutes
   credit-routes
@@ -169,13 +182,14 @@
   (POST "/credittype" r (do
                           (println "---- credit type ")
                           (->
-                            (credittype-default r)
+                            (mutate-credittype-params r)
                             (process-request))))
 
   (GET "/customer" r (do
                        (-> (get-request-m r)
                            (view/view))))
-  (POST "/customer" r (process-request r))
+  (POST "/customer" r (-> (mutate-customer-params r)
+                          (process-request )))
 
   (GET "/customerComplementary" r (do
                                     (-> (get-request-m r)

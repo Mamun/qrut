@@ -243,16 +243,15 @@
     <script src="assets/bootstrap-validator/dist/validator.min.js"></script>
 
 
-
-
     <script>
 
     $('#mDeliveringDate').datepicker({});
     $('#credittypeForm').validator();
 
-    $("#credittypeForm :input").blur(function() {
+    $("#credittypeForm :input").change(function() {
        $("#credittypeForm").submit();
     });
+
 
 
     </script>
