@@ -24,7 +24,10 @@
                  [:tr] (html/clone-for
                          [[type-m name-m t inst-count-m inst-m interest-m rsv-m] creditline]
                          calculation-table (html/set-attr :value (:value type-m))
-                         calculation-table (html/set-attr :checked (:checked type-m))
+                         calculation-table (html/do-> #(if (:checked type-m)
+                                                        ((html/set-attr :checked  "checked" )%)
+                                                        %)
+                                                        )
                          calculation-table-label #(update-in % [:content] update-last (:value name-m))))
 
 
@@ -35,7 +38,10 @@
                  [:tr] (html/clone-for
                          [[type-m name-m t inst-count-m inst-m interest-m rsv-m] creditline]
                          calculation-table (html/set-attr :value (:value type-m))
-                         calculation-table (html/set-attr :checked (:checked type-m))
+                         calculation-table (html/do-> #(if (:checked type-m)
+                                                        ((html/set-attr :checked  :val )%)
+                                                        %)
+                                                      )
                          calculation-table-label #(update-in % [:content] update-last (:value name-m))
                          in-ins-count (html/set-attr :value (:value inst-count-m))
                          in-ins-count (html/set-attr :name (:name inst-count-m))

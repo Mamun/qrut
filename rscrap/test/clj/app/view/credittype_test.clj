@@ -7,7 +7,7 @@
 
 
 
-(defn get-temp-data []
+#_(defn get-temp-data []
   (-> (e/scrap-data "credittype.html")
       (get-in [:params])
       (eu/view-data)))
