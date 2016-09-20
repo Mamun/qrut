@@ -2,7 +2,7 @@
   (:require [clojure.walk :as w]
             [app.view.credittype :as ct]
             [app.view.material :as mt]
-
+            [scraper.core :as scraper]
             [net.cgrand.enlive-html :as html]))
 
 
@@ -24,9 +24,9 @@
 
 (defn view-data [m]
   (->> (w/keywordize-keys m)
-    (postwalk-replace-value-with (fn [v]
-                                   (if (nil? v) "" v)
-                                   ) )))
+       (postwalk-replace-value-with (fn [v]
+                                      (if (nil? v) "" v)
+                                      ))))
 
 
 
@@ -42,12 +42,12 @@
 
 
 (html/deftemplate index-template "public/template.html"
-                  [title error content ]
+                  [title error content]
                   [:head :title] (html/content title)
                   [:div#wrapper] (html/content content)
                   [:div.alert.alert-danger] #(when (not-empty error)
                                               (html/at %
-                                              [html/any]  (html/content (apply str error)))))
+                                                       [html/any] (html/content (apply str error)))))
 
 
 (html/deftemplate login-template "public/login.html"
@@ -81,11 +81,10 @@
 (defmethod view
   "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
   [request-m]
-  (let [d (get-in request-m [:form-params "Instance_theDossierConditions_theMaterialInfo$0_mCode"])
-        s (get-in request-m [:form-params "Instance_theDossierConditions_theVendorInfo_mSalesmanId"])]
-    (->> (mt/material-snippet d s)
+  (let [r (scraper/extract-content request-m)]
+    (->> (mt/material-snippet r)
          ;(apply-session submit-m)
-         (index-template "Select material  " (:errormessage request-m) )
+         (index-template "Select material  " (scraper/get-error request-m))
          (apply str)
          (html-response))))
 
@@ -93,11 +92,11 @@
 (defmethod view
   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
   [request-m]
-  (let [d (get-in request-m [:form-params])
+  (let [d (scraper/extract-content request-m)
         credit-line (ct/get-credit-line d)
         d (view-data d)]
     (->> (ct/credittype-snippet d credit-line)
-         (index-template "Select credit type " (:errormessage request-m))
+         (index-template "Select credit type " (scraper/get-error request-m))
          (apply str)
          (html-response))))
 
@@ -105,7 +104,7 @@
   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
   [request-m]
   (->> (customer-snippet)
-       (index-template "Select credit type " (:errormessage request-m))
+       (index-template "Select credit type " (scraper/get-error request-m))
        (apply str)
        (html-response)
        )

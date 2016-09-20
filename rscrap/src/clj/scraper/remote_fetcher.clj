@@ -1,7 +1,8 @@
 (ns scraper.remote-fetcher
   (:require [clj-http.client :as client]
             [scraper.core :as p]
-            [clojure.tools.reader.edn :as edn])
+            [clojure.tools.reader.edn :as edn]
+            [scraper.core :as scraper])
   (import [java.io StringReader]))
 
 
@@ -51,7 +52,7 @@
   :default
   [request-m user-params-m]
   (-> request-m
-      (update-in  [:form-params] merge user-params-m)
+      (update-in [:form-params] (fn [_] (merge (scraper/form-params request-m) user-params-m)))
       (update-in  [:form-params] dissoc :credit-line)
       ))
 
@@ -78,7 +79,7 @@
   (-> response
       (:body)
       (StringReader.)
-      (p/scrap-data)
+      (p/as-node-map)
       (assoc :cookie cookie)
       )
   )

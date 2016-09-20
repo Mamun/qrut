@@ -35,12 +35,12 @@
        (html/emit*)
        (apply str))
 
-  (->
+  #_(->
     (e/scrap-data "credittype.html")
     (view/view))
 
 
-  (let [[card & credit-line :as w] (->> (e/scrap-data "credittype.html")
+  #_(let [[card & credit-line :as w] (->> (e/scrap-data "credittype.html")
                                         (:params)
                                         (eu/view-data)
                                         (:credit-line))]

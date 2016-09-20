@@ -1,6 +1,6 @@
 (ns app.view.material
   (:require [net.cgrand.enlive-html :as html]
-           ; [scraper.core :as e]
+           [scraper.core :as scraper]
             #_[app.handler.common :as c]))
 
 
@@ -8,7 +8,7 @@
 (html/alter-ns-options! assoc :reloadable? true)
 
 
-(defn apply-session [submit-m node]
+#_(defn apply-session [submit-m node]
   (html/at node
            [:select#mcode [:option (html/attr= :value (get submit-m "Instance_theDossierConditions_theMaterialInfo$0_mCode"))]]
            (html/set-attr :selected :selected)
@@ -18,7 +18,7 @@
            (html/set-attr :selected :selected)))
 
 
-(html/defsnippet material-snippet "public/material.html"
+(html/defsnippet material-snippet2 "public/material.html"
                  [:div#material]
                  [material-m sales-m]
                  [:select#mcode [:option (html/but html/first-of-type)]] nil
@@ -37,6 +37,14 @@
 
 
 
+(html/defsnippet material-snippet "public/material.html"
+                 [:div#material]
+                 [{:keys [m-code sales-man]}]
+                 [:select#mcode ] (html/content m-code)
+                 [:select#salesmanid ] (html/content sales-man)
+                 )
+
+
 
 #_(defn view [submit-m]
   (let [w (e/scrap-data "material.html")
@@ -48,3 +56,12 @@
          (apply str)
          (c/html-response))))
 
+(comment
+  (apply str
+         (-> (scraper/as-node-map "public/old/material_old.html")
+             (scraper/extract-content)
+             (material-snippet)
+             (html/emit*)
+             ))
+
+  )

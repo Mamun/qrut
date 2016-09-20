@@ -1,5 +1,5 @@
-{;"url" "https://green-1.commerzfinanz.com"
- "url" "http://localhost:8021"
+{"url" "https://green-1.commerzfinanz.com"
+ ;"url" "http://localhost:8021"
  "/ratanet/front?controller=CreditApplication&action=Login"
  {:vendor "2103257"
   :password "lumumi60"

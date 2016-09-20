@@ -6,14 +6,6 @@
            [net.cgrand.tagsoup]))
 
 
-
-
-;(keyword :A)
-
-
-
-
-
 (def selector #{[:select] [:input]})
 (def error-selector [:font.errormessage])
 
@@ -41,7 +33,7 @@
 (defmethod do-scrap
   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
   [_ node]
-  {:form-params (ct/extract-credit-data node)
+  {:form-params  (ct/extract-credit-data node)
    :errormessage (get-error node)})
 
 
@@ -62,7 +54,45 @@
         )))
 
 
+(defmulti extract-content (fn [node-map] (:url node-map)))
 
+(defmethod extract-content
+  :default
+  [{:keys [node]}]
+  node)
+
+(defmethod extract-content
+  "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
+  [{:keys [node]}]
+  (ct/extract-credit-data node))
+
+
+(def select-material [[:select (html/attr= :name "Instance_theDossierConditions_theMaterialInfo$0_mCode")]])
+(def sales-ma [[:select (html/attr= :name "Instance_theDossierConditions_theVendorInfo_mSalesmanId")]])
+
+(defmethod extract-content
+  "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
+  [{:keys [node]}]
+  (hash-map
+    :m-code
+    (-> (html/select node select-material)
+        (html/select [:option]))
+    :sales-man
+    (-> (html/select node sales-ma)
+        (html/select [:option]))))
+
+
+(defn as-node-map [r]
+  (let [node (-> (html/html-resource r)
+                 (html/select [:form])
+                 (c/postwalk-remove-new-line))]
+    (hash-map :node node
+              :url (get-form-url node))))
+
+
+
+(defn form-params [{:keys [node]}]
+  (c/extract-data (html/select node selector)))
 
 
 
@@ -77,17 +107,25 @@
   (-> (html/select (html/html-resource "material.html") selector)
       (c/extract-data))
 
-  (-> (html/html-resource "credittype.html")
-      (scrap-data)
-      (:params))
+  (->
+    (as-node-map "public/old/material_old.html")
+    ;(form-params)
+     (extract-content)
 
-  (-> (scrap-data "credittype.html")
-      (select-keys [:params]))
+    )
+
+  (-> (as-node-map "public/old/credittype_old.html")
+      (extract-content)
+      )
+
+  (-> (as-node-map "public/old/material_old.html")
+      (extract-content)
+      )
 
 
-  (-> (html/html-resource "material.html")
-      (scrap-data)
-      (select-keys [:params :url]))
+  #_(-> (scrap-data "public/old/material_old.html")
+      (extract-content)
+      )
 
 
 
