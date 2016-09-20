@@ -11,12 +11,13 @@
             [clojure.tools.logging :as log]
             [immutant.web.middleware :as imm]
             [dadysql.http-service :as h]
-        ;    [app.routes-middleware :as rm]
+    ;    [app.routes-middleware :as rm]
     ;  [app.handler.common :as common]
     ;  [app.handler.credittype :as credit]
     ;  [app.handler.material :as material]
             [app.view.core :as view]
             [scraper.remote-fetcher :as fetcher]
+            [scraper.request-builder :as rb]
             [app.service :as api]
             [app.state :as s]))
 
@@ -31,14 +32,14 @@
 
 (def redirect-url-m
   {;"/login"                                                                     "/ratanet/front?controller=CreditApplication&action=Login"
-   "/ratanet/front?controller=CreditApplication&action=Login"                   "/login"
+   "/ratanet/front?controller=CreditApplication&action=Login"                                "/login"
    ;"/material"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
    ;"/credittype"                                                                "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
    ;"/customer"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
-   "/customerComplementary" "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary"
-   "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"       "/material"
-   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"     "/credittype"
-   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity" "/customer"
+   "/customerComplementary"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary"
+   "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"                    "/material"
+   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"                  "/credittype"
+   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"              "/customer"
    "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary" "/customerComplementary"})
 
 
@@ -75,48 +76,21 @@
     uri))
 
 
-(defonce session-store (atom {}))
-
-(comment
-  (->
-    (get @session-store 1)
-
-    (view/view)
-    )
-  )
-
-
-;@session-store
-
-(defn add-to-store! [request-m ring-request]
-  (let [identifier (get-in ring-request [:session :identifier])]
-    (swap! session-store (fn [w]
-                           (update-in w [identifier] (fn [_] request-m))))
-    request-m))
-
-
-(defn get-request-m [ring-request]
-  (get @session-store (get-in ring-request [:session :identifier])))
 
 
 (defn copy-session [new-request old-request]
   (assoc new-request :session (:session old-request)))
 
 
-(defn process-request [{:keys [uri params] :as rrequest}]
-  (let [user-params-m (w/stringify-keys params)]
-    ;(fetcher/log user-params-m "proecess request start ")
-    (-> (get-request-m rrequest)
-        (fetcher/format-request user-params-m)
-        (fetcher/assoc-action-type params)
-       ; (fetcher/log "Before fetach ")
-        (fetcher/fetch-data)
-        (fetcher/log "After fetch  ")
-        (add-to-store! rrequest)
-        (find-redirect-utl rrequest)
-     ;   (fetcher/log "Redirect URL   ")
-        (response/redirect)
-        (copy-session rrequest))))
+(defn process-request [rrequest]
+  (-> (fetcher/get-request-m rrequest)
+      (rb/merge-request rrequest)
+      (fetcher/fetch-data)
+      (fetcher/add-to-store! rrequest)
+      (find-redirect-utl rrequest)
+      (response/redirect)
+      (copy-session rrequest)))
+
 
 
 
@@ -133,29 +107,12 @@
   auth-routes
   (GET "/login" rrequest (let [rrequest (assoc-idententifer-to-session rrequest)]
                            (-> (fetcher/login-request)
-                               (add-to-store! rrequest)
+                               (fetcher/add-to-store! rrequest)
                                (view/view)
                                (copy-session rrequest))))
   (POST "/login" rrequest (process-request rrequest))
   (GET "/logout" _ (response/redirect "/login")))
 
-
-
-(defn mutate-credittype-params [{:keys [params] :as r}]
-  (assoc r :params (assoc params
-                     :CAM_Instance_theDossierConditions_mCreditTypeCode "0"
-                     :Instance_theDossierConditions_mCreditTypeCode (or (get params "CALCULATION_TABLE")
-                                                                        (get params :CALCULATION_TABLE ))
-                     :CAM_mCreditAmount (get params "Instance_theDossierConditions_theMaterialInfo$0_mPrice"))))
-
-
-(def default-customer-info {"accountTypeSelected"                                              "SEPA"
-                            "account_type"                                                     "SEPA"
-                            "SCHUFA_AGREEMENT_CHECK"                                           "1"})
-
-
-(defn mutate-customer-params [{:keys [params] :as r}]
-  (assoc r :params (merge params default-customer-info)))
 
 
 
@@ -166,10 +123,10 @@
 
   (GET "/material" rrequest (let []
                               ;(println "----/material .........." v)
-                              (-> (get-request-m rrequest)
+                              (-> (fetcher/get-request-m rrequest)
                                   (fetcher/init-flow-request)
                                   (fetcher/fetch-data)
-                                  (add-to-store! rrequest)
+                                  (fetcher/add-to-store! rrequest)
                                   ;(sender/log)
                                   (view/view)
                                   (copy-session rrequest)))  #_(material/view (get-in r [:session :action-v "/material"])))
@@ -177,22 +134,21 @@
 
   (GET "/credittype" rrequest (do
                                 (println "credot type voew ")
-                                (-> (get-request-m rrequest)
+                                (-> (fetcher/get-request-m rrequest)
                                     (view/view))))
   (POST "/credittype" r (do
                           (println "---- credit type ")
-                          (->
-                            (mutate-credittype-params r)
-                            (process-request))))
+                          (-> r
+                              (process-request))))
 
   (GET "/customer" r (do
-                       (-> (get-request-m r)
+                       (-> (fetcher/get-request-m r)
                            (view/view))))
-  (POST "/customer" r (-> (mutate-customer-params r)
-                          (process-request )))
+  (POST "/customer" r (-> r
+                          (process-request)))
 
   (GET "/customerComplementary" r (do
-                                    (-> (get-request-m r)
+                                    (-> (fetcher/get-request-m r)
                                         (view/view))))
   (POST "/customerComplementary" r (process-request r))
 

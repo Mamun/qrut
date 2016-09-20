@@ -30,7 +30,7 @@
                     :force-redirects true})))
 
 
-(defn assoc-action-type [request-m user-params-m]
+#_(defn assoc-action-type [request-m user-params-m]
   (cond
     (contains? user-params-m :prev)
     (-> request-m
@@ -45,10 +45,10 @@
     (update-in request-m [:form-params] (fn [w] (dissoc w "next" "next.x" "next.y" "prev" "prev.x" "prev.y" "alternate3" "alternate1")))))
 
 
-(defmulti format-request (fn [request-m _] (get request-m :url)))
+#_(defmulti format-request (fn [request-m _] (get request-m :url)))
 
 
-(defmethod format-request
+#_(defmethod format-request
   :default
   [request-m user-params-m]
   (-> request-m
@@ -57,7 +57,7 @@
       ))
 
 
-(defmethod format-request
+#_(defmethod format-request
   "/ratanet/front?controller=CreditApplication&action=Login"
   [request-m user-params-m]
   (-> request-m
@@ -65,11 +65,38 @@
       (assoc :cookie (clj-http.cookies/cookie-store))))
 
 
-(defmethod format-request
+#_(defmethod format-request
   "/ratanet/front?controller=CreditApplication&action=DispoMaterialType&ps=DISPOV2&init=1"
   [request-m _]
   (dissoc request-m :form-params))
 
+
+
+
+
+
+(defonce session-store (atom {}))
+
+(comment
+  (->
+    (get @session-store 1)
+
+    (view/view)
+    )
+  )
+
+
+;@session-store
+
+(defn add-to-store! [request-m ring-request]
+  (let [identifier (get-in ring-request [:session :identifier])]
+    (swap! session-store (fn [w]
+                           (update-in w [identifier] (fn [_] request-m))))
+    request-m))
+
+
+(defn get-request-m [ring-request]
+  (get @session-store (get-in ring-request [:session :identifier])))
 
 
 
@@ -121,8 +148,8 @@
 
 (defn create-contract [user-params stop-url]
   (let [v (-> (login-request)
-              (format-request user-params)
-              (assoc-action-type user-params)
+              #_(format-request user-params)
+              #_(assoc-action-type user-params)
               (fetch-data)
               (init-flow-request))]
     (loop [request-m v]
@@ -132,8 +159,9 @@
             ;  (nil? (:url user-params))
             ; request
             :else
-            (-> (format-request request-m user-params)
-                (assoc-action-type user-params)
+            (-> request-m
+                #_(format-request request-m user-params)
+                #_(assoc-action-type user-params)
                 (fetch-data)
                 (recur))))))
 

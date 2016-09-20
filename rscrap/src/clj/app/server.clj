@@ -7,7 +7,7 @@
 
 
 (def dev-server-config {:port 3001
-                        ;:host "0.0.0.0"
+                        :host "0.0.0.0"
                         })
 
 (def prod-server-config {:port 9001
