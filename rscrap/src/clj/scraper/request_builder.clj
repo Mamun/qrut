@@ -54,7 +54,8 @@
   [_ r] r)
 
 (defmethod assoc-default-params
-  "DispoPlusCreditType"
+  ;"DispoPlusCreditType"
+  "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
   [_ params]
   (assoc params
     :CAM_Instance_theDossierConditions_mCreditTypeCode "0"
@@ -72,14 +73,16 @@
 
 
 (defmethod assoc-default-params
-  "DispoV2CustomerIdentity"
+  ;"DispoV2CustomerIdentity"
+  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
   [_ params ]
   (merge params default-customer-info))
 
 
 
 (defn merge-request [request-m {:keys [params]}]
+  (println "---params " params)
   (-> request-m
-      (format-request (w/stringify-keys (assoc-default-params (:action params ) params)))
+      (format-request (w/stringify-keys (assoc-default-params (:url request-m) #_(:action params ) params)))
       (assoc-action-type params)))
 

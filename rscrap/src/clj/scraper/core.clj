@@ -21,7 +21,7 @@
 
 
 
-(defn get-error [node]
+(defn get-error [{:keys [node]}]
   (->> (html/select node error-selector)
        (map :content)
        (map first)))

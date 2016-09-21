@@ -81,7 +81,7 @@
   (->
     (get @session-store 1)
 
-    (view/view)
+    (scraper/get-error)
     )
   )
 

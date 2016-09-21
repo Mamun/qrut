@@ -31,18 +31,7 @@
 
 
 (def redirect-url-m
-  {;"/login"                                                                     "/ratanet/front?controller=CreditApplication&action=Login"
-   "/ratanet/front?controller=CreditApplication&action=Login"                                "/login"
-   ;"/material"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
-   ;"/credittype"                                                                "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
-   ;"/customer"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
-   ;"/customerComplementary"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary"
-   ;"/ratanet/front?controller=CreditApplication&action=DispoMaterialType"                    "/material"
-   ;"/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"                  "/credittype"
-   ;"/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"              "/customer"
-   ;"/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary" "/customerComplementary"
-
-
+  {"/ratanet/front?controller=CreditApplication&action=Login"                                "/login"
    "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"                    "/credit?action=DispoMaterialType"
    "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"                  "/credit?action=DispoPlusCreditType"
    "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"              "/credit?DispoV2CustomerIdentity"
@@ -69,22 +58,7 @@
 
 
 (defn find-redirect-utl [request-m {:keys [uri params]}]
-
-  (cond
-    #_(is-same-page params)
-    ;uri
-    (not-empty (:errormessage request-m))
-    uri
-    (empty? (:errormessage request-m))
-    (do
-      ;(fetcher/log request-m  "Redirect url ")
-      (or (get redirect-url-m (:url request-m))
-          "/credit?action=DispoMaterialType"
-          ;"/material"
-          ))
-    :else
-    uri))
-
+  (get redirect-url-m (:url request-m)))
 
 
 
@@ -95,11 +69,11 @@
 (defn post-request [rrequest]
   (-> (fetcher/get-request-m rrequest)
       (rb/merge-request rrequest)
+      ;(fetcher/log "After merge request  ")
       (fetcher/fetch-data)
       (fetcher/add-to-store! rrequest)
-      ;(fetcher/log  "After submit  url ")
       (find-redirect-utl rrequest)
-      (fetcher/log "Redirect uzrl name ")
+      ;(fetcher/log "Redirect uzrl name ")
       (response/redirect)
       (copy-session rrequest)))
 
@@ -116,21 +90,14 @@
 
 
 (defn login-handler [rrequest]
-  (let []
-    (println "-------------------Login catch ---")
+  (do
     (-> (fetcher/login-request)
-        (fetcher/log "--After login request  ")
         (rb/merge-request rrequest)
-        (fetcher/log "--After login ")
         (fetcher/fetch-data)
-        (fetcher/log "--After login add to streo  ")
-        (fetcher/add-to-store! rrequest)
-
-        #_(copy-session rrequest))
-    #_(post-request rrequest))
-
-  (response/redirect "/credit?action=DispoMaterialType")
-  )
+        (fetcher/add-to-store! rrequest))
+    (->
+      (response/redirect "/credit?action=DispoMaterialType")
+      (copy-session rrequest))))
 
 
 (defroutes
@@ -138,14 +105,14 @@
   (GET "/login" rrequest (let [rrequest (assoc-idententifer-to-session rrequest)]
                            (-> (view/login-view)
                                (copy-session rrequest))))
-  (POST "/login" rrequest (login-handler rrequest) )
+  (POST "/login" rrequest (login-handler rrequest))
   (GET "/logout" _ (response/redirect "/login")))
 
 
 
 (defn get-request [rrequest]
 
-  (println "---- Get request " )
+  (println "---- Get request ")
 
   (let [action (get-in rrequest [:params :action])]
     (if (= action "DispoMaterialType")
