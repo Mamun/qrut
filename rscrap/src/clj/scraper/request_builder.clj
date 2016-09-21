@@ -44,8 +44,8 @@
 
 
 
-(defmulti assoc-default-params (fn [uri _]
-                                 uri
+(defmulti assoc-default-params (fn [url p]
+                                 url
                                  ))
 
 
@@ -54,8 +54,8 @@
   [_ r] r)
 
 (defmethod assoc-default-params
-  "/credittype"
-  [_ params ]
+  "DispoPlusCreditType"
+  [_ params]
   (assoc params
     :CAM_Instance_theDossierConditions_mCreditTypeCode "0"
     :Instance_theDossierConditions_mCreditTypeCode (or (get params "CALCULATION_TABLE")
@@ -72,14 +72,14 @@
 
 
 (defmethod assoc-default-params
-  "/customer"
+  "DispoV2CustomerIdentity"
   [_ params ]
   (merge params default-customer-info))
 
 
 
-(defn merge-request [request-m {:keys [params uri] :as r}]
+(defn merge-request [request-m {:keys [params]}]
   (-> request-m
-      (format-request (w/stringify-keys (assoc-default-params uri params)))
+      (format-request (w/stringify-keys (assoc-default-params (:action params ) params)))
       (assoc-action-type params)))
 

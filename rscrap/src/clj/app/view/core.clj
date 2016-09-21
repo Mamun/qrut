@@ -70,9 +70,8 @@
 (defmulti view (fn [request-m] (:url request-m)))
 
 
-(defmethod view
-  "/ratanet/front?controller=CreditApplication&action=Login"
-  [_]
+(defn login-view
+  []
   (->> (login-template "Login ")
        (apply str)
        (html-response)))

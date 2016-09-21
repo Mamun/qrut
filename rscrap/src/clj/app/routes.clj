@@ -36,11 +36,19 @@
    ;"/material"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"
    ;"/credittype"                                                                "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
    ;"/customer"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
-   "/customerComplementary"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary"
-   "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"                    "/material"
-   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"                  "/credittype"
-   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"              "/customer"
-   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary" "/customerComplementary"})
+   ;"/customerComplementary"                                                                  "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary"
+   ;"/ratanet/front?controller=CreditApplication&action=DispoMaterialType"                    "/material"
+   ;"/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"                  "/credittype"
+   ;"/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"              "/customer"
+   ;"/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary" "/customerComplementary"
+
+
+   "/ratanet/front?controller=CreditApplication&action=DispoMaterialType"                    "/credit?action=DispoMaterialType"
+   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"                  "/credit?action=DispoPlusCreditType"
+   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"              "/credit?DispoV2CustomerIdentity"
+   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentityComplementary" "/credit?DispoV2CustomerIdentityComplementary"
+
+   })
 
 
 
@@ -61,7 +69,7 @@
 
 
 (defn find-redirect-utl [request-m {:keys [uri params]}]
-  ; (fetcher/log params "Params value ")
+
   (cond
     #_(is-same-page params)
     ;uri
@@ -71,7 +79,9 @@
     (do
       ;(fetcher/log request-m  "Redirect url ")
       (or (get redirect-url-m (:url request-m))
-          "/material"))
+          "/credit?action=DispoMaterialType"
+          ;"/material"
+          ))
     :else
     uri))
 
@@ -82,12 +92,14 @@
   (assoc new-request :session (:session old-request)))
 
 
-(defn process-request [rrequest]
+(defn post-request [rrequest]
   (-> (fetcher/get-request-m rrequest)
       (rb/merge-request rrequest)
       (fetcher/fetch-data)
       (fetcher/add-to-store! rrequest)
+      ;(fetcher/log  "After submit  url ")
       (find-redirect-utl rrequest)
+      (fetcher/log "Redirect uzrl name ")
       (response/redirect)
       (copy-session rrequest)))
 
@@ -103,16 +115,49 @@
 
 
 
+(defn login-handler [rrequest]
+  (let []
+    (println "-------------------Login catch ---")
+    (-> (fetcher/login-request)
+        (fetcher/log "--After login request  ")
+        (rb/merge-request rrequest)
+        (fetcher/log "--After login ")
+        (fetcher/fetch-data)
+        (fetcher/log "--After login add to streo  ")
+        (fetcher/add-to-store! rrequest)
+
+        #_(copy-session rrequest))
+    #_(post-request rrequest))
+
+  (response/redirect "/credit?action=DispoMaterialType")
+  )
+
+
 (defroutes
   auth-routes
   (GET "/login" rrequest (let [rrequest (assoc-idententifer-to-session rrequest)]
-                           (-> (fetcher/login-request)
-                               (fetcher/add-to-store! rrequest)
-                               (view/view)
+                           (-> (view/login-view)
                                (copy-session rrequest))))
-  (POST "/login" rrequest (process-request rrequest))
+  (POST "/login" rrequest (login-handler rrequest) )
   (GET "/logout" _ (response/redirect "/login")))
 
+
+
+(defn get-request [rrequest]
+
+  (println "---- Get request " )
+
+  (let [action (get-in rrequest [:params :action])]
+    (if (= action "DispoMaterialType")
+      (-> (fetcher/get-request-m rrequest)
+          (fetcher/init-flow-request)
+          (fetcher/fetch-data)
+          (fetcher/add-to-store! rrequest)
+          (view/view)
+          (copy-session rrequest))
+
+      (-> (fetcher/get-request-m rrequest)
+          (view/view)))))
 
 
 
@@ -120,39 +165,9 @@
   credit-routes
   (GET "/" [_]
     (response/redirect "/login"))
+  (GET "/credit" rrequest (get-request rrequest))
+  (POST "/credit" rrequest (post-request rrequest)))
 
-  (GET "/material" rrequest (let []
-                              ;(println "----/material .........." v)
-                              (-> (fetcher/get-request-m rrequest)
-                                  (fetcher/init-flow-request)
-                                  (fetcher/fetch-data)
-                                  (fetcher/add-to-store! rrequest)
-                                  ;(sender/log)
-                                  (view/view)
-                                  (copy-session rrequest)))  #_(material/view (get-in r [:session :action-v "/material"])))
-  (POST "/material" r (process-request r))
-
-  (GET "/credittype" rrequest (do
-                                (println "credot type voew ")
-                                (-> (fetcher/get-request-m rrequest)
-                                    (view/view))))
-  (POST "/credittype" r (do
-                          (println "---- credit type ")
-                          (-> r
-                              (process-request))))
-
-  (GET "/customer" r (do
-                       (-> (fetcher/get-request-m r)
-                           (view/view))))
-  (POST "/customer" r (-> r
-                          (process-request)))
-
-  (GET "/customerComplementary" r (do
-                                    (-> (fetcher/get-request-m r)
-                                        (view/view))))
-  (POST "/customerComplementary" r (process-request r))
-
-  )
 
 
 (def api-routes
@@ -165,8 +180,8 @@
 
 (def app-routes
   (routes
-    auth-routes
-    credit-routes
+    #'auth-routes
+    #'credit-routes
     ;(wrap-routes #'credit-routes rm/warp-navi-middleware "/material")
     (wrap-routes #'api-routes h/warp-default)
     (route/resources "/")
