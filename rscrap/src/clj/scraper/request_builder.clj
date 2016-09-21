@@ -2,7 +2,7 @@
 
 
 (defn assoc-action-type [params submit-params ]
-  (println "asssoc-action -ype ")
+  ;(println "asssoc-action -ype ")
   (cond
     (contains? params :prev)
     (-> submit-params

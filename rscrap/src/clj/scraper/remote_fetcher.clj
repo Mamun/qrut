@@ -126,42 +126,54 @@
 
 
 
+(defn fetch-remote-data [user-params request-m]
+  (fetch-remote 100 (get user-params (:url request-m)) request-m))
+
+
+
 (defn create-contract [user-params stop-url]
-  (let [v (-> (init-login-request)
-              #_(format-request user-params)
-              #_(assoc-action-type user-params)
-              (fetch-data)
-              ;(init-flow-request)
-              )]
-    (loop [request-m v]
-      (cond (or (not-empty (:errormessage request-m))
+  (let [_ (fetch-remote-data user-params (init-login-request))
+        w (fetch-remote-data user-params (init-flow-request))]
+    (loop [request-m w]
+      (cond (or (not-empty (scraper/get-error request-m))
                 (= stop-url (:url request-m)))
             request-m
-            ;  (nil? (:url user-params))
-            ; request
             :else
-            (-> request-m
-                #_(format-request request-m user-params)
-                #_(assoc-action-type user-params)
-                (fetch-data)
+            (->
+                (fetch-remote-data user-params request-m)
                 (recur))))))
 
+
+(defn assoc-next [config]
+  (->>
+    (map (fn [[k v]]
+           (if (map? v)
+             {k (assoc v :next 1)}
+             {k v} ))
+         config)
+    (into {})
+    ))
 
 
 (comment
 
+
+
+  (merge-with merge {:a {:a 3}} {:next 1} )
+
+
   (->> "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
-       (create-contract config))
+       (create-contract (assoc-next config)))
 
   (get config "/ratanet/front?controller=CreditApplication&action=DispoMaterialType")
 
-  (-> (init-login-request)
-      (fetch-data config)
-      ;(init-flow-request)
-      ; (send-request config)
-      ;  (send-request config :prev)
-      ;  (send-request config)
-      )
+
+
+
+  (->> (assoc-next config)
+       (create-contract "/ratanet/front?controller=CreditApplication&action=PrintingContract")
+
+       )
 
   )
 
