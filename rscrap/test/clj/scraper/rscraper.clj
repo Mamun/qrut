@@ -43,7 +43,7 @@
 
 
   (->
-    (s/login-request)
+    (s/init-login-request)
     (s/fetch-data s/config)
     (s/init-flow-request)
     (s/fetch-data s/config)

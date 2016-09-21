@@ -1,46 +1,19 @@
-(ns scraper.request-builder
-  (:require [scraper.core :as scraper]
-            [clojure.walk :as w]))
+(ns scraper.request-builder)
 
 
-(defn assoc-action-type [request-m user-params-m]
+(defn assoc-action-type [params submit-params ]
+  (println "asssoc-action -ype ")
   (cond
-    (contains? user-params-m :prev)
-    (-> request-m
-        (update-in [:form-params] (fn [w] (dissoc w "prev" "next" "alternate3" "alternate1")))
-        (update-in [:form-params] (fn [w] (assoc w "prev.x" 35 "prev.y" 35))))
-
-    (contains? user-params-m :next)
-    (-> request-m
-        (update-in [:form-params] (fn [w] (dissoc w "prev" "next" "alternate3" "alternate1")))
-        (update-in [:form-params] (fn [w] (assoc w "next.x" 14 "next.y" 14))))
+    (contains? params :prev)
+    (-> submit-params
+        (dissoc  "prev" "next" "alternate3" "alternate1")
+        (assoc  "prev.x" 35 "prev.y" 35))
+    (contains? params :next)
+    (-> submit-params
+        (dissoc  "prev" "next" "alternate3" "alternate1")
+        (assoc  "next.x" 14 "next.y" 14))
     :else
-    (update-in request-m [:form-params] (fn [w] (dissoc w "next" "next.x" "next.y" "prev" "prev.x" "prev.y" "alternate3" "alternate1")))))
-
-
-(defmulti format-request (fn [request-m _] (get request-m :url)))
-
-
-(defmethod format-request
-  :default
-  [request-m user-params-m]
-  (-> request-m
-      (update-in [:form-params] (fn [_] (merge (scraper/form-params request-m) user-params-m)))
-      (update-in  [:form-params] dissoc :credit-line)))
-
-
-(defmethod format-request
-  "/ratanet/front?controller=CreditApplication&action=Login"
-  [request-m user-params-m]
-  (-> request-m
-      (assoc :form-params user-params-m)
-      (assoc :cookie (clj-http.cookies/cookie-store))))
-
-
-(defmethod format-request
-  "/ratanet/front?controller=CreditApplication&action=DispoMaterialType&ps=DISPOV2&init=1"
-  [request-m _]
-  (dissoc request-m :form-params))
+    (dissoc submit-params "next" "next.x" "next.y" "prev" "prev.x" "prev.y" "alternate3" "alternate1")))
 
 
 
@@ -54,7 +27,7 @@
   [_ r] r)
 
 (defmethod assoc-default-params
-  ;"DispoPlusCreditType"
+
   "/ratanet/front?controller=CreditApplication&action=DispoPlusCreditType"
   [_ params]
   (assoc params
@@ -73,16 +46,13 @@
 
 
 (defmethod assoc-default-params
-  ;"DispoV2CustomerIdentity"
   "/ratanet/front?controller=CreditApplication&action=DispoV2CustomerIdentity"
   [_ params ]
   (merge params default-customer-info))
 
 
 
-(defn merge-request [request-m {:keys [params]}]
-  (println "---params " params)
-  (-> request-m
-      (format-request (w/stringify-keys (assoc-default-params (:url request-m) #_(:action params ) params)))
-      (assoc-action-type params)))
 
+
+
+;(update-in {:form-params {nil nil} } [:form-params] dissoc nil )

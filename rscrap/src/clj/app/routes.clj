@@ -11,13 +11,8 @@
             [clojure.tools.logging :as log]
             [immutant.web.middleware :as imm]
             [dadysql.http-service :as h]
-    ;    [app.routes-middleware :as rm]
-    ;  [app.handler.common :as common]
-    ;  [app.handler.credittype :as credit]
-    ;  [app.handler.material :as material]
             [app.view.core :as view]
             [scraper.remote-fetcher :as fetcher]
-            [scraper.request-builder :as rb]
             [app.service :as api]
             [app.state :as s]))
 
@@ -41,23 +36,7 @@
 
 
 
-(defn is-same-page [params]
-  (if (or (contains? params :next)
-          (contains? params :prev))
-    false
-    true))
-
-(comment
-  (is-same-page {"Instance_theDossierConditions_theMaterialInfo$0_mCode"  "320",
-                 :Instance_theDossierConditions_theVendorInfo_mSalesmanId "2103257",
-                 :next                                                    ""}
-                )
-
-  )
-
-
-
-(defn find-redirect-utl [request-m {:keys [uri params]}]
+(defn find-redirect-utl [request-m]
   (get redirect-url-m (:url request-m)))
 
 
@@ -67,16 +46,10 @@
 
 
 (defn post-request [rrequest]
-  (-> (fetcher/get-request-m rrequest)
-      (rb/merge-request rrequest)
-      ;(fetcher/log "After merge request  ")
-      (fetcher/fetch-data)
-      (fetcher/add-to-store! rrequest)
-      (find-redirect-utl rrequest)
-      ;(fetcher/log "Redirect uzrl name ")
+  (-> (fetcher/fetch-remote (get-in rrequest [:session :identifier]) (get-in rrequest [:params]) )
+      (find-redirect-utl)
       (response/redirect)
       (copy-session rrequest)))
-
 
 
 
@@ -91,39 +64,30 @@
 
 (defn login-handler [rrequest]
   (do
-    (-> (fetcher/login-request)
-        (rb/merge-request rrequest)
-        (fetcher/fetch-data)
-        (fetcher/add-to-store! rrequest))
-    (->
-      (response/redirect "/credit?action=DispoMaterialType")
-      (copy-session rrequest))))
+    (fetcher/fetch-remote (get-in rrequest [:session :identifier])
+                          (get-in rrequest [:params])
+                          (fetcher/init-login-request))
+    (-> (response/redirect "/credit?action=DispoMaterialType")
+        (copy-session rrequest))))
 
 
 (defroutes
   auth-routes
-  (GET "/login" rrequest (let [rrequest (assoc-idententifer-to-session rrequest)]
-                           (-> (view/login-view)
-                               (copy-session rrequest))))
+  (GET "/login" rrequest (->> (assoc-idententifer-to-session rrequest)
+                              (copy-session (view/login-view))))
   (POST "/login" rrequest (login-handler rrequest))
   (GET "/logout" _ (response/redirect "/login")))
 
 
 
 (defn get-request [rrequest]
-
-  (println "---- Get request ")
-
   (let [action (get-in rrequest [:params :action])]
     (if (= action "DispoMaterialType")
-      (-> (fetcher/get-request-m rrequest)
-          (fetcher/init-flow-request)
-          (fetcher/fetch-data)
-          (fetcher/add-to-store! rrequest)
-          (view/view)
-          (copy-session rrequest))
-
-      (-> (fetcher/get-request-m rrequest)
+      (-> (fetcher/fetch-remote (get-in rrequest [:session :identifier])
+                                (get-in rrequest [:params])
+                                (fetcher/init-flow-request))
+          (view/view))
+      (-> (fetcher/get-request-m (get-in rrequest [:session :identifier]))
           (view/view)))))
 
 
